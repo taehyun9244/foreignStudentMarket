@@ -1,12 +1,15 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.SignUpRequestDto;
 import com.example.demo.util.Timesteamed;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity // DB테이블 표시
 @NoArgsConstructor // 기본생성자
+@Getter
 public class User extends Timesteamed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,4 +41,5 @@ public class User extends Timesteamed {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
 }
