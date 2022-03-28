@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity // DB테이블 표시
 @NoArgsConstructor // 기본생성자
 @Getter
-public class User extends Timesteamed {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
