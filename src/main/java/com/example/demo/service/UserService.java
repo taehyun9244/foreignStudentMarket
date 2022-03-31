@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.SignUpRequestDto;
+import com.example.demo.dto.request.SignUpRequestDto;
 import com.example.demo.jwt.JwtTokenProvider;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.model.User;

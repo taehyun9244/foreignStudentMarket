@@ -1,7 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.SignUpRequestDto;
-import com.example.demo.util.Timesteamed;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
