@@ -1,22 +1,21 @@
 package com.example.demo.model;
 
+import com.example.demo.util.Timesteamed;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductBoard {
+@Entity
+public class ProductBoard extends Timesteamed {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
