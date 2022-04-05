@@ -31,6 +31,7 @@ public class UserService {
         String birthday = signUpRequestDto.getBirthday();
         String email = signUpRequestDto.getEmail();
         String phoneNumber = signUpRequestDto.getPhoneNumber();
+        String address = signUpRequestDto.getAddress();
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
 
         Optional<User> foundUser = userRepository.findByUsername(username);
@@ -45,7 +46,7 @@ public class UserService {
             throw new RuntimeException("이미 등록된 전화번호 입니다");
         }
 
-        User user = new User(username, password, nickname, birthday, email, phoneNumber);
+        User user = new User(username, password, nickname, birthday, email, phoneNumber, address);
         userRepository.save(user);
     }
 
