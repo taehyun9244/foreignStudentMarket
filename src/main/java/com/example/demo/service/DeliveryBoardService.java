@@ -7,6 +7,7 @@ import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class DeliveryBoardService {
     private final DeliveryBoardRepository deliveryBoardRepository;
     private final UserRepository userRepository;
 
+    @Autowired
     public DeliveryBoardService(DeliveryBoardRepository deliveryBoardRepository, UserRepository userRepository) {
         this.deliveryBoardRepository = deliveryBoardRepository;
         this.userRepository = userRepository;
@@ -45,7 +47,7 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 수정
-    public Long editDeliveryBoard(Long deliveryBoardId, DeliveryBoardDetailResDto detailResDto ){
+    public Long editDeliveryBoard(Long deliveryBoardId, DeliveryBoardDetailResDto detailResDto ) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
                 ()-> new IllegalArgumentException("can not find user")
         );

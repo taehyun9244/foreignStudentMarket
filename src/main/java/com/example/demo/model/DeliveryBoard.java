@@ -2,16 +2,12 @@ package com.example.demo.model;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.util.Timesteamed;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "ProductBoard")
 public class DeliveryBoard extends Timesteamed {
@@ -35,8 +31,7 @@ public class DeliveryBoard extends Timesteamed {
     @Column(name = "LOCATION",nullable = false)
     private String location;
 
-    @Enumerated(EnumType.STRING)
-    private entryStatus status;
+    private String username;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -45,6 +40,7 @@ public class DeliveryBoard extends Timesteamed {
 
     @Builder
     public DeliveryBoard(String title, String contents, String country, int price, String location, User user) {
+        super();
         this.title = title;
         this.contents = contents;
         this.country = country;

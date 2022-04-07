@@ -41,6 +41,9 @@ public class User extends Timesteamed{
     @OneToMany(mappedBy = "user")
     private List<DeliveryBoard> boards = new ArrayList<DeliveryBoard>();
 
+//    @OneToMany(mappedBy = "user")
+//    private List<Comment> comments = new ArrayList<>(Comment);
+
     public User(String username, String password, String nickname, String birthday, String email, String phoneNumber, String address) {
         this.username = username;
         this.password = password;

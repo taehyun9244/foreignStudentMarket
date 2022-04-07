@@ -14,7 +14,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class DeliveryBoardSimResDto {
     private Long id;

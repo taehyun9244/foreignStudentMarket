@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.model.DeliveryBoard;
 import com.example.demo.service.DeliveryBoardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,12 +37,12 @@ public class DeliveryBoardController {
     @PostMapping("/deliveryBoards")
     public ResponseEntity<Void> creatDeliveryBoard(@RequestBody DeliveryBoardPostReqDto postReqDto){
         deliveryBoardService.creatDeliveryBoard(postReqDto);
-        return ResponseEntity.created(URI.create("/deliveryBoard")).build();
+        return ResponseEntity.created(URI.create("/deliveryBoards")).build();
     }
 
     //운송 게시글 수정
     @PatchMapping("/deliveryBoards/{deliveryBoardId}")
-    public ResponseEntity<Void> editDeliveryBoard(@PathVariable Long deliveryBoardId, @RequestBody DeliveryBoardDetailResDto detailResDto){
+    public ResponseEntity<DeliveryBoard> editDeliveryBoard(@PathVariable Long deliveryBoardId, @RequestBody DeliveryBoardDetailResDto detailResDto){
         deliveryBoardService.editDeliveryBoard(deliveryBoardId, detailResDto);
         return ResponseEntity.ok().build();
     }
