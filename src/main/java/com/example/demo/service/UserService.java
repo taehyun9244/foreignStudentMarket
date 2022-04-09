@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -25,9 +26,9 @@ public class UserService {
 
 
     //유저 회원가입
+    @Transactional
     public void registerUser(SignUpRequestDto signUpRequestDto){
         String username = signUpRequestDto.getUsername();
-        String nickname = signUpRequestDto.getNickname();
         String birthday = signUpRequestDto.getBirthday();
         String email = signUpRequestDto.getEmail();
         String phoneNumber = signUpRequestDto.getPhoneNumber();
@@ -35,28 +36,26 @@ public class UserService {
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
 
         Optional<User> foundUser = userRepository.findByUsername(username);
-        Optional<User> foundNickname = userRepository.findByNickname(nickname);
         Optional<User> foundPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
 
         if (foundUser.isPresent()){
             throw new RuntimeException("이미 등록된 아이디 입니다");
-        }else if (foundNickname.isPresent()){
-            throw new RuntimeException("이미 등록된 닉네임 입니다");
         }else if (foundPhoneNumber.isPresent()){
             throw new RuntimeException("이미 등록된 전화번호 입니다");
         }
 
-        User user = new User(username, password, nickname, birthday, email, phoneNumber, address);
+        User user = new User(username, password, birthday, email, phoneNumber, address);
         userRepository.save(user);
     }
 
+    @Transactional
     public String createToken(SignUpRequestDto signUpRequestDto) {
         User user = userRepository.findByUsername(signUpRequestDto.getUsername())
                 .orElseThrow(()->new IllegalArgumentException("가입되지 않은 유저입니다"));
         if (!passwordEncoder.matches(signUpRequestDto.getPassword(),user.getPassword())){
             throw new RuntimeException("잘못된 비밀번호입니다");
         }
-        return jwtTokenProvider.createToken(user.getUsername(), user.getId(), user.getNickname());
+        return jwtTokenProvider.createToken(user.getUsername(), user.getId(), user.getPhoneNumber());
     }
 
 

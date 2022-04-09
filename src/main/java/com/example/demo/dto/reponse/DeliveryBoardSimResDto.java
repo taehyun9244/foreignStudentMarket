@@ -4,7 +4,6 @@ import com.example.demo.model.DeliveryBoard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -21,7 +20,7 @@ public class DeliveryBoardSimResDto {
     private int price;
     private String location;
     private String country;
-    private String nickname;
+    private String username;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -38,7 +37,7 @@ public class DeliveryBoardSimResDto {
                 .country(board.getCountry())
                 .createdAt(board.getCreatedAt())
                 .updateAt(board.getUpdateAt())
-                .nickname(board.getUser().getNickname())
+                .username(board.getUser().getUsername())
                 .build();
     }
     //전체 게시글 조회 데이터 가공

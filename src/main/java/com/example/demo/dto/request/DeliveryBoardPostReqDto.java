@@ -21,9 +21,9 @@ public class DeliveryBoardPostReqDto {
     @NotBlank(message = "운송위치를 입력해 주세요")
     private String location;
 
-    public DeliveryBoard toEntity(User user){
+    public DeliveryBoard toEntity(User username){
         return DeliveryBoard.builder()
-                .user(user)
+                .user(username)
                 .title(title)
                 .contents(contents)
                 .country(country)

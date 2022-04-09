@@ -22,5 +22,4 @@ public abstract class Timesteamed {
     @LastModifiedDate // 게시글의 수정시간
     private LocalDateTime updateAt;
 
-
 }

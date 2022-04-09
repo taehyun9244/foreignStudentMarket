@@ -40,7 +40,6 @@ public class DeliveryBoard extends Timesteamed {
 
     @Builder
     public DeliveryBoard(String title, String contents, String country, int price, String location, User user) {
-        super();
         this.title = title;
         this.contents = contents;
         this.country = country;
@@ -49,6 +48,7 @@ public class DeliveryBoard extends Timesteamed {
         this.user = user;
     }
 
+    //운송 게시글 수정 데이터 가공
     public void editDeliveryBoard(DeliveryBoardDetailResDto detailResDto) {
         this.title = detailResDto.getTitle();
         this.contents = detailResDto.getContents();

@@ -23,9 +23,6 @@ public class User extends Timesteamed{
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "NICKNAME", nullable = false)
-    private String nickname;
-
     @Column(name = "BIRTHDAY", nullable = false)
     private String birthday;
 
@@ -39,15 +36,14 @@ public class User extends Timesteamed{
     private String address;
 
     @OneToMany(mappedBy = "user")
-    private List<DeliveryBoard> boards = new ArrayList<DeliveryBoard>();
+    private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Comment> comments = new ArrayList<>(Comment);
+    @OneToMany(mappedBy = "user")
+    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
 
-    public User(String username, String password, String nickname, String birthday, String email, String phoneNumber, String address) {
+    public User(String username, String password, String birthday, String email, String phoneNumber, String address) {
         this.username = username;
         this.password = password;
-        this.nickname = nickname;
         this.birthday = birthday;
         this.email = email;
         this.phoneNumber = phoneNumber;

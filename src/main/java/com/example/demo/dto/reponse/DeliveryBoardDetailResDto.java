@@ -21,7 +21,7 @@ public class DeliveryBoardDetailResDto {
     private String country;
     private int price;
     private String location;
-    private String nickname;
+    private String username;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -39,7 +39,7 @@ public class DeliveryBoardDetailResDto {
                 .location(deliveryBoard.getLocation())
                 .createdAt(deliveryBoard.getCreatedAt())
                 .updateAt(deliveryBoard.getUpdateAt())
-                .nickname(deliveryBoard.getUser().getNickname())
+                .username(deliveryBoard.getUser().getUsername())
                 .build();
     }
 }

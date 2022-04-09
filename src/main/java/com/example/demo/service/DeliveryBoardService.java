@@ -10,6 +10,7 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -25,12 +26,14 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 전체조회
+    @Transactional(readOnly = true) // 읽기 트랜잭션으로 데이터를 읽어 올 때, 성능이 조금이라도 도움이 될 수 있도록
     public List<DeliveryBoardSimResDto> getBoardSim(){
         List<DeliveryBoard> deliveryBoardList = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
         return DeliveryBoardSimResDto.list(deliveryBoardList);
     }
 
     //운송 게시글 상세조회
+    @Transactional(readOnly = true)
     public DeliveryBoardDetailResDto getBoardDetail(Long deliveryBoardId) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
                 ()-> new IllegalArgumentException("Error")
@@ -39,6 +42,7 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 작성
+    @Transactional
     public void creatDeliveryBoard(DeliveryBoardPostReqDto postReqDto) {
         User findUsername = userRepository.findByUsername(postReqDto.getUsername()).orElseThrow(
                 ()-> new IllegalArgumentException("can not found user")
@@ -47,6 +51,7 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 수정
+    @Transactional
     public Long editDeliveryBoard(Long deliveryBoardId, DeliveryBoardDetailResDto detailResDto ) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
                 ()-> new IllegalArgumentException("can not find user")
@@ -56,6 +61,7 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 삭제
+    @Transactional
     public void deleteDeliveryBoard(Long deliveryBoardId){
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
                 ()-> new RuntimeException("can not found user")

@@ -19,32 +19,33 @@ public class ComBoardSimResDto {
     private String com_title;
     private String com_subtitle;
     private String com_location;
-    private String comm_contents;
-    private String nickname;
+    private String username;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updateAt;
 
 
-    public static ComBoardSimResDto ofComSimBuild(CommunityBoard communityBoard){
+    //젠체 게시글 데이터 가공
+    public static ComBoardSimResDto ComSimBuild(CommunityBoard board){
         return ComBoardSimResDto.builder()
-                .id(communityBoard.getId())
-                .com_location(communityBoard.getCom_location())
-                .com_subtitle(communityBoard.getCom_subtitle())
-                .com_title(communityBoard.getCom_title())
-                .comm_contents(communityBoard.getComm_contents())
-                .createdAt(communityBoard.getCreatedAt())
-                .updateAt(communityBoard.getUpdateAt())
-                .nickname(communityBoard.getUser().getNickname())
+                .id(board.getId())
+                .com_title(board.getCom_title())
+                .com_subtitle(board.getCom_subtitle())
+                .com_location(board.getCom_location())
+                .createdAt(board.getCreatedAt())
+                .updateAt(board.getUpdateAt())
+                .username(board.getUser().getUsername())
                 .build();
     }
+
+    //전체 게시글 가공된 데이터 리스트로 만들기
     public static List<ComBoardSimResDto> list(List<CommunityBoard> communityBoards){
-        List<ComBoardSimResDto> comBoardSimResDtos = new ArrayList<>();
-        for(CommunityBoard communityBoard : communityBoards){
-            comBoardSimResDtos.add(ofComSimBuild(communityBoard));
+        List<ComBoardSimResDto> comBoardSimResDtoList = new ArrayList<>();
+        for(CommunityBoard simResDto : communityBoards){
+            comBoardSimResDtoList.add(ComSimBuild(simResDto));
         }
-        return comBoardSimResDtos;
+        return comBoardSimResDtoList;
     }
 
 

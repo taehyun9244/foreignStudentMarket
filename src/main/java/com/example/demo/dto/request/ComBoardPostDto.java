@@ -1,7 +1,5 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.model.CommunityBoard;
-import com.example.demo.model.User;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -21,15 +19,5 @@ public class ComBoardPostDto {
     @NotBlank(message = "국가를 입력해 주세요")
     private String com_country;
 
-    public  CommunityBoard postComBoard(User username){
-        return CommunityBoard.builder()
-                .user(username)
-                .com_title(com_title)
-                .com_subtitle(com_subtitle)
-                .com_location(com_location)
-                .com_country(com_country)
-                .comm_contents(com_contents)
-                .build();
-    }
 
 }

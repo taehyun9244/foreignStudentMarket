@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.reponse.ComBoardDetailDto;
 import com.example.demo.dto.reponse.ComBoardSimResDto;
 import com.example.demo.dto.request.ComBoardPostDto;
+import com.example.demo.model.CommunityBoard;
 import com.example.demo.service.CommunityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class CommunityBoardController {
 
     //커뮤니티 게시판 상세조회
     @GetMapping("/communities/{communityId}")
-    public ResponseEntity<ComBoardDetailDto> getComBoardDetail(@PathVariable Long communityId){
+    public ResponseEntity<CommunityBoard> getComBoardDetail(@PathVariable Long communityId){
         communityService.getComBoardDetail(communityId);
         return ResponseEntity.ok().body(communityService.getComBoardDetail(communityId));
     }
@@ -42,7 +43,16 @@ public class CommunityBoardController {
     }
 
     //커뮤니티 게시판 수정
+    @PutMapping("/communities/{communitiesId}")
+    public ResponseEntity<CommunityBoard> editCommunityBoard(@PathVariable Long communitiesId, @RequestBody ComBoardDetailDto detailDto){
+        communityService.editCommunityBoard(communitiesId,detailDto);
+        return ResponseEntity.ok().build();
+    }
 
     //커뮤니티 게시판 삭제
+    @DeleteMapping("/communities/{communitiesId}")
+    public void deleteComBoard(@PathVariable Long communitiesId){
+        communityService.deleteComBoard(communitiesId);
+    }
 
 }

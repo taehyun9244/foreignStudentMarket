@@ -29,12 +29,11 @@ class UserServiceTest {
         Long id = 1L;
         String username = "userA";
         String password = "123456789";
-        String nickname = "nickName1";
         String birthday = "19920404";
         String email = "namtaehyun@naver.com";
         String phoneNumber = "010-1234-5678";
         String address = "seocho-gu";
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(id, username, password, birthday, nickname, email, phoneNumber, address);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(id, username, password, birthday, email, phoneNumber, address);
 
         //when
         userService.registerUser(signUpRequestDto);
@@ -44,7 +43,6 @@ class UserServiceTest {
         Assertions.assertEquals("userA", signUpRequestDto.getUsername());
         Assertions.assertEquals("123456789", signUpRequestDto.getPassword());
         Assertions.assertEquals("19920404", signUpRequestDto.getBirthday());
-        Assertions.assertEquals("nickName1", signUpRequestDto.getNickname());
         Assertions.assertEquals("010-1234-5678", signUpRequestDto.getPhoneNumber());
         Assertions.assertEquals("seocho-gu", signUpRequestDto.getAddress());
     }
