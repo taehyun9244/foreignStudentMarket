@@ -38,8 +38,8 @@ public class User extends Timesteamed{
     @OneToMany(mappedBy = "user")
     private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
 
-    @OneToMany(mappedBy = "user")
-    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
+//    @OneToMany(mappedBy = "user")
+//    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
 
     public User(String username, String password, String birthday, String email, String phoneNumber, String address) {
         this.username = username;

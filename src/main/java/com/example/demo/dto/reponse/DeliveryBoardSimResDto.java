@@ -8,8 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -17,35 +15,27 @@ import java.util.List;
 public class DeliveryBoardSimResDto {
     private Long id;
     private String title;
-    private int price;
-    private String location;
-    private String country;
+    private String send_country;
+    private String send_address;
+    private String delivered_country;
+    private String delivered_address;
     private String username;
-
+    private int price;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updateAt;
 
-    //데이터 가공
-    public static DeliveryBoardSimResDto of(DeliveryBoard board){
-        return DeliveryBoardSimResDto.builder()
-                .id(board.getId())
-                .title(board.getTitle())
-                .price(board.getPrice())
-                .location(board.getLocation())
-                .country(board.getCountry())
-                .createdAt(board.getCreatedAt())
-                .updateAt(board.getUpdateAt())
-                .username(board.getUser().getUsername())
-                .build();
-    }
-    //전체 게시글 조회 데이터 가공
-    public static List<DeliveryBoardSimResDto> list(List<DeliveryBoard> boards){
-        List<DeliveryBoardSimResDto> deliveryBoardSimResDtos = new ArrayList<>();
-        for (DeliveryBoard board : boards){
-            deliveryBoardSimResDtos.add(of(board));
-        }
-        return deliveryBoardSimResDtos;
+    public DeliveryBoardSimResDto(DeliveryBoard deliveryBoard) {
+        this.id = deliveryBoard.getId();
+        this.title = deliveryBoard.getTitle();
+        this.send_country = deliveryBoard.getSend_country();
+        this.send_address = deliveryBoard.getSend_address();
+        this.delivered_country = deliveryBoard.getDelivered_country();
+        this.delivered_address = deliveryBoard.getDelivered_address();
+        this.price = deliveryBoard.getPrice();
+        this.createdAt =deliveryBoard.getCreatedAt();
+        this.updateAt = deliveryBoard.getUpdateAt();
+        this.username = deliveryBoard.getUser().getUsername();
     }
 }

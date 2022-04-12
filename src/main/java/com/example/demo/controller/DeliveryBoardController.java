@@ -4,8 +4,10 @@ import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
 import com.example.demo.model.DeliveryBoard;
+import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,36 +24,35 @@ public class DeliveryBoardController {
 
     //운송 게시글 전체 조회
     @GetMapping("/deliveryBoards")
-    public ResponseEntity<List<DeliveryBoardSimResDto>> getBoardSim() {
-        return ResponseEntity.ok().body(deliveryBoardService.getBoardSim());
+    public List<DeliveryBoardSimResDto> getBoardSim() {
+        return deliveryBoardService.getBoardSim();
     }
 
-    //운송 상세 게시글 조회
-    @GetMapping("/deliveryBoards/{deliveryBoardId}")
-    public ResponseEntity<DeliveryBoardDetailResDto> getBoardDetail(@PathVariable Long deliveryBoardId) {
-        return ResponseEntity.ok().body(deliveryBoardService.getBoardDetail(deliveryBoardId));
+    //운송 게시글 상세 조회
+    @GetMapping("/deliveryBoards/{deliveryBoardsId}")
+    public DeliveryBoardDetailResDto getBoardDetail(@PathVariable Long deliveryBoardsId){
+        return deliveryBoardService.getBoardDetail(deliveryBoardsId);
     }
-
 
     //운송 게시글 작성
     @PostMapping("/deliveryBoards")
-    public ResponseEntity<Void> creatDeliveryBoard(@RequestBody DeliveryBoardPostReqDto postReqDto){
-        deliveryBoardService.creatDeliveryBoard(postReqDto);
-        return ResponseEntity.created(URI.create("/deliveryBoards")).build();
+    public void creatDeliveryBoard(@RequestBody DeliveryBoardPostReqDto postReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        deliveryBoardService.creatDeliveryBoard(postReqDto, userDetails);
     }
 
     //운송 게시글 수정
-    @PatchMapping("/deliveryBoards/{deliveryBoardId}")
-    public ResponseEntity<DeliveryBoard> editDeliveryBoard(@PathVariable Long deliveryBoardId, @RequestBody DeliveryBoardDetailResDto detailResDto){
-        deliveryBoardService.editDeliveryBoard(deliveryBoardId, detailResDto);
-        return ResponseEntity.ok().build();
+    @PutMapping("/deliveryBoards/{deliveryBoardsId}")
+    public void editDeliveryBoard(@PathVariable Long deliveryBoardsId,
+                                  @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                  @RequestBody DeliveryBoardDetailResDto detailResDto){
+        deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, detailResDto);
     }
 
-    //운송 게시글 삭제
-    @DeleteMapping("/deliveryBoards/{deliveryBoardId}")
-    public void deleteDeliveryBoard(@PathVariable Long deliveryBoardId){
-        deliveryBoardService.deleteDeliveryBoard(deliveryBoardId);
 
+    //운송 게시글 삭제
+    @DeleteMapping("/deliveryBoards/{deliveryBoardsId}")
+    public void deleteDeliveryBoard(@PathVariable Long deliveryBoardsId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        deliveryBoardService.deleteDeliveryBoard(deliveryBoardsId, userDetails);
     }
 
 }

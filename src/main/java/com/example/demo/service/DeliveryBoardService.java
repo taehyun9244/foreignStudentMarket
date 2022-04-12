@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
@@ -7,11 +8,14 @@ import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class DeliveryBoardService {
@@ -25,48 +29,54 @@ public class DeliveryBoardService {
         this.userRepository = userRepository;
     }
 
-    //운송 게시글 전체조회
-    @Transactional(readOnly = true) // 읽기 트랜잭션으로 데이터를 읽어 올 때, 성능이 조금이라도 도움이 될 수 있도록
-    public List<DeliveryBoardSimResDto> getBoardSim(){
-        List<DeliveryBoard> deliveryBoardList = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
-        return DeliveryBoardSimResDto.list(deliveryBoardList);
+    //운송 게시글 전체 조회
+    @Transactional(readOnly = true)
+    public List<DeliveryBoardSimResDto> getBoardSim() {
+        List<DeliveryBoard> deliveryBoards = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
+        List<DeliveryBoardSimResDto> simResDtos = new ArrayList<>();
+        for (DeliveryBoard deliveryBoard : deliveryBoards)
+            simResDtos.add(new DeliveryBoardSimResDto(deliveryBoard));
+            return simResDtos;
     }
 
-    //운송 게시글 상세조회
+    //운송 게시글 상세 조회
     @Transactional(readOnly = true)
     public DeliveryBoardDetailResDto getBoardDetail(Long deliveryBoardId) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
-                ()-> new IllegalArgumentException("Error")
+                ()-> new IllegalArgumentException("게시글이 존재하지 않습니다")
         );
-        return DeliveryBoardDetailResDto.of(deliveryBoard);
+        return new DeliveryBoardDetailResDto(deliveryBoard);
     }
 
     //운송 게시글 작성
     @Transactional
-    public void creatDeliveryBoard(DeliveryBoardPostReqDto postReqDto) {
-        User findUsername = userRepository.findByUsername(postReqDto.getUsername()).orElseThrow(
-                ()-> new IllegalArgumentException("can not found user")
-        );
-        deliveryBoardRepository.save(postReqDto.toEntity(findUsername));
+    public void creatDeliveryBoard(DeliveryBoardPostReqDto postReqDto, UserDetailsImpl userDetails) {
+            User findUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
+                    ()-> new RuntimeException("회원가입을 해주세요 가입되지 앖았습니다")
+            );
+            DeliveryBoard deliveryBoard = new DeliveryBoard(postReqDto,findUser);
+            deliveryBoardRepository.save(deliveryBoard);
     }
 
     //운송 게시글 수정
-    @Transactional
-    public Long editDeliveryBoard(Long deliveryBoardId, DeliveryBoardDetailResDto detailResDto ) {
-        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
-                ()-> new IllegalArgumentException("can not find user")
+    public void editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardDetailResDto detailResDto){
+        User user = userDetails.getUser();
+        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId).orElseThrow(
+                ()->new RuntimeException("존재하지 않는 게시글입니다")
         );
-        deliveryBoard.editDeliveryBoard(detailResDto);
-        return deliveryBoardId;
+        if (user.equals(deliveryBoard.getUser())){
+            deliveryBoard.editDeliveryBoard(detailResDto);
+        }else new RuntimeException("작성자가 아닙니다");
     }
 
     //운송 게시글 삭제
-    @Transactional
-    public void deleteDeliveryBoard(Long deliveryBoardId){
-        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
-                ()-> new RuntimeException("can not found user")
+    public void deleteDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails){
+        User user = userDetails.getUser();
+        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId).orElseThrow(
+                ()-> new RuntimeException("존재하지 않는 게시글입니다")
         );
-        deliveryBoardRepository.delete(deliveryBoard);
+        if (user.equals(deliveryBoard.getUser())){
+            deliveryBoardRepository.delete(deliveryBoard);
+        }
     }
-
 }

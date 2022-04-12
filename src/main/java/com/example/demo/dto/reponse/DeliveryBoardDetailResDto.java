@@ -18,28 +18,28 @@ public class DeliveryBoardDetailResDto {
     private Long id;
     private String title;
     private String contents;
-    private String country;
+    private String send_country;
+    private String send_address;
+    private String delivered_country;
+    private String delivered_address;
     private int price;
-    private String location;
     private String username;
-
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updateAt;
 
-    //상세 게시글 조회 데이터 가공
-    public static DeliveryBoardDetailResDto of(DeliveryBoard deliveryBoard) {
-        return DeliveryBoardDetailResDto.builder()
-                .id(deliveryBoard.getId())
-                .title(deliveryBoard.getTitle())
-                .contents(deliveryBoard.getContents())
-                .country(deliveryBoard.getCountry())
-                .price(deliveryBoard.getPrice())
-                .location(deliveryBoard.getLocation())
-                .createdAt(deliveryBoard.getCreatedAt())
-                .updateAt(deliveryBoard.getUpdateAt())
-                .username(deliveryBoard.getUser().getUsername())
-                .build();
+    public DeliveryBoardDetailResDto (DeliveryBoard deliveryBoard){
+        this.id = deliveryBoard.getId();
+        this.title = deliveryBoard.getTitle();
+        this.contents = deliveryBoard.getContents();
+        this.send_country = deliveryBoard.getSend_country();
+        this.send_address = deliveryBoard.getSend_address();
+        this.delivered_country = deliveryBoard.getDelivered_country();
+        this.delivered_address = deliveryBoard.getDelivered_address();
+        this.price = deliveryBoard.getPrice();
+        this.username = deliveryBoard.getUser().getUsername();
+        this.createdAt = deliveryBoard.getCreatedAt();
+        this.updateAt = deliveryBoard.getUpdateAt();
     }
 }
