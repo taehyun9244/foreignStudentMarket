@@ -51,8 +51,9 @@ public class DeliveryBoardService {
     //운송 게시글 작성
     @Transactional
     public void creatDeliveryBoard(DeliveryBoardPostReqDto postReqDto, UserDetailsImpl userDetails) {
-            User findUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
-                    ()-> new RuntimeException("회원가입을 해주세요 가입되지 앖았습니다")
+            User user = userDetails.getUser();
+            User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
+                    ()-> new RuntimeException("회원가입을 해주세요 가입되지 않았습니다")
             );
             DeliveryBoard deliveryBoard = new DeliveryBoard(postReqDto,findUser);
             deliveryBoardRepository.save(deliveryBoard);
@@ -66,7 +67,7 @@ public class DeliveryBoardService {
         );
         if (user.equals(deliveryBoard.getUser())){
             deliveryBoard.editDeliveryBoard(detailResDto);
-        }else new RuntimeException("작성자가 아닙니다");
+        }else new RuntimeException("게시글 작성자가 아닙니다");
     }
 
     //운송 게시글 삭제
@@ -77,6 +78,6 @@ public class DeliveryBoardService {
         );
         if (user.equals(deliveryBoard.getUser())){
             deliveryBoardRepository.delete(deliveryBoard);
-        }
+        }else  new RuntimeException("게시글 작성자가 아닙니다");
     }
 }

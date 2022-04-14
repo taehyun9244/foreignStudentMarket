@@ -36,7 +36,8 @@ public class DeliveryBoardController {
 
     //운송 게시글 작성
     @PostMapping("/deliveryBoards")
-    public void creatDeliveryBoard(@RequestBody DeliveryBoardPostReqDto postReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public void creatDeliveryBoard(@RequestBody DeliveryBoardPostReqDto postReqDto,
+                                   @AuthenticationPrincipal UserDetailsImpl userDetails){
         deliveryBoardService.creatDeliveryBoard(postReqDto, userDetails);
     }
 
@@ -51,7 +52,8 @@ public class DeliveryBoardController {
 
     //운송 게시글 삭제
     @DeleteMapping("/deliveryBoards/{deliveryBoardsId}")
-    public void deleteDeliveryBoard(@PathVariable Long deliveryBoardsId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public void deleteDeliveryBoard(@PathVariable Long deliveryBoardsId,
+                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
         deliveryBoardService.deleteDeliveryBoard(deliveryBoardsId, userDetails);
     }
 

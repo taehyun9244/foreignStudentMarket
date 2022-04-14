@@ -4,6 +4,7 @@ import com.example.demo.jwt.JwtAuthenticationFilter;
 import com.example.demo.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
@@ -35,6 +37,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
     @Override
     public void configure(WebSecurity web) {
         // h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
@@ -45,15 +48,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy((SessionCreationPolicy.STATELESS))//세션정책, jwt토큰 사용을 위해 STATELESS
+                .and()
                 .headers().frameOptions().disable()
                 .and()
-                    .csrf().disable()
                     .httpBasic().disable()
-                    .sessionManagement().sessionCreationPolicy((SessionCreationPolicy.STATELESS))//세션정책, jwt토큰 사용을 위해 STATELESS
-                .and()
                     .authorizeRequests()
-                    .antMatchers("/**").permitAll()
-                    .anyRequest().authenticated()
+                    .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
