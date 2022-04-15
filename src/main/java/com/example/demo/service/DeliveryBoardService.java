@@ -60,24 +60,30 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 수정
-    public void editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardDetailResDto detailResDto){
+    @Transactional
+    public void editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReqDto postReqDto){
         User user = userDetails.getUser();
-        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId).orElseThrow(
-                ()->new RuntimeException("존재하지 않는 게시글입니다")
+        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
+                .orElseThrow( ()->new RuntimeException("존재하지 않는 게시글입니다")
         );
-        if (user.equals(deliveryBoard.getUser())){
-            deliveryBoard.editDeliveryBoard(detailResDto);
-        }else new RuntimeException("게시글 작성자가 아닙니다");
+        if (user.getUsername().equals(deliveryBoard.getUser().getUsername())){
+            deliveryBoard.editDeliveryBoard(postReqDto);
+        }else {
+            throw new RuntimeException("게시글 작성자가 아닙니다");
+        }
     }
 
     //운송 게시글 삭제
+    @Transactional
     public void deleteDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails){
         User user = userDetails.getUser();
-        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 게시글입니다")
+        DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
+                .orElseThrow( ()-> new RuntimeException("존재하지 않는 게시글입니다")
         );
-        if (user.equals(deliveryBoard.getUser())){
+        if (user.getUsername().equals(deliveryBoard.getUser().getUsername())){
             deliveryBoardRepository.delete(deliveryBoard);
-        }else  new RuntimeException("게시글 작성자가 아닙니다");
+        }else {
+            throw new RuntimeException("게시글 작성자가 아닙니다");
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import com.example.demo.util.Timesteamed;
+import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor // 기본생성자
 @Getter
 @Table(name = "User")
-public class User extends Timesteamed{
+public class User extends Timestamped{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "USER_ID")
     private Long id;

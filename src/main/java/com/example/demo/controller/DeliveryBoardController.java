@@ -45,8 +45,8 @@ public class DeliveryBoardController {
     @PutMapping("/deliveryBoards/{deliveryBoardsId}")
     public void editDeliveryBoard(@PathVariable Long deliveryBoardsId,
                                   @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                  @RequestBody DeliveryBoardDetailResDto detailResDto){
-        deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, detailResDto);
+                                  @RequestBody DeliveryBoardPostReqDto postReqDto){
+        deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, postReqDto);
     }
 
 

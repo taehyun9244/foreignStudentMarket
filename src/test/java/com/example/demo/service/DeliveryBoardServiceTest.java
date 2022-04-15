@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ class DeliveryBoardServiceTest {
     @DisplayName("운송 게시판 전체 조회")
     void getBoardSimTest() {
         //given
+        DeliveryBoardSimResDto simResDto = new DeliveryBoardSimResDto(1L, "test_title"  )
 
         //when
 

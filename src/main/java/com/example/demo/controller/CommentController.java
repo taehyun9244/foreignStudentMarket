@@ -1,27 +1,40 @@
-//package com.example.demo.controller;
-//
-//import com.example.demo.dto.reponse.CommentResDto;
-//import com.example.demo.model.Comment;
-//import com.example.demo.service.CommentService;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.util.List;
-//
-//
-//@RestController
-//public class CommentController {
-//    private final CommentService commentService;
-//
-//    public CommentController(CommentService commentService) {
-//        this.commentService = commentService;
+package com.example.demo.controller;
+
+
+import com.example.demo.dto.request.CommentPostReq;
+import com.example.demo.security.UserDetailsImpl;
+import com.example.demo.service.CommentService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+
+@RestController
+public class CommentController {
+    private final CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
+
+    @PostMapping("/deliveryBoards/{deliveryBoardId}/comments/")
+    public void creatDeliComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                 @RequestBody CommentPostReq postReq,
+                                 @PathVariable Long deliveryBoardId){
+        commentService.creatDeliComment(userDetails, postReq, deliveryBoardId);
+    }
+
+//    @PostMapping("/comments/{communityBoardId}")
+//    public void creatComComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+//                                @RequestBody CommentPostReq postReq,
+//                                @PathVariable Long communityBoardId){
+//        commentService.creatComComment(userDetails, postReq, communityBoardId);
 //    }
 //
-//    @GetMapping("/communtiyBoards/{communityId}comments")
-//    public ResponseEntity<List<Comment>> getBoardComment(@PathVariable  CommentResDto commentResDto){
-//        commentService.getBoardCommentList();
-//        return new ResponseEntity<>
+//    @DeleteMapping("/comments/{commentId}")
+//    public void deleteComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+//                              @PathVariable Long commentId){
+//        commentService.deleteDeliComment(userDetails, commentId);
 //    }
-//}
+
+
+}

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 public class ComBoardPostDto {
-    private Long id;
     @NotBlank(message = "제목을 입력해 주세요")
     private String com_title;
     @NotBlank(message = "소제목을 선택해 주세요")
