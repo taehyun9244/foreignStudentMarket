@@ -1,15 +1,16 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
 import com.example.demo.util.Timestamped;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "DeliveryBoard")
 public class DeliveryBoard extends Timestamped {
@@ -24,30 +25,33 @@ public class DeliveryBoard extends Timestamped {
     @Column(name = "DELIVERY_CONTENTS", nullable = false)
     private String contents;
 
-    @Column(name = "COUNTRY", nullable = false)
+    @Column(nullable = false)
     private String send_country;
 
-    @Column(name = "ADDRESS", nullable = false)
+    @Column(nullable = false)
     private String send_address;
 
-    @Column(name = "DELIVERED_COUNTRY", nullable = false)
+    @Column(nullable = false)
     private String delivered_country;
 
-    @Column(name = "DELIVERED_ADDRESS", nullable = false)
+    @Column(nullable = false)
     private String delivered_address;
 
     @Column(name = "DELIVERY_PRICE", nullable = false)
     private int price;
 
-    @Column(name = "COUNT_COMMENT", nullable = false)
+    @Column(nullable = false)
     private int countComment;
 
-    @Column(name = "LIKE_DELIBOARD", nullable = false)
+    @Column( nullable = false)
     private int delivery_like;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @OneToMany(mappedBy = "deliveryBoard")
+    private List<DeliComment> deliComment = new ArrayList<DeliComment>();
 
     //게시글 작성 데이터 가공
     public DeliveryBoard(DeliveryBoardPostReqDto postReqDto, User findUser){

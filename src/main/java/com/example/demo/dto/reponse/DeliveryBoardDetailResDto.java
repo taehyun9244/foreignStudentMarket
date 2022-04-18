@@ -25,6 +25,7 @@ public class DeliveryBoardDetailResDto {
     private String send_address;
     private String delivered_country;
     private String delivered_address;
+    private int countComment;
     private int price;
     private String username;
 
@@ -48,6 +49,7 @@ public class DeliveryBoardDetailResDto {
         this.send_address = deliveryBoard.getSend_address();
         this.delivered_country = deliveryBoard.getDelivered_country();
         this.delivered_address = deliveryBoard.getDelivered_address();
+        this.countComment = deliveryBoard.getCountComment();
         this.price = deliveryBoard.getPrice();
         this.username = deliveryBoard.getUser().getUsername();
         this.createdAt = deliveryBoard.getCreatedAt();

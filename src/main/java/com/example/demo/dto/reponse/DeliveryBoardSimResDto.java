@@ -18,6 +18,7 @@ public class DeliveryBoardSimResDto {
     private String delivered_country;
     private String delivered_address;
     private String username;
+    private int countComment;
     private int price;
     @CreatedDate
     private LocalDateTime createdAt;
@@ -31,6 +32,7 @@ public class DeliveryBoardSimResDto {
         this.send_address = deliveryBoard.getSend_address();
         this.delivered_country = deliveryBoard.getDelivered_country();
         this.delivered_address = deliveryBoard.getDelivered_address();
+        this.countComment = deliveryBoard.getCountComment();
         this.price = deliveryBoard.getPrice();
         this.updateAt = deliveryBoard.getUpdateAt();
         this.username = deliveryBoard.getUser().getUsername();

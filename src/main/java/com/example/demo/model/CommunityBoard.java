@@ -21,23 +21,23 @@ public class CommunityBoard extends Timestamped {
     @Column(name = "COMMUNITY_TITLE", nullable = false)
     private String com_title;
 
-    @Column(name = "COMMUNITY_SUBTITLE", nullable = false)
+    @Column(nullable = false)
     private String com_subtitle;
 
     @Column(name = "COMMUNITY_CONTENTS", nullable = false)
     private String com_contents;
 
-    @Column(name = "COMMUNITY_LOCATION", nullable = false)
+    @Column(nullable = false)
     private String com_location;
 
-    @Column(name = "COMMUNITY_COUNTRY", nullable = false)
+    @Column(nullable = false)
     private String com_country;
 
-    @Column(name = "COUNT_COMMUNITY_COMMENT", nullable = false)
+    @Column(nullable = false)
     private int countComment;
 
-    @Column(name = "LIKE_COMBOARD", nullable = false)
-    private int delivery_like;
+    @Column(nullable = false)
+    private int community_like;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")

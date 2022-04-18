@@ -17,29 +17,32 @@ public class User extends Timestamped{
     @Column(name = "USER_ID")
     private Long id;
 
-    @Column(name = "USERNAME", nullable = false)
+    @Column(nullable = false)
     private String username;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "BIRTHDAY", nullable = false)
+    @Column(nullable = false)
     private String birthday;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(name = "PHONENUMBER", nullable = false)
+    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(name = "ADDRESS", nullable = false)
+    @Column(nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "user")
     private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
 
-//    @OneToMany(mappedBy = "user")
-//    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
+    @OneToMany(mappedBy = "user")
+    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
+
+    @OneToMany(mappedBy = "user")
+    private List<DeliComment> comments = new ArrayList<DeliComment>();
 
     public User(String username, String password, String birthday, String email, String phoneNumber, String address) {
         this.username = username;

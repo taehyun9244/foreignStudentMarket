@@ -3,14 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
-import com.example.demo.model.DeliveryBoard;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -56,5 +53,4 @@ public class DeliveryBoardController {
                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
         deliveryBoardService.deleteDeliveryBoard(deliveryBoardsId, userDetails);
     }
-
 }

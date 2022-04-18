@@ -65,7 +65,7 @@ public class CommunityService {
         CommunityBoard communityBoard = communityRepository.findById(communityBoardId).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않은 게시글입니다")
         );
-        if (user.equals(communityBoard.getUser())){
+        if (user.getUsername().equals(communityBoard.getUser().getUsername())){
             communityBoard.editCommunityBoard(detailDto);
         }else throw new RuntimeException("게시글 작성자가 아닙니다");
     }
@@ -77,7 +77,7 @@ public class CommunityService {
         CommunityBoard communityBoard = communityRepository.findById(communityId).orElseThrow(
                 ()-> new RuntimeException("게시글이 존재하지 않습니다")
         );
-        if (user.equals(communityBoard.getUser())){
+        if (user.getUsername().equals(communityBoard.getUser().getUsername())){
             communityRepository.delete(communityBoard);
         }else throw new RuntimeException("게시글 작성자가 아닙니다");
     }
