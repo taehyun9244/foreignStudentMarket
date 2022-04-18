@@ -23,7 +23,7 @@ public class DeliComment extends Timestamped {
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DeliveryId")
     private DeliveryBoard deliveryBoard;
 

@@ -33,9 +33,9 @@ public class DeliCommentService {
     //DeliveryBoard 댓글 조회
     @Transactional(readOnly = true)
     public List<DeliCommentResDto> getDeliComment(Long deliveryBoardId){
-        List<DeliComment> comment = deliCommentRepository.findAllByDeliveryBoardOrderByCreatedAtDesc(deliveryBoardId);
+        List<DeliComment> selectAllComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
         List<DeliCommentResDto> resDtos = new ArrayList<>();
-        for (DeliComment deliComments : comment){
+        for (DeliComment deliComments : selectAllComment){
             resDtos.add(new DeliCommentResDto(deliComments));
         }return resDtos;
     }

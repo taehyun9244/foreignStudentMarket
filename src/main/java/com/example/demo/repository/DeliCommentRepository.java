@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DeliCommentRepository extends JpaRepository<DeliComment, Long> {
     List<DeliComment> findByDeliveryBoardId(Long deliveryBoardId);
-    List<DeliComment> findAllByDeliveryBoardOrderByCreatedAtDesc(Long deliveryBoardId);
+    List<DeliComment> findAllByDeliveryBoardIdOrderByCreatedAtDesc(Long deliveryBoardId);
 }

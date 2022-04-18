@@ -1,7 +1,9 @@
 package com.example.demo.dto.reponse;
 
 import com.example.demo.model.DeliComment;
+import lombok.Getter;
 
+@Getter
 public class DeliCommentResDto {
 
     private String comment;
