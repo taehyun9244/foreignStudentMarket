@@ -46,7 +46,7 @@ public class DeliveryBoard extends Timestamped {
     @Column( nullable = false)
     private int delivery_like;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
     private User user;
 

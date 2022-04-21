@@ -39,7 +39,7 @@ public class CommunityBoard extends Timestamped {
     @Column(nullable = false)
     private int community_like;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
     private User user;
 

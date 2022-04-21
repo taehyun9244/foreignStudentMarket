@@ -19,11 +19,11 @@ public class DeliComment extends Timestamped {
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "DeliveryId")
     private DeliveryBoard deliveryBoard;
 
