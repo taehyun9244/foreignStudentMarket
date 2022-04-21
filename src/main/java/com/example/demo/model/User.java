@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.request.SignUpRequestDto;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,7 +53,5 @@ public class User extends Timestamped{
         this.phoneNumber = phoneNumber;
         this.address = address;
     }
-
-
 }
 

@@ -11,12 +11,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class UserServiceTest {
 
     @InjectMocks
@@ -69,13 +76,19 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원가입 성공")
-    void registerUserTest() throws Exception {
-        //given
+    void registerUserTest(){
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto("username", mockPasswordEncoder.encode("1234"),
                 "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
+        given(mockUserRepository.findById(any())).willReturn(Optional.empty());
+        given(mockUserRepository.save(argThat(User -> User.getUsername().equals("username"))))
+                .willReturn(new User(signUpRequestDto.getUsername(), signUpRequestDto.getPassword(), signUpRequestDto.getBirthday()
+                        , signUpRequestDto.getEmail(), signUpRequestDto.getPhoneNumber(), signUpRequestDto.getAddress()));
+
         //when
+        userService.registerUser(signUpRequestDto);
 
         //then
+        verify(mockUserRepository).save(argThat(User -> User.getUsername().equals("username")));
     }
 
 
