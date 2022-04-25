@@ -60,7 +60,7 @@ class DeliveryBoardServiceTest {
         deliveryBoardA = new DeliveryBoard(postReqDto, taehyunRegister.getUser());
 
         //User: ayako, BoardB: Japan
-        DeliveryBoardPostReqDto postReqDto2 = new DeliveryBoardPostReqDto("미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
+        DeliveryBoardPostReqDto postReqDto2 = new DeliveryBoardPostReqDto( "미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
                 "USA", "NewYork", "Japan", "Tokyo-Sibuya", 100000);
         User ayako = new User("ayako", mockPasswordEncoder.encode("1234"),
                 "19970528", "ayako@naver.com", "010-2222-2222", "sibuya");
