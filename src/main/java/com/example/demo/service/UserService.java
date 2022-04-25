@@ -35,13 +35,14 @@ public class UserService {
         String phoneNumber = signUpRequestDto.getPhoneNumber();
         String address = signUpRequestDto.getAddress();
 
-        User foundUser = userRepository.findByUsername(username).orElseThrow(
-                ()->new RuntimeException("이미 등록된 아이디 입니다!")
-        );
-        User foundPhoneNumber = userRepository.findByPhoneNumber(phoneNumber).orElseThrow(
-                ()-> new RuntimeException("이미 등록된 전화번호 입니다")
-        );
+        Optional<User> foundUser = userRepository.findByUsername(username);
+        Optional<User> foundPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
 
+        if (foundUser.isPresent()){
+            throw new RuntimeException("이미 존재하는 아이디입니다");
+        }else if (foundPhoneNumber.isPresent()){
+            throw new RuntimeException("이미 등록된 핸드폰 번호 입니다");
+        }
 
         User user = new User(username, password, birthday, email, phoneNumber, address);
         userRepository.save(user);

@@ -15,10 +15,10 @@ import java.util.List;
 @Table(name = "User")
 public class User extends Timestamped{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "USER_ID")
+    @Column
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "USER_ID",nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -44,6 +44,9 @@ public class User extends Timestamped{
 
     @OneToMany(mappedBy = "user")
     private List<DeliComment> comments = new ArrayList<DeliComment>();
+
+    @OneToMany(mappedBy = "user")
+    private List<CommunityComment> communityComments = new ArrayList<CommunityComment>();
 
     public User(String username, String password, String birthday, String email, String phoneNumber, String address) {
         this.username = username;

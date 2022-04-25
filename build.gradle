@@ -28,8 +28,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    //junit5
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     //jwt
