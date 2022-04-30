@@ -28,25 +28,21 @@ class UserControllerTest {
     @DisplayName("회원가입 요청 API")
     void registerUser() {
         //given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto();
-//        mockMvc.perform()
+
+        //when
+
+        //then
 
     }
 
-    @Test
-    @DisplayName("아이디 잘못입력으로 JWT 토큰 생성 실패 API")
-    void uncreatedTokenId() {
-
-    }
-
-    @Test
-    @DisplayName("비밀번호 잘못입력으로 JWT 토큰 생성 실패 API")
-    void uncreatedTokenPassword() {
-
-    }
 
     @Test
     @DisplayName("로그인 시 JWT 토큰 생성 API")
     void createToken() {
+        //given
+
+        //when
+
+        //then
     }
 }

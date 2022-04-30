@@ -28,17 +28,7 @@ public class DeliveryBoardDetailResDto {
     private int countComment;
     private int price;
     private String username;
-
-    @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime updateAt;
 
     public DeliveryBoardDetailResDto (DeliveryBoard deliveryBoard){

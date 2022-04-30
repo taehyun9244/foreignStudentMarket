@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,9 @@ public class CommunityComment extends Timestamped {
     @JoinColumn(name = "CommunityBoardId")
     private CommunityBoard communityBoard;
 
+    public CommunityComment(User findUser, ComCommentPostReq postReq, CommunityBoard findCommunityBoard) {
+        this.comment = postReq.getComComment();
+        this.user = findUser;
+        this.communityBoard =findCommunityBoard;
+    }
 }

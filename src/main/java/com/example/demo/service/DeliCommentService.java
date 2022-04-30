@@ -9,6 +9,8 @@ import com.example.demo.repository.DeliCommentRepository;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class DeliCommentService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
@@ -47,13 +50,13 @@ public class DeliCommentService {
         User writer= userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("회원가입을 해 주세요")
         );
-        DeliveryBoard existBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
+        DeliveryBoard existBoardId = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
                 ()-> new RuntimeException("존재하지 않는 게시글입니다")
         );
         List<DeliComment> countComment = deliCommentRepository.findByDeliveryBoardId(deliveryBoardId);
         int deliCommentSize = countComment.size();
-        existBoard.setCountComment(deliCommentSize +1);
-        DeliComment deliComment = new DeliComment(postReq, writer, existBoard);
+        existBoardId.setCountComment(deliCommentSize +1);
+        DeliComment deliComment = new DeliComment(postReq, writer, existBoardId);
         deliCommentRepository.save(deliComment);
     }
 

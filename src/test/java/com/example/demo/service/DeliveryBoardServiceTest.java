@@ -177,6 +177,7 @@ class DeliveryBoardServiceTest {
 
         //then
         assertThat(deliveryBoardA.getUser()).isEqualTo(writer.getUser());
+        org.assertj.core.api.Assertions.assertThat(deliveryBoardA.getTitle()).isEqualTo("미국배송모집합니다");
     }
 
     @Test

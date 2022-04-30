@@ -24,7 +24,7 @@ public class DeliComment extends Timestamped {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "DeliveryId")
+    @JoinColumn(name = "deliveryId")
     private DeliveryBoard deliveryBoard;
 
     public DeliComment(DeliCommentPostReq postReq, User writer, DeliveryBoard existBoard) {
