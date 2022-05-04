@@ -5,13 +5,11 @@ import com.example.demo.dto.request.ComBoardPostDto;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "CommunityBoard")
 @NoArgsConstructor
 public class CommunityBoard extends Timestamped {
@@ -41,7 +39,7 @@ public class CommunityBoard extends Timestamped {
     @Column(nullable = false)
     private int community_like;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
     private User user;
 
@@ -60,5 +58,15 @@ public class CommunityBoard extends Timestamped {
         this.com_subtitle = detailDto.getCom_subtitle();
         this.com_contents = detailDto.getCom_contents();
         this.com_country = detailDto.getCom_country();
+    }
+
+    //댓글 작성시 +1
+    public void addComment(int count){
+        this.countComment = countComment + 1;
+    }
+
+    //댓글 삭제시 -1
+    public void removeComment(int count){
+        this.countComment = countComment - 1;
     }
 }

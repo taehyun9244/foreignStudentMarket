@@ -11,7 +11,6 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,18 +19,14 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@Transactional
 public class DeliCommentService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
     private final DeliCommentRepository deliCommentRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public DeliCommentService(DeliveryBoardRepository deliveryBoardRepository, DeliCommentRepository deliCommentRepository, UserRepository userRepository) {
-        this.deliveryBoardRepository = deliveryBoardRepository;
-        this.deliCommentRepository = deliCommentRepository;
-        this.userRepository = userRepository;
-    }
 
     //DeliveryBoard 댓글 조회
     @Transactional(readOnly = true)
@@ -44,7 +39,6 @@ public class DeliCommentService {
     }
 
     //DeliveryBoard 댓글 작성
-    @Transactional
     public void creatDeliComment(UserDetailsImpl userDetails, DeliCommentPostReq postReq, Long deliveryBoardId) {
         User user = userDetails.getUser();
         User writer= userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -55,13 +49,12 @@ public class DeliCommentService {
         );
         List<DeliComment> countComment = deliCommentRepository.findByDeliveryBoardId(deliveryBoardId);
         int deliCommentSize = countComment.size();
-        existBoardId.setCountComment(deliCommentSize +1);
         DeliComment deliComment = new DeliComment(postReq, writer, existBoardId);
+        deliComment.getDeliveryBoard().addComment(deliCommentSize);
         deliCommentRepository.save(deliComment);
     }
 
     //DeliveryBoard 댓글 삭제
-    @Transactional
     public void deleteDeliComment(UserDetailsImpl userDetails, Long commentId, Long deliveryBoardId) {
         User user = userDetails.getUser();
         DeliComment findDeliComment = deliCommentRepository.findById(commentId).orElseThrow(
@@ -73,7 +66,7 @@ public class DeliCommentService {
         if (user.getUsername().equals(findDeliComment.getUser().getUsername())){
             List<DeliComment> countComment = deliCommentRepository.findByDeliveryBoardId(deliveryBoardId);
             int deliCommentSize = countComment.size();
-            deliveryBoard.setCountComment(deliCommentSize -1);
+            deliveryBoard.removeComment(deliCommentSize);
             deliCommentRepository.delete(findDeliComment);
         }else throw new RuntimeException("댓글 작성자가 아닙니다");
     }

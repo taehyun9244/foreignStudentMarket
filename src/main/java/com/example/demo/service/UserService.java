@@ -4,7 +4,7 @@ import com.example.demo.dto.request.SignUpRequestDto;
 import com.example.demo.jwt.JwtTokenProvider;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,21 +12,17 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+
 
 
     //유저 회원가입
-    @Transactional
     public void registerUser(SignUpRequestDto signUpRequestDto){
         String username = signUpRequestDto.getUsername();
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
@@ -48,7 +44,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Transactional
     public String createToken(SignUpRequestDto signUpRequestDto) {
         User user = userRepository.findByUsername(signUpRequestDto.getUsername())
                 .orElseThrow(()->new IllegalArgumentException("가입되지 않은 유저입니다"));

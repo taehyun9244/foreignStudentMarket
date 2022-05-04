@@ -31,7 +31,7 @@ public class User extends Timestamped{
 
     @Column(nullable = false)
     private String phoneNumber;
-
+    
     @Column(nullable = false)
     private String address;
 

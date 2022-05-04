@@ -34,6 +34,7 @@ public class DeliveryBoardSimResDto {
         this.delivered_address = deliveryBoard.getDelivered_address();
         this.countComment = deliveryBoard.getCountComment();
         this.price = deliveryBoard.getPrice();
+        this.createdAt = deliveryBoard.getCreatedAt();
         this.updateAt = deliveryBoard.getUpdateAt();
         this.username = deliveryBoard.getUser().getUsername();
     }

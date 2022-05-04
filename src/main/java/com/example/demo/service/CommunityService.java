@@ -8,6 +8,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.CommunityRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public CommunityService(CommunityRepository communityRepository, UserRepository userRepository) {
-        this.communityRepository = communityRepository;
-        this.userRepository = userRepository;
-    }
 
 
     //커뮤니티 게시판 전체조회
@@ -48,7 +45,6 @@ public class CommunityService {
     }
 
     //커뮤니티 게시판 작성
-    @Transactional
     public void postComBoard(ComBoardPostDto postDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
        User findUser =  userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -59,7 +55,6 @@ public class CommunityService {
     }
 
     //커뮤니티 게시판 수정
-    @Transactional
     public void editCommunityBoard(Long communityBoardId, ComBoardDetailDto detailDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityBoardId).orElseThrow(
@@ -71,7 +66,6 @@ public class CommunityService {
     }
 
     //커뮤니티 게시판 삭제
-    @Transactional
     public void deleteComBoard(Long communityId, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityId).orElseThrow(

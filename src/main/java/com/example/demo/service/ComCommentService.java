@@ -19,6 +19,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class ComCommentService {
     private final ComCommentRepository comCommentRepository;
@@ -47,8 +48,8 @@ public class ComCommentService {
         );
         List<CommunityComment> communityComments = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(findCommunityBoard.getId());
         int count = communityComments.size();
-        findCommunityBoard.setCountComment(count + 1);
         CommunityComment communityComment = new CommunityComment(findUser, postReq, findCommunityBoard);
+        communityComment.getCommunityBoard().addComment(count);
         comCommentRepository.save(communityComment);
     }
 
@@ -64,7 +65,7 @@ public class ComCommentService {
         if (writer.getUsername().equals(communityComment.getUser().getUsername())){
             List<CommunityComment> countComment = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(communityBoardId);
             int deliCommentSize = countComment.size();
-            communityBoard.setCountComment(deliCommentSize -1);
+            communityBoard.removeComment(deliCommentSize);
             comCommentRepository.delete(communityComment);
         }else throw new RuntimeException("댓글 작성자가 아닙니다");
     }

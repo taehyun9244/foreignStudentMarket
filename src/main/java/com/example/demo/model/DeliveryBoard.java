@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "DeliveryBoard")
@@ -46,7 +45,7 @@ public class DeliveryBoard extends Timestamped {
     @Column( nullable = false)
     private int delivery_like;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
     private User user;
 
@@ -74,5 +73,15 @@ public class DeliveryBoard extends Timestamped {
         this.delivered_country = postReqDto.getDelivered_country();
         this.delivered_address = postReqDto.getDelivered_address();
         this.price = postReqDto.getPrice();
+    }
+
+    //댓글 작성시 +1
+    public void addComment(int count){
+         this.countComment = countComment + 1;
+    }
+
+    //댓글 삭제시 -1
+    public void removeComment(int count){
+        this.countComment = countComment - 1;
     }
 }

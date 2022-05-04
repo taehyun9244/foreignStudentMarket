@@ -19,7 +19,7 @@ public class CommunityComment extends Timestamped {
     @Column(name = "COMMUNITY_COMMENT")
     private String comment;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private User user;
 

@@ -9,7 +9,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,16 +18,14 @@ import java.util.List;
 
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class DeliveryBoardService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public DeliveryBoardService(DeliveryBoardRepository deliveryBoardRepository, UserRepository userRepository) {
-        this.deliveryBoardRepository = deliveryBoardRepository;
-        this.userRepository = userRepository;
-    }
+
 
     //운송 게시글 전체 조회
     @Transactional(readOnly = true)
@@ -49,7 +47,6 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 작성
-    @Transactional
     public void creatDeliveryBoard(DeliveryBoardPostReqDto postReqDto, UserDetailsImpl userDetails) {
             User user = userDetails.getUser();
             User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -60,7 +57,6 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 수정
-    @Transactional
     public void editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReqDto postReqDto){
         User user = userDetails.getUser();
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
@@ -74,7 +70,6 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 삭제
-    @Transactional
     public void deleteDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails){
         User user = userDetails.getUser();
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)

@@ -35,6 +35,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     // 스프링 시큐리티
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    //쿼리 볼 수 있도록
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
 
 }
