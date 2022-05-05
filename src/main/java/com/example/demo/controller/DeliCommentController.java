@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.dto.reponse.DeliCommentResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliCommentService;
@@ -21,7 +22,7 @@ public class DeliCommentController {
 
     //Delivery 댓글조회
     @GetMapping("/deliveryBoard/{deliveryBoardId}/comments")
-    public List<DeliCommentResDto> getDeliComment(@PathVariable Long deliveryBoardId){
+    public ResultList getDeliComment(@PathVariable Long deliveryBoardId){
         return deliCommentService.getDeliComment(deliveryBoardId);
     }
 

@@ -152,40 +152,11 @@ class DeliCommentServiceTest {
     @Test
     @DisplayName("댓글 생성시 게시글 댓글 수 +1")
     void plusCommentCount(){
-        //given
-        List<DeliComment> deliComments = new ArrayList<>();
-        deliComments.add(deliCommentA);
-        deliComments.add(deliCommentA);
-
-        //when
-        when(mockDeliCommentRepository.findByDeliveryBoardId(deliCommentA.getDeliveryBoard().getId())).thenReturn(deliComments);
-        List<DeliComment> countBoardIdComment = mockDeliCommentRepository.findByDeliveryBoardId(deliCommentA.getDeliveryBoard().getId());
-        int count = countBoardIdComment.size();
-        deliCommentA.getDeliveryBoard().setCountComment(count + 1);
-
-
-        //then
-        Assertions.assertThat(deliveryBoard1.getCountComment()).isEqualTo(3);
-
     }
 
     @Test
     @DisplayName("댓글 삭제시 게시글 댓글 수 -1")
     void minusCommentCount(){
-        //given
-        List<DeliComment> deliComments = new ArrayList<>();
-        deliComments.add(deliCommentA);
-        deliComments.add(deliCommentA);
-
-        //when
-        when(mockDeliCommentRepository.findByDeliveryBoardId(deliCommentA.getDeliveryBoard().getId())).thenReturn(deliComments);
-        List<DeliComment> countBoardIdComment = mockDeliCommentRepository.findByDeliveryBoardId(deliCommentA.getDeliveryBoard().getId());
-        int count = countBoardIdComment.size();
-        deliCommentA.getDeliveryBoard().setCountComment(count - 1);
-
-        //then
-        Assertions.assertThat(deliveryBoard1.getCountComment()).isEqualTo(1);
-
     }
 
 }

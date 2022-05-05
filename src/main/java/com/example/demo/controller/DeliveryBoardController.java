@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
@@ -21,7 +22,7 @@ public class DeliveryBoardController {
 
     //운송 게시글 전체 조회
     @GetMapping("/deliveryBoards")
-    public List<DeliveryBoardSimResDto> getBoardSim() {
+    public ResultList getBoardSim() {
         return deliveryBoardService.getBoardSim();
     }
 

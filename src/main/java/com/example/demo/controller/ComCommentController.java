@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.ComCommentResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.ComCommentService;
@@ -19,7 +20,7 @@ public class ComCommentController {
 
     //Community 댓글조회
     @GetMapping
-    public List<ComCommentResDto> getComComment(@PathVariable Long communityBoardId){
+    public ResultList getComComment(@PathVariable Long communityBoardId){
         return comCommentService.getComComment(communityBoardId);
     }
 

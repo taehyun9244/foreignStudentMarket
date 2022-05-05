@@ -35,18 +35,6 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "user")
-    private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
-
-    @OneToMany(mappedBy = "user")
-    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
-
-    @OneToMany(mappedBy = "user")
-    private List<DeliComment> comments = new ArrayList<DeliComment>();
-
-    @OneToMany(mappedBy = "user")
-    private List<CommunityComment> communityComments = new ArrayList<CommunityComment>();
-
     public User(String username, String password, String birthday, String email, String phoneNumber, String address) {
         this.username = username;
         this.password = password;

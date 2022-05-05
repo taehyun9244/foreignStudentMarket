@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
 import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
@@ -13,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,12 +30,12 @@ public class DeliveryBoardService {
 
     //운송 게시글 전체 조회
     @Transactional(readOnly = true)
-    public List<DeliveryBoardSimResDto> getBoardSim() {
+    public ResultList getBoardSim() {
         List<DeliveryBoard> deliveryBoards = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
-        List<DeliveryBoardSimResDto> simResDtos = new ArrayList<>();
-        for (DeliveryBoard deliveryBoard : deliveryBoards)
-            simResDtos.add(new DeliveryBoardSimResDto(deliveryBoard));
-            return simResDtos;
+        List<DeliveryBoardSimResDto> collect = deliveryBoards.stream()
+                .map(deliveryBoard -> new DeliveryBoardSimResDto(deliveryBoard))
+                .collect(Collectors.toList());
+        return new ResultList(collect);
     }
 
     //운송 게시글 상세 조회
@@ -81,6 +82,4 @@ public class DeliveryBoardService {
             throw new RuntimeException("게시글 작성자가 아닙니다");
         }
     }
-
-
 }

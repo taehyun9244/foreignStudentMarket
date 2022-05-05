@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.reponse.DeliCommentResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.model.DeliComment;
 import com.example.demo.model.DeliveryBoard;
@@ -30,12 +31,12 @@ public class DeliCommentService {
 
     //DeliveryBoard 댓글 조회
     @Transactional(readOnly = true)
-    public List<DeliCommentResDto> getDeliComment(Long deliveryBoardId){
+    public ResultList getDeliComment(Long deliveryBoardId){
         List<DeliComment> selectAllComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
         List<DeliCommentResDto> resDtos = new ArrayList<>();
         for (DeliComment deliComments : selectAllComment){
             resDtos.add(new DeliCommentResDto(deliComments));
-        }return resDtos;
+        }return new ResultList<>(resDtos);
     }
 
     //DeliveryBoard 댓글 작성

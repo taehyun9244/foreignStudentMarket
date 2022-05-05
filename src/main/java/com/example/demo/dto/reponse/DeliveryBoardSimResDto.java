@@ -39,3 +39,5 @@ public class DeliveryBoardSimResDto {
         this.username = deliveryBoard.getUser().getUsername();
     }
 }
+
+

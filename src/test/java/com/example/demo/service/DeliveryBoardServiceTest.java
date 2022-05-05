@@ -100,21 +100,21 @@ class DeliveryBoardServiceTest {
         assertThat(saveDeliveryBoard.getUser().getUsername()).isEqualTo(writer.getUsername());
     }
 
-    @Test
-    @DisplayName("운송 게시판 전체 조회")
-    void getBoardSimTest() {
-        //given
-        List<DeliveryBoard> deliveryBoards = new ArrayList<>();
-        deliveryBoards.add(deliveryBoardA);
-        deliveryBoards.add(deliveryBoardB);
-
-        //when
-        when(mockDeliveryBoardRepository.findAllByOrderByCreatedAtDesc()).thenReturn(deliveryBoards);
-        List<DeliveryBoardSimResDto> simResDtos = deliveryBoardService.getBoardSim();
-
-        //then
-        assertThat(simResDtos.size()).isEqualTo(2);
-    }
+//    @Test
+//    @DisplayName("운송 게시판 전체 조회")
+//    void getBoardSimTest() {
+//        //given
+//        List<DeliveryBoard> deliveryBoards = new ArrayList<>();
+//        deliveryBoards.add(deliveryBoardA);
+//        deliveryBoards.add(deliveryBoardB);
+//
+//        //when
+//        when(mockDeliveryBoardRepository.findAllByOrderByCreatedAtDesc()).thenReturn(deliveryBoards);
+//        List<DeliveryBoardSimResDto> simResDtos = deliveryBoardService.getBoardSim();
+//
+//        //then
+//        assertThat(simResDtos.size()).isEqualTo(2);
+//    }
 
 
     @Test

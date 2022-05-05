@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.ComBoardDetailDto;
 import com.example.demo.dto.reponse.ComBoardSimResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.ComBoardPostDto;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
@@ -27,12 +28,12 @@ public class CommunityService {
 
     //커뮤니티 게시판 전체조회
     @Transactional(readOnly = true)
-    public List<ComBoardSimResDto> getCommunityBoard() {
+    public ResultList getCommunityBoard() {
         List<CommunityBoard> communityBoards = communityRepository.findAllByOrderByCreatedAtDesc();
         List<ComBoardSimResDto> simResDtos = new ArrayList<>();
         for (CommunityBoard communityBoard : communityBoards)
             simResDtos.add(new ComBoardSimResDto(communityBoard));
-        return simResDtos;
+        return new ResultList<>(simResDtos);
     }
 
     //커뮤니티 게시판 상세조회

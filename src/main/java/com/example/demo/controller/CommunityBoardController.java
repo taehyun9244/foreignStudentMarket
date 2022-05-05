@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.ComBoardDetailDto;
 import com.example.demo.dto.reponse.ComBoardSimResDto;
+import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.ComBoardPostDto;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.CommunityService;
@@ -22,7 +23,7 @@ public class CommunityBoardController {
 
     //커뮤니티 게시판 전체 조회
     @GetMapping("/communities")
-    public List<ComBoardSimResDto> getCommunityBoard(){
+    public ResultList getCommunityBoard(){
         return communityService.getCommunityBoard();
     }
 
