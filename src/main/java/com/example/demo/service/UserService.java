@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.request.SignUpRequestDto;
 import com.example.demo.jwt.JwtTokenProvider;
+import com.example.demo.model.Address;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.model.User;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,6 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-
-
     //유저 회원가입
     public void registerUser(SignUpRequestDto signUpRequestDto){
         String username = signUpRequestDto.getUsername();
@@ -29,7 +28,7 @@ public class UserService {
         String birthday = signUpRequestDto.getBirthday();
         String email = signUpRequestDto.getEmail();
         String phoneNumber = signUpRequestDto.getPhoneNumber();
-        String address = signUpRequestDto.getAddress();
+        Address address = signUpRequestDto.getAddress();
 
         Optional<User> foundUser = userRepository.findByUsername(username);
         Optional<User> foundPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
@@ -44,6 +43,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    //유저 로그인
     public String createToken(SignUpRequestDto signUpRequestDto) {
         User user = userRepository.findByUsername(signUpRequestDto.getUsername())
                 .orElseThrow(()->new IllegalArgumentException("가입되지 않은 유저입니다"));
@@ -52,6 +52,4 @@ public class UserService {
         }
         return jwtTokenProvider.createToken(user.getUsername(), user.getId(), user.getPhoneNumber());
     }
-
-
 }

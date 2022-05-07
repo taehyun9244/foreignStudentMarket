@@ -18,13 +18,13 @@ public class CommunityBoard extends Timestamped {
     @Column(name = "COMMUNITY_ID", nullable = false)
     private Long id;
 
-    @Column(name = "COMMUNITY_TITLE", nullable = false)
+    @Column(nullable = false)
     private String com_title;
 
     @Column(nullable = false)
     private String com_subtitle;
 
-    @Column(name = "COMMUNITY_CONTENTS", nullable = false)
+    @Column(nullable = false)
     private String com_contents;
 
     @Column(nullable = false)
@@ -43,6 +43,7 @@ public class CommunityBoard extends Timestamped {
     @JoinColumn(name = "USER_ID")
     private User user;
 
+    //커뮤니티 게시글 작성
     public CommunityBoard(ComBoardPostDto postDto, User findUser) {
         this.com_title = postDto.getCom_title();
         this.com_subtitle = postDto.getCom_subtitle();
@@ -52,6 +53,7 @@ public class CommunityBoard extends Timestamped {
         this.user = findUser;
     }
 
+    //커뮤니티 게시글 수정
     public void editCommunityBoard(ComBoardDetailDto detailDto) {
         this.id = detailDto.getId();
         this.com_title = detailDto.getCom_title();

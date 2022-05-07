@@ -27,7 +27,6 @@ public class DeliveryBoardService {
     private final UserRepository userRepository;
 
 
-
     //운송 게시글 전체 조회
     @Transactional(readOnly = true)
     public ResultList getBoardSim() {
@@ -38,7 +37,7 @@ public class DeliveryBoardService {
         return new ResultList(collect);
     }
 
-    //운송 게시글 상세 조회
+   //운송 게시글 상세 조회
     @Transactional(readOnly = true)
     public DeliveryBoardDetailResDto getBoardDetail(Long deliveryBoardId) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(

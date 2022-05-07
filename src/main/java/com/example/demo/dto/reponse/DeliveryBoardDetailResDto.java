@@ -1,18 +1,14 @@
 package com.example.demo.dto.reponse;
 
+import com.example.demo.model.DeliComment;
 import com.example.demo.model.DeliveryBoard;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.example.demo.util.DeliveryCountry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -21,28 +17,31 @@ public class DeliveryBoardDetailResDto {
     private Long id;
     private String title;
     private String contents;
-    private String send_country;
+    private String delivery_city;
+    private String delivered_street;
+    private DeliveryCountry send_country;
     private String send_address;
-    private String delivered_country;
-    private String delivered_address;
     private int countComment;
     private int price;
     private String username;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
+    private List<DeliComment> comment;
+
     public DeliveryBoardDetailResDto (DeliveryBoard deliveryBoard){
         this.id = deliveryBoard.getId();
         this.title = deliveryBoard.getTitle();
         this.contents = deliveryBoard.getContents();
+        this.delivery_city = deliveryBoard.getDelivered_city();
+        this.delivered_street = deliveryBoard.getDelivered_street();
         this.send_country = deliveryBoard.getSend_country();
         this.send_address = deliveryBoard.getSend_address();
-        this.delivered_country = deliveryBoard.getDelivered_country();
-        this.delivered_address = deliveryBoard.getDelivered_address();
-        this.countComment = deliveryBoard.getCountComment();
+        this.countComment = deliveryBoard.getCount_comment();
         this.price = deliveryBoard.getPrice();
         this.username = deliveryBoard.getUser().getUsername();
         this.createdAt = deliveryBoard.getCreatedAt();
         this.updateAt = deliveryBoard.getUpdateAt();
+        this.comment = deliveryBoard.getDeliComment();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.dto.reponse;
 
 import com.example.demo.model.DeliveryBoard;
+import com.example.demo.util.DeliveryCountry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,27 +13,34 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DeliveryBoardSimResDto {
     private Long id;
+
     private String title;
-    private String send_country;
-    private String send_address;
-    private String delivered_country;
-    private String delivered_address;
+
     private String username;
+
+    private String delivered_street;
+
     private int countComment;
+
     private int price;
+
+    private String delivery_city;
+
+    private DeliveryCountry send_country;
+
     @CreatedDate
     private LocalDateTime createdAt;
+
     @LastModifiedDate
     private LocalDateTime updateAt;
 
     public DeliveryBoardSimResDto(DeliveryBoard deliveryBoard) {
         this.id = deliveryBoard.getId();
         this.title = deliveryBoard.getTitle();
+        this.delivery_city = deliveryBoard.getDelivered_city();
+        this.delivered_street = deliveryBoard.getDelivered_street();
         this.send_country = deliveryBoard.getSend_country();
-        this.send_address = deliveryBoard.getSend_address();
-        this.delivered_country = deliveryBoard.getDelivered_country();
-        this.delivered_address = deliveryBoard.getDelivered_address();
-        this.countComment = deliveryBoard.getCountComment();
+        this.countComment = deliveryBoard.getCount_comment();
         this.price = deliveryBoard.getPrice();
         this.createdAt = deliveryBoard.getCreatedAt();
         this.updateAt = deliveryBoard.getUpdateAt();

@@ -16,7 +16,7 @@ public class CommunityComment extends Timestamped {
     @Column(name = "COMMUNITY_COMMENT_ID")
     private Long id;
 
-    @Column(name = "COMMUNITY_COMMENT")
+    @Column(nullable = false)
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -27,6 +27,7 @@ public class CommunityComment extends Timestamped {
     @JoinColumn(name = "CommunityBoardId")
     private CommunityBoard communityBoard;
 
+    // 커뮤니티 댓글 작성
     public CommunityComment(User findUser, ComCommentPostReq postReq, CommunityBoard findCommunityBoard) {
         this.comment = postReq.getComComment();
         this.user = findUser;
