@@ -1,11 +1,13 @@
 package com.example.demo.dto.reponse;
 
 import com.example.demo.model.CommunityBoard;
+import com.example.demo.model.CommunityComment;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class ComBoardDetailDto {
@@ -22,6 +24,8 @@ public class ComBoardDetailDto {
     @LastModifiedDate
     private LocalDateTime updateAt;
 
+    private List<CommunityComment> comment;
+
     public ComBoardDetailDto(CommunityBoard communityBoard) {
         this.id = communityBoard.getId();
         this.com_title = communityBoard.getCom_title();
@@ -32,5 +36,6 @@ public class ComBoardDetailDto {
         this.username = communityBoard.getUser().getUsername();
         this.createdAt = communityBoard.getCreatedAt();
         this.updateAt = communityBoard.getUpdateAt();
+        this.comment = communityBoard.getComment();
     }
 }

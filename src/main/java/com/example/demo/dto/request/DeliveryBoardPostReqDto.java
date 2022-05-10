@@ -1,6 +1,6 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.util.DeliveryCountry;
+import com.example.demo.util.CountryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,6 @@ public class DeliveryBoardPostReqDto {
     @NotBlank(message = "배송국가의 지역을 설정해 주세요")
     private String send_address;
     @NotBlank(message = "배송국가를 설정해 주세요")
-    private DeliveryCountry country;
+    private CountryEnum country;
 
 }

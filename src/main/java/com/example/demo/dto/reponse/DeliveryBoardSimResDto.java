@@ -1,7 +1,7 @@
 package com.example.demo.dto.reponse;
 
 import com.example.demo.model.DeliveryBoard;
-import com.example.demo.util.DeliveryCountry;
+import com.example.demo.util.CountryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,7 +26,7 @@ public class DeliveryBoardSimResDto {
 
     private String delivery_city;
 
-    private DeliveryCountry send_country;
+    private CountryEnum send_country;
 
     @CreatedDate
     private LocalDateTime createdAt;

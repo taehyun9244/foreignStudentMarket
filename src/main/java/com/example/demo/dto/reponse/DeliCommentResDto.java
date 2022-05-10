@@ -13,12 +13,10 @@ public class DeliCommentResDto {
     private String comment;
     private String username;
     private Long deliveryBoardId;
-    private LocalDateTime localDateTime;
     public DeliCommentResDto(DeliComment deliComments) {
         this.id = deliComments.getId();
         this.comment = deliComments.getComment();
         this.username = deliComments.getUser().getUsername();
         this.deliveryBoardId = deliComments.getDeliveryBoard().getId();
-        this.localDateTime = deliComments.getCreatedAt();
     }
 }

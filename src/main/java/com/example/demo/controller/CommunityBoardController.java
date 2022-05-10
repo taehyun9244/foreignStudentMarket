@@ -7,24 +7,24 @@ import com.example.demo.dto.reponse.ResultList;
 import com.example.demo.dto.request.ComBoardPostDto;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.CommunityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class CommunityBoardController {
 
     private final CommunityService communityService;
 
-    public CommunityBoardController(CommunityService communityService) {
-        this.communityService = communityService;
-    }
 
     //커뮤니티 게시판 전체 조회
     @GetMapping("/communities")
-    public ResultList getCommunityBoard(){
-        return communityService.getCommunityBoard();
+    public ResultList getCommunityBoard(@RequestParam(value ="offset", defaultValue = "0") int offset,
+                                        @RequestParam(value = "limit", defaultValue = "100")int limit){
+        return communityService.getCommunityBoard(offset, limit);
     }
 
     //커뮤니티 게시판 상세조회

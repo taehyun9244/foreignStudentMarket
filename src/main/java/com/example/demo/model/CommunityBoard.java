@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,6 +44,9 @@ public class CommunityBoard extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @OneToMany(mappedBy = "communityBoard", cascade = CascadeType.REMOVE)
+    private List<CommunityComment> comment = new ArrayList<CommunityComment>();
 
     //커뮤니티 게시글 작성
     public CommunityBoard(ComBoardPostDto postDto, User findUser) {

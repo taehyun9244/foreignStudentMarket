@@ -9,6 +9,7 @@ import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.BoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,18 +20,19 @@ import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class DeliveryBoardService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
+    private final BoardQueryRepository queryRepository;
     private final UserRepository userRepository;
 
 
     //운송 게시글 전체 조회
     @Transactional(readOnly = true)
-    public ResultList getBoardSim() {
-        List<DeliveryBoard> deliveryBoards = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
+    public ResultList getBoardSim(int offset, int limit) {
+        List<DeliveryBoard> deliveryBoards = queryRepository.findAllDeliBoard(offset, limit);
         List<DeliveryBoardSimResDto> collect = deliveryBoards.stream()
                 .map(deliveryBoard -> new DeliveryBoardSimResDto(deliveryBoard))
                 .collect(Collectors.toList());

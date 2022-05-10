@@ -24,9 +24,9 @@ public class UserController {
 
     //로그인 api
     @PostMapping("/user/login")
-    public String createToken(@RequestBody SignUpRequestDto signUpRequestDto){
-        log.info("SignupRequestDto ={}", signUpRequestDto);
-        return userService.createToken(signUpRequestDto);
+    public String createToken(@RequestParam String username,
+                              @RequestParam String password){
+        return userService.createToken(username, password);
     }
 
 

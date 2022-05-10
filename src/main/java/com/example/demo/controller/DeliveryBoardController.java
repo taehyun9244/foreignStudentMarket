@@ -22,8 +22,9 @@ public class DeliveryBoardController {
 
     //운송 게시글 전체 조회
     @GetMapping("/deliveryBoards")
-    public ResultList getBoardSim() {
-        return deliveryBoardService.getBoardSim();
+    public ResultList getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
+                                  @RequestParam(value = "limit", defaultValue = "100")int limit) {
+        return deliveryBoardService.getBoardSim(offset, limit);
     }
 
     //운송 게시글 상세 조회

@@ -30,7 +30,6 @@ public class User extends Timestamped{
     @Embedded
     private Address address;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
 

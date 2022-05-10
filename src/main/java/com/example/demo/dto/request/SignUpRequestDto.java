@@ -1,7 +1,6 @@
 package com.example.demo.dto.request;
 
 import com.example.demo.model.Address;
-import com.example.demo.util.DeliveryCountry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

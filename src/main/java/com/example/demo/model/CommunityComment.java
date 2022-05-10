@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.util.Timestamped;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +22,12 @@ public class CommunityComment extends Timestamped {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "CommunityBoardId")
+    @JsonIgnore
     private CommunityBoard communityBoard;
 
     // 커뮤니티 댓글 작성

@@ -9,6 +9,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.DeliCommentRepository;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.CommentQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -26,17 +30,18 @@ public class DeliCommentService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
     private final DeliCommentRepository deliCommentRepository;
+    private final CommentQueryRepository queryRepository;
     private final UserRepository userRepository;
 
 
     //DeliveryBoard 댓글 조회
     @Transactional(readOnly = true)
     public ResultList getDeliComment(Long deliveryBoardId){
-        List<DeliComment> selectAllComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
-        List<DeliCommentResDto> resDtos = new ArrayList<>();
-        for (DeliComment deliComments : selectAllComment){
-            resDtos.add(new DeliCommentResDto(deliComments));
-        }return new ResultList<>(resDtos);
+        List<DeliComment> findDeliBoardComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
+        List<DeliCommentResDto> resDtos = findDeliBoardComment.stream()
+                .map(deliComment -> new DeliCommentResDto(deliComment))
+                .collect(toList());
+        return new ResultList<>(resDtos);
     }
 
     //DeliveryBoard 댓글 작성

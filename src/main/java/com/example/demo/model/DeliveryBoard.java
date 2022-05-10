@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
-import com.example.demo.util.DeliveryCountry;
+import com.example.demo.util.CountryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.*;
 
@@ -37,7 +37,7 @@ public class DeliveryBoard extends Timestamped {
     private String send_address;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryCountry send_country;
+    private CountryEnum send_country;
 
     @Column(nullable = false)
     private int count_comment;

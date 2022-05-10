@@ -2,7 +2,7 @@ package com.example.demo.dto.reponse;
 
 import com.example.demo.model.DeliComment;
 import com.example.demo.model.DeliveryBoard;
-import com.example.demo.util.DeliveryCountry;
+import com.example.demo.util.CountryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class DeliveryBoardDetailResDto {
     private String contents;
     private String delivery_city;
     private String delivered_street;
-    private DeliveryCountry send_country;
+    private CountryEnum send_country;
     private String send_address;
     private int countComment;
     private int price;

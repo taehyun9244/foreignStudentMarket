@@ -8,6 +8,7 @@ import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommunityRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.BoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,15 @@ import java.util.List;
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
+
+    private final BoardQueryRepository queryRepository;
     private final UserRepository userRepository;
 
 
     //커뮤니티 게시판 전체조회
     @Transactional(readOnly = true)
-    public ResultList getCommunityBoard() {
-        List<CommunityBoard> communityBoards = communityRepository.findAllByOrderByCreatedAtDesc();
+    public ResultList getCommunityBoard(int offset, int limit) {
+        List<CommunityBoard> communityBoards = queryRepository.findAllComBoard(offset, limit);
         List<ComBoardSimResDto> simResDtos = new ArrayList<>();
         for (CommunityBoard communityBoard : communityBoards)
             simResDtos.add(new ComBoardSimResDto(communityBoard));
