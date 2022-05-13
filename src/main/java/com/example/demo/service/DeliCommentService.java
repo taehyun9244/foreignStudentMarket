@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.reponse.DeliCommentResDto;
-import com.example.demo.dto.reponse.ResultList;
+import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.model.DeliComment;
 import com.example.demo.model.DeliveryBoard;
@@ -16,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,12 +34,12 @@ public class DeliCommentService {
 
     //DeliveryBoard 댓글 조회
     @Transactional(readOnly = true)
-    public ResultList getDeliComment(Long deliveryBoardId){
+    public Response getDeliComment(Long deliveryBoardId){
         List<DeliComment> findDeliBoardComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
         List<DeliCommentResDto> resDtos = findDeliBoardComment.stream()
                 .map(deliComment -> new DeliCommentResDto(deliComment))
                 .collect(toList());
-        return new ResultList<>(resDtos);
+        return new Response<>(resDtos);
     }
 
     //DeliveryBoard 댓글 작성

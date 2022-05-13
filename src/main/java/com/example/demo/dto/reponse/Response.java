@@ -5,6 +5,6 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class ResultList<E> {
+public class Response<E> {
     private E data;
 }

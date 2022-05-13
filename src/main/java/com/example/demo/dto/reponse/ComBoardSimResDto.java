@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 public class ComBoardSimResDto {
     private Long id;
-    private String com_title;
-    private String com_subtitle;
-    private String com_location;
+    private String title;
+    private String subtitle;
+    private String location;
     private String username;
     private int commentCount;
     @CreatedDate
@@ -23,9 +23,9 @@ public class ComBoardSimResDto {
 
     public ComBoardSimResDto(CommunityBoard communityBoard) {
         this.id = communityBoard.getId();
-        this.com_title = communityBoard.getCom_title();
-        this.com_subtitle = communityBoard.getCom_subtitle();
-        this.com_location = communityBoard.getCom_location();
+        this.title = communityBoard.getTitle();
+        this.subtitle = communityBoard.getSubtitle();
+        this.location = communityBoard.getLocation();
         this.username = communityBoard.getUser().getUsername();
         this.commentCount = communityBoard.getCountComment();
         this.createdAt = communityBoard.getCreatedAt();

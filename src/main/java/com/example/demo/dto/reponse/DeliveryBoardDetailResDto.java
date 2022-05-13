@@ -17,10 +17,9 @@ public class DeliveryBoardDetailResDto {
     private Long id;
     private String title;
     private String contents;
-    private String delivery_city;
-    private String delivered_street;
-    private CountryEnum send_country;
-    private String send_address;
+    private String from_city;
+    private CountryEnum from_country;
+    private String to_address;
     private int countComment;
     private int price;
     private String username;
@@ -32,11 +31,10 @@ public class DeliveryBoardDetailResDto {
     public DeliveryBoardDetailResDto (DeliveryBoard deliveryBoard){
         this.id = deliveryBoard.getId();
         this.title = deliveryBoard.getTitle();
-        this.contents = deliveryBoard.getContents();
-        this.delivery_city = deliveryBoard.getDelivered_city();
-        this.delivered_street = deliveryBoard.getDelivered_street();
-        this.send_country = deliveryBoard.getSend_country();
-        this.send_address = deliveryBoard.getSend_address();
+        this.contents = deliveryBoard.getBody();
+        this.from_city = deliveryBoard.getFrom_city();
+        this.from_country = deliveryBoard.getFrom_country();
+        this.to_address = deliveryBoard.getTo_city();
         this.countComment = deliveryBoard.getCount_comment();
         this.price = deliveryBoard.getPrice();
         this.username = deliveryBoard.getUser().getUsername();

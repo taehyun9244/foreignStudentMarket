@@ -4,6 +4,7 @@ import com.example.demo.dto.request.DeliveryBoardPostReqDto;
 import com.example.demo.util.CountryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.*;
+import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,22 +23,19 @@ public class DeliveryBoard extends Timestamped {
     private String title;
 
     @Column(nullable = false)
-    private String contents;
+    private String body;
 
     @Column(nullable = false)
-    private String delivered_city;
+    private String from_city;
+
+    @Enumerated(EnumType.STRING)
+    private CountryEnum from_country;
 
     @Column(nullable = false)
-    private String delivered_street;
+    private String to_city;
 
     @Column(name = "DELIVERY_PRICE", nullable = false)
     private int price;
-
-    @Column(nullable = false)
-    private String send_address;
-
-    @Enumerated(EnumType.STRING)
-    private CountryEnum send_country;
 
     @Column(nullable = false)
     private int count_comment;
@@ -53,24 +51,24 @@ public class DeliveryBoard extends Timestamped {
     private List<DeliComment> deliComment = new ArrayList<DeliComment>();
 
     //게시글 작성 데이터 가공
-    public DeliveryBoard(DeliveryBoardPostReqDto postReqDto, User findUser){
+    public DeliveryBoard(DeliveryBoardPostReqDto postReqDto, User writer){
         this.title = postReqDto.getTitle();
-        this.contents = postReqDto.getContents();
-        this.send_address = postReqDto.getSend_address();
-        this.send_country = postReqDto.getCountry();
-        this.delivered_city = findUser.getAddress().getCity();
-        this.delivered_street = findUser.getAddress().getStreet();
+        this.body = postReqDto.getContents();
+        this.from_city = postReqDto.getFrom_city();
+        this.from_country = postReqDto.getFrom_country();
+        this.to_city = writer.getAddress().getCity();
         this.price = postReqDto.getPrice();
-        this.user = findUser;
+        this.user = writer;
     }
 
     //게시글 수정 데이터 가공
-    public void editDeliveryBoard(DeliveryBoardPostReqDto postReqDto){
+    public DeliveryBoard editDeliveryBoard(DeliveryBoardPostReqDto postReqDto){
         this.title = postReqDto.getTitle();
-        this.contents = postReqDto.getContents();
-        this.send_address = postReqDto.getSend_address();
-        this.send_country = postReqDto.getCountry();
+        this.body = postReqDto.getContents();
+        this.from_city = postReqDto.getFrom_city();
+        this.from_country = postReqDto.getFrom_country();
         this.price = postReqDto.getPrice();
+        return this;
     }
 
     //댓글 작성시 +1

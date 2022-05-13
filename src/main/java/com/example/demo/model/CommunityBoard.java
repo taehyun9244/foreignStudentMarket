@@ -21,19 +21,16 @@ public class CommunityBoard extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private String com_title;
+    private String title;
 
     @Column(nullable = false)
-    private String com_subtitle;
+    private String subtitle;
 
     @Column(nullable = false)
-    private String com_contents;
+    private String body;
 
     @Column(nullable = false)
-    private String com_location;
-
-    @Column(nullable = false)
-    private String com_country;
+    private String location;
 
     @Column(nullable = false)
     private int countComment;
@@ -49,22 +46,21 @@ public class CommunityBoard extends Timestamped {
     private List<CommunityComment> comment = new ArrayList<CommunityComment>();
 
     //커뮤니티 게시글 작성
-    public CommunityBoard(ComBoardPostDto postDto, User findUser) {
-        this.com_title = postDto.getCom_title();
-        this.com_subtitle = postDto.getCom_subtitle();
-        this.com_contents = postDto.getCom_contents();
-        this.com_location = postDto.getCom_location();
-        this.com_country = postDto.getCom_country();
-        this.user = findUser;
+    public CommunityBoard(ComBoardPostDto postDto, User writer) {
+        this.title = postDto.getTitle();
+        this.subtitle = postDto.getSubtitle();
+        this.body = postDto.getContents();
+        this.location = postDto.getLocation();
+        this.user = writer;
     }
 
     //커뮤니티 게시글 수정
-    public void editCommunityBoard(ComBoardDetailDto detailDto) {
-        this.id = detailDto.getId();
-        this.com_title = detailDto.getCom_title();
-        this.com_subtitle = detailDto.getCom_subtitle();
-        this.com_contents = detailDto.getCom_contents();
-        this.com_country = detailDto.getCom_country();
+    public void editCommunityBoard(ComBoardDetailDto editDto) {
+        this.id = editDto.getId();
+        this.title = editDto.getTitle();
+        this.subtitle = editDto.getSubtitle();
+        this.body = editDto.getContents();
+        this.location = editDto.getLocation();
     }
 
     //댓글 작성시 +1

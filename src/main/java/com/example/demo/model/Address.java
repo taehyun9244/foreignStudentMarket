@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 @Getter
 public class Address {
 
-    @Column(name = "city",nullable = false)
+    @Column(name = "city",nullable = false, length = 3)
     private String city;
     @Column(name = "street",nullable = false)
     private String street;

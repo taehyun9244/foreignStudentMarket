@@ -13,11 +13,10 @@ import java.util.List;
 public class ComBoardDetailDto {
 
     private Long id;
-    private String com_title;
-    private String com_subtitle;
-    private String com_location;
-    private String com_country;
-    private String com_contents;
+    private String title;
+    private String subtitle;
+    private String location;
+    private String contents;
     private String username;
     @CreatedDate
     private LocalDateTime createdAt;
@@ -28,11 +27,10 @@ public class ComBoardDetailDto {
 
     public ComBoardDetailDto(CommunityBoard communityBoard) {
         this.id = communityBoard.getId();
-        this.com_title = communityBoard.getCom_title();
-        this.com_subtitle = communityBoard.getCom_subtitle();
-        this.com_location = communityBoard.getCom_location();
-        this.com_country = communityBoard.getCom_country();
-        this.com_contents = communityBoard.getCom_contents();
+        this.title = communityBoard.getTitle();
+        this.subtitle = communityBoard.getSubtitle();
+        this.location = communityBoard.getLocation();
+        this.contents = communityBoard.getBody();
         this.username = communityBoard.getUser().getUsername();
         this.createdAt = communityBoard.getCreatedAt();
         this.updateAt = communityBoard.getUpdateAt();

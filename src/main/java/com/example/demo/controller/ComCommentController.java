@@ -1,15 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.ComCommentResDto;
-import com.example.demo.dto.reponse.ResultList;
+import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.ComCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +17,7 @@ public class ComCommentController {
 
     //Community 댓글조회
     @GetMapping
-    public ResultList getComComment(@PathVariable Long communityBoardId){
+    public Response getComComment(@PathVariable Long communityBoardId){
         return comCommentService.getComComment(communityBoardId);
     }
 

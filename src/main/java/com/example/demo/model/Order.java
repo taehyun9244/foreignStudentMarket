@@ -23,6 +23,6 @@ public class Order extends Timestamped {
     private Delivery delivery;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus orderStatus;
 
 }

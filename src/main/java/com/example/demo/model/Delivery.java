@@ -13,11 +13,11 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
-    private String address;
+    private Address address;
 
     @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus status;
+    private DeliveryStatus deliveryStatus;
 }

@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.ComBoardDetailDto;
 import com.example.demo.dto.reponse.ComBoardSimResDto;
-import com.example.demo.dto.reponse.ResultList;
+import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.ComBoardPostDto;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
@@ -11,7 +11,6 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.queryRepository.BoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +30,12 @@ public class CommunityService {
 
     //커뮤니티 게시판 전체조회
     @Transactional(readOnly = true)
-    public ResultList getCommunityBoard(int offset, int limit) {
+    public Response getCommunityBoard(int offset, int limit) {
         List<CommunityBoard> communityBoards = queryRepository.findAllComBoard(offset, limit);
         List<ComBoardSimResDto> simResDtos = new ArrayList<>();
         for (CommunityBoard communityBoard : communityBoards)
             simResDtos.add(new ComBoardSimResDto(communityBoard));
-        return new ResultList<>(simResDtos);
+        return new Response<>(simResDtos);
     }
 
     //커뮤니티 게시판 상세조회

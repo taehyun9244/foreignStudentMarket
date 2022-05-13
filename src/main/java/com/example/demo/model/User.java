@@ -17,7 +17,7 @@ public class User extends Timestamped{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;
-    @Column(name = "USER_ID",nullable = false)
+    @Column(nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;

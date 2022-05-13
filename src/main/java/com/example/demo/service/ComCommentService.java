@@ -1,8 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.reponse.ComCommentResDto;
-import com.example.demo.dto.reponse.DeliCommentResDto;
-import com.example.demo.dto.reponse.ResultList;
+import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.CommunityComment;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,12 +29,12 @@ public class ComCommentService {
 
     //커뮤니티 게시판의 댓글 조회
     @Transactional(readOnly = true)
-    public ResultList getComComment(Long communityBoardId) {
+    public Response getComComment(Long communityBoardId) {
         List<CommunityComment>  communityComments = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(communityBoardId);
         List<ComCommentResDto> resDtos = communityComments.stream()
                 .map(communityComment -> new ComCommentResDto(communityComment))
                 .collect(Collectors.toList());
-        return new ResultList<>(resDtos);
+        return new Response<>(resDtos);
     }
 
     //커뮤니티 게시판의 댓글 생성

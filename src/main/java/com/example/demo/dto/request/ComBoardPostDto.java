@@ -7,14 +7,13 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class ComBoardPostDto {
     @NotBlank(message = "제목을 입력해 주세요")
-    private String com_title;
+    private String title;
     @NotBlank(message = "소제목을 선택해 주세요")
-    private String com_subtitle;
+    private String subtitle;
     @NotBlank(message = "내용을 입력해 주세요")
-    private String com_contents;
+    private String contents;
     @NotBlank(message = "지역을 입력해 주세요")
-    private String com_location;
-    @NotBlank(message = "국가를 입력해 주세요")
-    private String com_country;
+    private String location;
+
     private String username;
 }

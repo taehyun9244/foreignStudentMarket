@@ -1,29 +1,25 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
-import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
-import com.example.demo.dto.reponse.ResultList;
+import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.model.DeliveryBoard;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
+@RequiredArgsConstructor
 public class DeliveryBoardController {
 
     private final DeliveryBoardService deliveryBoardService;
 
-    public DeliveryBoardController(DeliveryBoardService deliveryBoardService) {
-        this.deliveryBoardService = deliveryBoardService;
-    }
-
     //운송 게시글 전체 조회
     @GetMapping("/deliveryBoards")
-    public ResultList getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
-                                  @RequestParam(value = "limit", defaultValue = "100")int limit) {
+    public Response getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
+                                @RequestParam(value = "limit", defaultValue = "100")int limit) {
         return deliveryBoardService.getBoardSim(offset, limit);
     }
 
@@ -41,11 +37,11 @@ public class DeliveryBoardController {
     }
 
     //운송 게시글 수정
-    @PutMapping("/deliveryBoards/{deliveryBoardsId}")
-    public void editDeliveryBoard(@PathVariable Long deliveryBoardsId,
-                                  @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                  @RequestBody DeliveryBoardPostReqDto postReqDto){
-        deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, postReqDto);
+    @PatchMapping("/deliveryBoards/{deliveryBoardsId}")
+    public DeliveryBoard editDeliveryBoard(@PathVariable Long deliveryBoardsId,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                           @RequestBody DeliveryBoardPostReqDto postReqDto){
+        return deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, postReqDto);
     }
 
 

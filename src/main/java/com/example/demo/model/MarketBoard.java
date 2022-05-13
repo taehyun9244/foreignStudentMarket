@@ -1,22 +1,26 @@
 package com.example.demo.model;
 
 
+import com.example.demo.util.Timestamped;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-public class Market {
+public class MarketBoard extends Timestamped {
 
     @Id @GeneratedValue
     @Column(name = "market_id")
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
-    private String contents;
+    @Column(nullable = false)
+    private String body;
 
+    @Column(nullable = false)
     private int price;
 
     @ManyToOne
