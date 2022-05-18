@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 
+import com.example.demo.dto.request.MarketPostDto;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class MarketBoard extends Timestamped {
     @Column(nullable = false)
     private int price;
 
+
     @OneToMany(mappedBy = "marketBoard", cascade = CascadeType.ALL)
     private List<UploadFile> imageFiles = new ArrayList<UploadFile>();
 
@@ -34,5 +36,9 @@ public class MarketBoard extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    public MarketBoard(MarketPostDto postDto, User writer) {
+        this.itemName = postDto.getItemName();
+        this.body = postDto.getItemBody();
+        this.price = postDto.getPrice();
+        this.user = writer;}
 }

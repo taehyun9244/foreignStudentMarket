@@ -1,4 +1,4 @@
-package com.example.demo.util.fileStore;
+package com.example.demo.util;
 
 import com.example.demo.model.UploadFile;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class fileStore {
+public class FileStore {
 
     @Value("${file.dir}")
     private String fileDir;
