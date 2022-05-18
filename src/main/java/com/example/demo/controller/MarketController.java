@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +38,12 @@ public class MarketController {
     //중고게시글 작성
     @PostMapping("/markets")
     public void creatMarketBoard(@RequestPart MarketPostDto postDto,
+                                 @RequestPart("file") List<MultipartFile> multipartFiles,
                                  @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        marketService.creatMarketBoard(postDto, userDetails);
+        log.info("itemName = {}", postDto.getItemName());
+        log.info("username={}", userDetails.getUsername());
+        log.info("file name = {}", multipartFiles.size());
+        marketService.creatMarketBoard(postDto, multipartFiles, userDetails);
     }
 
 }

@@ -26,7 +26,7 @@ public class DeliComment extends Timestamped {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "delivery_id")
+    @JoinColumn(name = "deliveryId")
     @JsonIgnore
     private DeliveryBoard deliveryBoard;
 

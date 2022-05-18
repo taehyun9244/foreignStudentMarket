@@ -17,6 +17,7 @@ import com.example.demo.util.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -54,16 +55,15 @@ public class MarketService {
 
 
     //게시글 작성
-    public void creatMarketBoard(MarketPostDto postDto, UserDetailsImpl userDetails) throws IOException {
+    public void creatMarketBoard(MarketPostDto postDto, List<MultipartFile> multipartFiles, UserDetailsImpl userDetails) throws IOException {
         User user = userDetails.getUser();
         User writer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("회원가입을 해주세요 가입되지 않았습니다")
         );
-        List<UploadFile> imageFiles = fileStore.saveFiles(postDto.getImageFiles());
-        log.info("imageFiles = {}", imageFiles);
-        uploadFileRepository.saveAll(imageFiles);
+        List<UploadFile> uploadFiles = fileStore.saveFiles(multipartFiles);
+        List<UploadFile> imageFiles = uploadFileRepository.saveAll(uploadFiles);
 
-        MarketBoard creatMarketBoard = new MarketBoard(postDto,writer);
+        MarketBoard creatMarketBoard = new MarketBoard(postDto, writer, imageFiles);
         marketRepository.save(creatMarketBoard);
     }
 

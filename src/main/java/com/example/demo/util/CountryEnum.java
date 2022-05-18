@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import java.util.Arrays;
 
 public enum CountryEnum {
-    USA, JAPAN, CHINA, FRANCE, UK, GERMANY, THAILAND, VIETNAM, SWEDEN, TAIWAN;
+    USA, JP, CHA, FR, GRM, THA, VEN, SWE, TAI;
 //    private final String code;
 //    private final String name;
 //    private final String nameEn;

@@ -18,14 +18,9 @@ public class UploadFile extends Timestamped{
     private String storeFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "marketBoard_id")
+    @JoinColumn(name = "marketBoardId")
     @JsonIgnore
     private MarketBoard marketBoard;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
 
     public UploadFile(String uploadFileName, String storeFileName) {
         this.uploadFileName = uploadFileName;
