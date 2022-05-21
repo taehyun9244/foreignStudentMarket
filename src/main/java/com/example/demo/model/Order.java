@@ -3,15 +3,17 @@ package com.example.demo.model;
 import com.example.demo.util.OrderStatus;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@Table(name = "order_table")
 public class Order extends Timestamped {
 
-    @Id @GeneratedValue
-    @Column(name = "order_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -19,10 +21,15 @@ public class Order extends Timestamped {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "delivery_id")
-    private Delivery delivery;
+    @JoinColumn(name = "marketId")
+    private MarketBoard marketBoard;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    public Order(User writer, MarketBoard orderItem, OrderStatus orderStatus) {
+        this.user = writer;
+        this.marketBoard = orderItem;
+        this.orderStatus = orderStatus;
+    }
 }

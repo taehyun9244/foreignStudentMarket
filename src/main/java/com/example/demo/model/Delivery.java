@@ -2,11 +2,13 @@ package com.example.demo.model;
 
 import com.example.demo.util.DeliveryStatus;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Delivery {
 
     @Id @GeneratedValue
@@ -16,9 +18,8 @@ public class Delivery {
     @Embedded
     private Address address;
 
-    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
-    private Order order;
-
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
+
+
 }

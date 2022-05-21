@@ -26,4 +26,5 @@ public class UploadFile extends Timestamped{
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
     }
+
 }

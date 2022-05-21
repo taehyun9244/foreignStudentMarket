@@ -42,6 +42,9 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<CommunityComment> communityComments = new ArrayList<CommunityComment>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<Order>();
+
     //유저 회원가입
     public User(String username, String password, String birthday, String email, String phoneNumber, Address address) {
         this.username = username;

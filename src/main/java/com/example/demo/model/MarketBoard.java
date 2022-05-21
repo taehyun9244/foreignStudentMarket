@@ -6,6 +6,7 @@ import com.example.demo.util.CategoryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -42,13 +43,18 @@ public class MarketBoard extends Timestamped {
     @JoinColumn(name = "userId")
     private User user;
 
-    public MarketBoard(MarketPostDto postDto, User writer, List<UploadFile> save) {
+    @OneToOne
+    @JoinColumn(name = "orderId")
+    private Order order;
+
+
+    public MarketBoard(MarketPostDto postDto, User writer, List<UploadFile> saveImages) {
         this.itemName = postDto.getItemName();
         this.body = postDto.getItemBody();
         this.price = postDto.getPrice();
         this.category = postDto.getCategory();
         this.location = postDto.getLocation();
         this.user = writer;
-        this.imageFiles = save;
+        this.imageFiles = saveImages;
     }
 }

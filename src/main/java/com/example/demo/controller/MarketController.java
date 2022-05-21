@@ -5,7 +5,6 @@ import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.MarketPostDto;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.MarketService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

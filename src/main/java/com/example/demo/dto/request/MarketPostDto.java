@@ -12,7 +12,7 @@ public class MarketPostDto {
     private String itemBody;
     @NotBlank(message = "카테고리를 설정해 주세요")
     private CategoryEnum category;
-    @NotBlank(message = "거래하고 싶은 지역을 입력해 주세요")
+    @NotBlank(message = "배달 지역을 입력해 주세요")
     private String location;
     @NotBlank(message = "가격을 입력해 주세요")
     private int price;

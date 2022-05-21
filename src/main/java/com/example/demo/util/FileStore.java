@@ -1,6 +1,9 @@
 package com.example.demo.util;
 
+import com.example.demo.model.MarketBoard;
 import com.example.demo.model.UploadFile;
+import com.example.demo.repository.MarketRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,10 +12,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class FileStore {
+
+    private final MarketRepository marketRepository;
 
     @Value("${file.dir}")
     private String fileDir;
@@ -38,6 +45,7 @@ public class FileStore {
         if (multipartFile.isEmpty()){
             return null;
         }
+
 
         String originalFilename = multipartFile.getOriginalFilename();
         //서버에 저장하는 파일명
