@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.reponse.ComBoardDetailDto;
-import com.example.demo.dto.request.ComBoardPostDto;
+import com.example.demo.dto.reponse.ComBoardDetailRes;
+import com.example.demo.dto.request.ComBoardPostReq;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +46,7 @@ public class CommunityBoard extends Timestamped {
     private List<CommunityComment> comment = new ArrayList<CommunityComment>();
 
     //커뮤니티 게시글 작성
-    public CommunityBoard(ComBoardPostDto postDto, User writer) {
+    public CommunityBoard(ComBoardPostReq postDto, User writer) {
         this.title = postDto.getTitle();
         this.subtitle = postDto.getSubtitle();
         this.body = postDto.getContents();
@@ -55,7 +55,7 @@ public class CommunityBoard extends Timestamped {
     }
 
     //커뮤니티 게시글 수정
-    public void editCommunityBoard(ComBoardDetailDto editDto) {
+    public void editCommunityBoard(ComBoardDetailRes editDto) {
         this.id = editDto.getId();
         this.title = editDto.getTitle();
         this.subtitle = editDto.getSubtitle();

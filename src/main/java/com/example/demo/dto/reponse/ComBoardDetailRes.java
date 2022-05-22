@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class ComBoardDetailDto {
+public class ComBoardDetailRes {
 
     private Long id;
     private String title;
@@ -25,7 +25,7 @@ public class ComBoardDetailDto {
 
     private List<CommunityComment> comment;
 
-    public ComBoardDetailDto(CommunityBoard communityBoard) {
+    public ComBoardDetailRes(CommunityBoard communityBoard) {
         this.id = communityBoard.getId();
         this.title = communityBoard.getTitle();
         this.subtitle = communityBoard.getSubtitle();

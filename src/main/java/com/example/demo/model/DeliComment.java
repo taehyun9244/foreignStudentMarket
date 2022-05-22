@@ -13,7 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class DeliComment extends Timestamped {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")
     private Long id;
 

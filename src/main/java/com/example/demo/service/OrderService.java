@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.reponse.OrderListResDto;
+import com.example.demo.dto.reponse.OrderListRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.OrderPostDto;
+import com.example.demo.dto.request.OrderPostReq;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.Order;
 import com.example.demo.model.User;
@@ -10,7 +10,6 @@ import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
-import com.example.demo.util.DeliveryStatus;
 import com.example.demo.util.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     //주문생성
-    public void creatOrder(OrderPostDto postDto, UserDetailsImpl userDetails) {
+    @Transactional
+    public void creatOrder(OrderPostReq postDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("회원가입 후 주문 할 수 있습니다")
@@ -46,6 +46,7 @@ public class OrderService {
     }
 
     //주문취소
+    @Transactional
     public void cancelOrder(Long orderId, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -66,8 +67,8 @@ public class OrderService {
                  ()-> new RuntimeException("존재하지 않는 회원입니다")
          );
         List<Order> orders = user.getOrders();
-        List<OrderListResDto> collect = orders.stream()
-                .map(order -> new OrderListResDto(order))
+        List<OrderListRes> collect = orders.stream()
+                .map(order -> new OrderListRes(order))
                 .collect(Collectors.toList());
         return new Response(collect);
     }

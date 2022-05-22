@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class MarketPostDto {
+public class MarketPostReq {
     @NotBlank(message = "상품의 이름을 입력해 주세요")
     private String itemName;
     @NotBlank(message = "내용을 입력해 주세요")

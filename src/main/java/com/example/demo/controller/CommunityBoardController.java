@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.reponse.ComBoardDetailDto;
+import com.example.demo.dto.reponse.ComBoardDetailRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.ComBoardPostDto;
+import com.example.demo.dto.request.ComBoardPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +26,13 @@ public class CommunityBoardController {
 
     //커뮤니티 게시판 상세조회
     @GetMapping("/communities/{communityId}")
-    public ComBoardDetailDto getComBoardDetail(@PathVariable Long communityId){
+    public ComBoardDetailRes getComBoardDetail(@PathVariable Long communityId){
         return communityService.getComBoardDetail(communityId);
     }
 
     //커뮤니티 게시판 작성
     @PostMapping("/communities")
-    public void postComBoard(@RequestBody ComBoardPostDto postDto,
+    public void postComBoard(@RequestBody ComBoardPostReq postDto,
                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         communityService.postComBoard(postDto, userDetails);
     }
@@ -40,7 +40,7 @@ public class CommunityBoardController {
     //커뮤니티 게시판 수정
     @PutMapping("/communities/{communitiesId}")
     public void editCommunityBoard(@PathVariable Long communitiesId,
-                                   @RequestBody ComBoardDetailDto detailDto,
+                                   @RequestBody ComBoardDetailRes detailDto,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
         communityService.editCommunityBoard(communitiesId, detailDto, userDetails);
     }

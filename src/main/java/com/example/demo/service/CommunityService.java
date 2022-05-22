@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.reponse.ComBoardDetailDto;
-import com.example.demo.dto.reponse.ComBoardSimResDto;
+import com.example.demo.dto.reponse.ComBoardDetailRes;
+import com.example.demo.dto.reponse.ComBoardSimRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.ComBoardPostDto;
+import com.example.demo.dto.request.ComBoardPostReq;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommunityRepository;
@@ -32,23 +32,23 @@ public class CommunityService {
     @Transactional(readOnly = true)
     public Response getCommunityBoard(int offset, int limit) {
         List<CommunityBoard> communityBoards = queryRepository.findAllComBoard(offset, limit);
-        List<ComBoardSimResDto> simResDtos = new ArrayList<>();
+        List<ComBoardSimRes> simResDtos = new ArrayList<>();
         for (CommunityBoard communityBoard : communityBoards)
-            simResDtos.add(new ComBoardSimResDto(communityBoard));
+            simResDtos.add(new ComBoardSimRes(communityBoard));
         return new Response<>(simResDtos);
     }
 
     //커뮤니티 게시판 상세조회
     @Transactional(readOnly = true)
-    public ComBoardDetailDto getComBoardDetail(Long communityId) {
+    public ComBoardDetailRes getComBoardDetail(Long communityId) {
         CommunityBoard communityBoard = communityRepository.findById(communityId).orElseThrow(
                 () -> new RuntimeException("게시글이 존재하지 않습니다")
         );
-        return new ComBoardDetailDto(communityBoard);
+        return new ComBoardDetailRes(communityBoard);
     }
 
     //커뮤니티 게시판 작성
-    public void postComBoard(ComBoardPostDto postDto, UserDetailsImpl userDetails) {
+    public void postComBoard(ComBoardPostReq postDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
        User findUser =  userRepository.findByUsername(user.getUsername()).orElseThrow(
                ()-> new IllegalArgumentException("가입된 유저가 아닙니다.")
@@ -58,7 +58,7 @@ public class CommunityService {
     }
 
     //커뮤니티 게시판 수정
-    public void editCommunityBoard(Long communityBoardId, ComBoardDetailDto detailDto, UserDetailsImpl userDetails) {
+    public void editCommunityBoard(Long communityBoardId, ComBoardDetailRes detailDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityBoardId).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않은 게시글입니다")

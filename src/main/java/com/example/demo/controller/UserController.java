@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.request.SignUpRequestDto;
+import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,13 @@ public class UserController {
 
     //회원가입 api
     @PostMapping("/user/signup")
-    public void registerUser(@RequestBody SignUpRequestDto signUpRequestDto){
+    public void registerUser(@RequestBody SignUpReq signUpRequestDto){
         userService.registerUser(signUpRequestDto);
     }
 
     //로그인 api
     @PostMapping("/user/login")
-    public String createToken(@RequestBody SignUpRequestDto signUpRequestDto){
+    public String createToken(@RequestBody SignUpReq signUpRequestDto){
         return userService.createToken(signUpRequestDto);
     }
 

@@ -1,12 +1,11 @@
 package com.example.demo.model;
 
 
-import com.example.demo.dto.request.MarketPostDto;
+import com.example.demo.dto.request.MarketPostReq;
 import com.example.demo.util.CategoryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class MarketBoard extends Timestamped {
     private Order order;
 
 
-    public MarketBoard(MarketPostDto postDto, User writer, List<UploadFile> saveImages) {
+    public MarketBoard(MarketPostReq postDto, User writer, List<UploadFile> saveImages) {
         this.itemName = postDto.getItemName();
         this.body = postDto.getItemBody();
         this.price = postDto.getPrice();

@@ -4,7 +4,7 @@ import com.example.demo.util.OrderStatus;
 import lombok.Getter;
 
 @Getter
-public class OrderPostDto {
+public class OrderPostReq {
     private Long marketId;
     private OrderStatus orderStatus;
 }

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 
-import com.example.demo.dto.request.SignUpRequestDto;
+import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -36,9 +36,9 @@ class UserServiceTest {
     @DisplayName("회원가입 아이디 중복으로 실패")
     void registerUsernameDuplicateTest(){
         //given
-        SignUpRequestDto signUpRequestFailDto1 = new SignUpRequestDto("usernameA", mockPasswordEncoder.encode("1234"),
+        SignUpReq signUpRequestFailDto1 = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
                 "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
-        SignUpRequestDto signUpRequestFailDto2 = new SignUpRequestDto("usernameA", mockPasswordEncoder.encode("1234"),
+        SignUpReq signUpRequestFailDto2 = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
                 "19970528", "ayako@naver.com", "010-2222-2222", "sibuya");
 
         //when & then
@@ -56,9 +56,9 @@ class UserServiceTest {
     @DisplayName("회원가입 핸드폰 번호 중복으로 실패")
     void registerDuplicatePhoneTest(){
         //given
-        SignUpRequestDto signUpRequestFailDto1 = new SignUpRequestDto("usernameA", mockPasswordEncoder.encode("1234"),
+        SignUpReq signUpRequestFailDto1 = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
                 "19970528", "ayako@naver.com", "010-1111-1111", "sibuya");
-        SignUpRequestDto signUpRequestFailDto2 = new SignUpRequestDto("usernameB", mockPasswordEncoder.encode("5678"),
+        SignUpReq signUpRequestFailDto2 = new SignUpReq("usernameB", mockPasswordEncoder.encode("5678"),
                 "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
 
         //when
@@ -76,7 +76,7 @@ class UserServiceTest {
     @Test
     @DisplayName("회원가입 성공")
     void registerUserTest(){
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("usernameA", mockPasswordEncoder.encode("1234"),
+        SignUpReq signUpRequestDto = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
                 "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
         given(mockUserRepository.save(argThat(User -> User.getUsername().equals("usernameA"))))
                 .willReturn(new User(signUpRequestDto.getUsername(), signUpRequestDto.getPassword(), signUpRequestDto.getBirthday()

@@ -2,13 +2,12 @@ package com.example.demo.dto.reponse;
 
 import com.example.demo.model.Address;
 import com.example.demo.model.Order;
-import com.example.demo.util.DeliveryStatus;
 import com.example.demo.util.OrderStatus;
 import lombok.Getter;
 
 
 @Getter
-public class OrderListResDto {
+public class OrderListRes {
 
     private Long marketId;
     private String itemName;
@@ -16,7 +15,8 @@ public class OrderListResDto {
     private OrderStatus orderStatus;
     private Address to_address;
 
-    public OrderListResDto(Order order) {
+
+    public OrderListRes(Order order) {
         this.marketId = order.getMarketBoard().getId();
         this.itemName = order.getMarketBoard().getItemName();
         this.price = order.getMarketBoard().getPrice();

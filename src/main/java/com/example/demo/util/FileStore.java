@@ -6,6 +6,7 @@ import com.example.demo.repository.MarketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -29,6 +30,7 @@ public class FileStore {
     }
 
     //이미지 파일 여려장 저장
+    @Transactional
     public List<UploadFile> saveFiles(List<MultipartFile> multipartFiles) throws IOException {
         List<UploadFile> saveFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {

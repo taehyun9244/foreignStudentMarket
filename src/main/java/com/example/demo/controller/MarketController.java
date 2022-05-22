@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.MarketDetailResDto;
+import com.example.demo.dto.reponse.MarketDetailRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.MarketPostDto;
+import com.example.demo.dto.request.MarketPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.MarketService;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +24,19 @@ public class MarketController {
     //전체 중고게시글 조회
     @GetMapping("/markets")
      public Response getAllListMarket(@RequestParam(value ="offset", defaultValue = "0") int offset,
-                                      @RequestParam(value = "limit", defaultValue = "100")int limit){
+                                      @RequestParam(value = "limit", defaultValue = "100") int limit){
        return marketService.getAllListMarket(offset, limit);
     }
 
     //싱세 중고게시글 조회
     @GetMapping("/markets/{marketId}")
-    public MarketDetailResDto getDetailMarket(@PathVariable Long marketId) {
+    public MarketDetailRes getDetailMarket(@PathVariable Long marketId) {
         return marketService.getDetailMarket(marketId);
     }
 
     //중고게시글 작성
     @PostMapping("/markets")
-    public void creatMarketBoard(@RequestPart MarketPostDto postDto,
+    public void creatMarketBoard(@RequestPart MarketPostReq postDto,
                                  @RequestPart("file") List<MultipartFile> multipartFiles,
                                  @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         log.info("itemName = {}", postDto.getItemName());

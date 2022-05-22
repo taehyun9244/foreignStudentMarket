@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.reponse.ComCommentResDto;
+import com.example.demo.dto.reponse.ComCommentRes;
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.model.CommunityBoard;
@@ -31,8 +31,8 @@ public class ComCommentService {
     @Transactional(readOnly = true)
     public Response getComComment(Long communityBoardId) {
         List<CommunityComment>  communityComments = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(communityBoardId);
-        List<ComCommentResDto> resDtos = communityComments.stream()
-                .map(communityComment -> new ComCommentResDto(communityComment))
+        List<ComCommentRes> resDtos = communityComments.stream()
+                .map(communityComment -> new ComCommentRes(communityComment))
                 .collect(Collectors.toList());
         return new Response<>(resDtos);
     }

@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
+import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
@@ -25,13 +25,13 @@ public class DeliveryBoardController {
 
     //운송 게시글 상세 조회
     @GetMapping("/deliveryBoards/{deliveryBoardsId}")
-    public DeliveryBoardDetailResDto getBoardDetail(@PathVariable Long deliveryBoardsId){
+    public DeliveryBoardDetailRes getBoardDetail(@PathVariable Long deliveryBoardsId){
         return deliveryBoardService.getBoardDetail(deliveryBoardsId);
     }
 
     //운송 게시글 작성
     @PostMapping("/deliveryBoards")
-    public void creatDeliveryBoard(@RequestBody DeliveryBoardPostReqDto postReqDto,
+    public void creatDeliveryBoard(@RequestBody DeliveryBoardPostReq postReqDto,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
         deliveryBoardService.creatDeliveryBoard(postReqDto, userDetails);
     }
@@ -40,7 +40,7 @@ public class DeliveryBoardController {
     @PatchMapping("/deliveryBoards/{deliveryBoardsId}")
     public DeliveryBoard editDeliveryBoard(@PathVariable Long deliveryBoardsId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                           @RequestBody DeliveryBoardPostReqDto postReqDto){
+                                           @RequestBody DeliveryBoardPostReq postReqDto){
         return deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, postReqDto);
     }
 

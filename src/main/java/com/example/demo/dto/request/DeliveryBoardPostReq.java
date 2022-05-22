@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryBoardPostReqDto {
+public class DeliveryBoardPostReq {
     @NotBlank(message = "제목을 입력해 주세요")
     private String title;
     @NotBlank(message = "내용 입력해 주세요")

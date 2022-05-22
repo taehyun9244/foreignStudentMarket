@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.OrderPostDto;
+import com.example.demo.dto.request.OrderPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class OrderController {
     //주문생성
     @PostMapping("/markets/v1/orders")
     public void creatOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                           @RequestBody OrderPostDto postDto){
+                           @RequestBody OrderPostReq postDto){
         orderService.creatOrder(postDto, userDetails);
     }
 

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.request.SignUpRequestDto;
+import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.jwt.JwtTokenProvider;
 import com.example.demo.model.Address;
 import com.example.demo.repository.UserRepository;
@@ -22,7 +22,7 @@ public class UserService {
 
 
     //유저 회원가입
-    public void registerUser(SignUpRequestDto signUpRequestDto){
+    public void registerUser(SignUpReq signUpRequestDto){
         String username = signUpRequestDto.getUsername();
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
         String birthday = signUpRequestDto.getBirthday();
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     //유저 로그인
-    public String createToken(SignUpRequestDto signUpRequestDto) {
+    public String createToken(SignUpReq signUpRequestDto) {
         User user = userRepository.findByUsername(signUpRequestDto.getUsername())
                 .orElseThrow(()->new IllegalArgumentException("가입되지 않은 유저입니다"));
         if (!passwordEncoder.matches(signUpRequestDto.getPassword(), user.getPassword())){

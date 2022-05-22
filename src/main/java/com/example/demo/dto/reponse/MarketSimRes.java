@@ -6,14 +6,14 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class MarketSimResDto {
+public class MarketSimRes {
 
     private String username;
     private String location;
     private int price;
     private LocalDateTime creatAt;
 
-    public MarketSimResDto(MarketBoard marketBoard) {
+    public MarketSimRes(MarketBoard marketBoard) {
         this.username = marketBoard.getUser().getUsername();
         this.location = marketBoard.getUser().getAddress().getCity();
         this.price = marketBoard.getPrice();

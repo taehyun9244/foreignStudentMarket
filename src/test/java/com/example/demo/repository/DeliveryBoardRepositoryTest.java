@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.security.UserDetailsImpl;
@@ -30,7 +30,7 @@ class DeliveryBoardRepositoryTest {
     public void setUp(){
 
         //User: Nam, BoardA: Korea
-        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
+        DeliveryBoardPostReq postReqDto = new DeliveryBoardPostReq("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
                 "Korea", "Seoul-Seocho", "Korea", "Seoul-Seocho", 50000);
         User taehyun = new User("taehyun","1234",
                 "19920404", "namtaehyun@naver.com", "010-1111-1111", "Seocho");
@@ -38,7 +38,7 @@ class DeliveryBoardRepositoryTest {
         deliveryBoardA = new DeliveryBoard(postReqDto, taehyunRegister.getUser());
 
         //User: ayako, BoardB: Japan
-        DeliveryBoardPostReqDto postReqDto2 = new DeliveryBoardPostReqDto("미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
+        DeliveryBoardPostReq postReqDto2 = new DeliveryBoardPostReq("미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
                 "USA", "NewYork", "Japan", "Tokyo-Sibuya", 100000);
         User ayako = new User("ayako","1234",
                 "19970528", "ayako@naver.com", "010-2222-2222", "sibuya");
@@ -65,7 +65,7 @@ class DeliveryBoardRepositoryTest {
     @DisplayName("상세 운송 게시글 조회")
     void findDetailBoard(){
         //given
-        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
+        DeliveryBoardPostReq postReqDto = new DeliveryBoardPostReq("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
                 "Korea", "Seoul-Seocho", "Korea", "Seoul-Seocho", 50000);
         DeliveryBoard saveBoard = deliveryBoardRepository.save(deliveryBoardA);
         //when
@@ -89,7 +89,7 @@ class DeliveryBoardRepositoryTest {
     @DisplayName("운송 게시글 수정")
     void editDeliveryBoard(){
         //given
-        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto("배송모집합니다 수정", "5명모집이고 상자크기는 '대'입니다",
+        DeliveryBoardPostReq postReqDto = new DeliveryBoardPostReq("배송모집합니다 수정", "5명모집이고 상자크기는 '대'입니다",
                 "Korea", "Seoul-Seocho", "Korea", "Seoul-Seocho", 70000);
         DeliveryBoard saveBoard = deliveryBoardRepository.save(deliveryBoardA);
 

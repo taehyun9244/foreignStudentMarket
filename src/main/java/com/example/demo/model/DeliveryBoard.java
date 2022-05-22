@@ -1,10 +1,9 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.util.CountryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.*;
-import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class DeliveryBoard extends Timestamped {
     private List<DeliComment> deliComment = new ArrayList<DeliComment>();
 
     //게시글 작성 데이터 가공
-    public DeliveryBoard(DeliveryBoardPostReqDto postReqDto, User writer){
+    public DeliveryBoard(DeliveryBoardPostReq postReqDto, User writer){
         this.title = postReqDto.getTitle();
         this.body = postReqDto.getContents();
         this.from_city = postReqDto.getFrom_city();
@@ -62,7 +61,7 @@ public class DeliveryBoard extends Timestamped {
     }
 
     //게시글 수정 데이터 가공
-    public DeliveryBoard editDeliveryBoard(DeliveryBoardPostReqDto postReqDto){
+    public DeliveryBoard editDeliveryBoard(DeliveryBoardPostReq postReqDto){
         this.title = postReqDto.getTitle();
         this.body = postReqDto.getContents();
         this.from_city = postReqDto.getFrom_city();

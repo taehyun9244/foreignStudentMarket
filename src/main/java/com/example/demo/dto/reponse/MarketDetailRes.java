@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class MarketDetailResDto {
+public class MarketDetailRes {
 
     private String username;
     private String itemName;
@@ -20,7 +20,7 @@ public class MarketDetailResDto {
     private LocalDateTime creatAt;
     private List<UploadFile> uploadFiles;
 
-    public MarketDetailResDto(MarketBoard marketBoard, List<UploadFile> findByImages) {
+    public MarketDetailRes(MarketBoard marketBoard, List<UploadFile> findByImages) {
         this.username = marketBoard.getUser().getUsername();
         this.itemName = marketBoard.getItemName();
         this.contents = marketBoard.getBody();

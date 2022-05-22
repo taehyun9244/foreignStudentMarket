@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.request.DeliCommentPostReq;
-import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.model.DeliComment;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,9 +65,9 @@ class DeliCommentServiceTest {
         ayakoRegister =  new UserDetailsImpl(ayako);
 
         //DeliveryBoard postReqDto
-        DeliveryBoardPostReqDto postReqDto1 = new DeliveryBoardPostReqDto("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
+        DeliveryBoardPostReq postReqDto1 = new DeliveryBoardPostReq("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
                 "Korea", "Seoul-Seocho", "Korea", "Seoul-Seocho", 50000);
-        DeliveryBoardPostReqDto postReqDto2 = new DeliveryBoardPostReqDto( "미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
+        DeliveryBoardPostReq postReqDto2 = new DeliveryBoardPostReq( "미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
                 "USA", "NewYork", "Japan", "Tokyo-Sibuya", 100000);
         deliveryBoard1 = new DeliveryBoard(postReqDto1, taehyun);
         deliveryBoard2 = new DeliveryBoard(postReqDto2, ayako);

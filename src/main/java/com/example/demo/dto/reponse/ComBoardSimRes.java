@@ -8,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Getter
-public class ComBoardSimResDto {
+public class ComBoardSimRes {
     private Long id;
     private String title;
     private String subtitle;
@@ -21,7 +21,7 @@ public class ComBoardSimResDto {
     private LocalDateTime updateAt;
 
 
-    public ComBoardSimResDto(CommunityBoard communityBoard) {
+    public ComBoardSimRes(CommunityBoard communityBoard) {
         this.id = communityBoard.getId();
         this.title = communityBoard.getTitle();
         this.subtitle = communityBoard.getSubtitle();

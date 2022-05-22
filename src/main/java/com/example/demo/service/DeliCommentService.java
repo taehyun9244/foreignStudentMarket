@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.reponse.DeliCommentResDto;
+import com.example.demo.dto.reponse.DeliCommentRes;
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.model.DeliComment;
@@ -36,8 +36,8 @@ public class DeliCommentService {
     @Transactional(readOnly = true)
     public Response getDeliComment(Long deliveryBoardId){
         List<DeliComment> findDeliBoardComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
-        List<DeliCommentResDto> resDtos = findDeliBoardComment.stream()
-                .map(deliComment -> new DeliCommentResDto(deliComment))
+        List<DeliCommentRes> resDtos = findDeliBoardComment.stream()
+                .map(deliComment -> new DeliCommentRes(deliComment))
                 .collect(toList());
         return new Response<>(resDtos);
     }

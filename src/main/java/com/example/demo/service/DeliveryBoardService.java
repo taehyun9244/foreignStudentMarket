@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
 
-import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
-import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
+import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
+import com.example.demo.dto.reponse.DeliveryBoardSimRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.DeliveryBoardPostReqDto;
+import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
@@ -33,23 +33,23 @@ public class DeliveryBoardService {
     @Transactional(readOnly = true)
     public Response getBoardSim(int offset, int limit) {
         List<DeliveryBoard> deliveryBoards = queryRepository.findAllDeliBoard(offset, limit);
-        List<DeliveryBoardSimResDto> collect = deliveryBoards.stream()
-                .map(deliveryBoard -> new DeliveryBoardSimResDto(deliveryBoard))
+        List<DeliveryBoardSimRes> collect = deliveryBoards.stream()
+                .map(deliveryBoard -> new DeliveryBoardSimRes(deliveryBoard))
                 .collect(Collectors.toList());
         return new Response(collect);
     }
 
    //운송 게시글 상세 조회
     @Transactional(readOnly = true)
-    public DeliveryBoardDetailResDto getBoardDetail(Long deliveryBoardId) {
+    public DeliveryBoardDetailRes getBoardDetail(Long deliveryBoardId) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
                 ()-> new IllegalArgumentException("게시글이 존재하지 않습니다")
         );
-        return new DeliveryBoardDetailResDto(deliveryBoard);
+        return new DeliveryBoardDetailRes(deliveryBoard);
     }
 
     //운송 게시글 작성
-    public void creatDeliveryBoard(DeliveryBoardPostReqDto postReqDto, UserDetailsImpl userDetails) {
+    public void creatDeliveryBoard(DeliveryBoardPostReq postReqDto, UserDetailsImpl userDetails) {
             User user = userDetails.getUser();
             User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
                     ()-> new RuntimeException("회원가입을 해주세요 가입되지 않았습니다")
@@ -59,7 +59,7 @@ public class DeliveryBoardService {
     }
 
     //운송 게시글 수정
-    public DeliveryBoard editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReqDto postReqDto){
+    public DeliveryBoard editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReq postReqDto){
         User user = userDetails.getUser();
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
                 .orElseThrow( ()->new RuntimeException("존재하지 않는 게시글입니다")

@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class ComBoardPostDto {
+public class ComBoardPostReq {
     @NotBlank(message = "제목을 입력해 주세요")
     private String title;
     @NotBlank(message = "소제목을 선택해 주세요")
