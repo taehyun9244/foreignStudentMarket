@@ -6,6 +6,7 @@ import com.example.demo.util.CategoryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.List;
 public class MarketBoard extends Timestamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "market_id")
     private Long id;
 
     @Column(nullable = false)
@@ -47,6 +47,7 @@ public class MarketBoard extends Timestamped {
     private Order order;
 
 
+    //주문게시글 생성 생성자
     public MarketBoard(MarketPostReq postDto, User writer, List<UploadFile> saveImages) {
         this.itemName = postDto.getItemName();
         this.body = postDto.getItemBody();
@@ -55,5 +56,9 @@ public class MarketBoard extends Timestamped {
         this.location = postDto.getLocation();
         this.user = writer;
         this.imageFiles = saveImages;
+    }
+
+    public MarketBoard(MarketBoard findBoard, MarketPostReq postReq, List<MultipartFile> multipartFiles) {
+        super();
     }
 }

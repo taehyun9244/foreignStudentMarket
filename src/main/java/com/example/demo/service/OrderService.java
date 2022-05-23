@@ -47,7 +47,7 @@ public class OrderService {
 
     //주문취소
     @Transactional
-    public void cancelOrder(Long orderId, UserDetailsImpl userDetails) {
+    public void  cancelOrder(Long orderId, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("에러")

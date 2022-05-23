@@ -17,7 +17,7 @@ public class Order extends Timestamped {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
 
     @OneToOne
@@ -27,6 +27,7 @@ public class Order extends Timestamped {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    //주문생성 생성자
     public Order(User writer, MarketBoard orderItem, OrderStatus orderStatus) {
         this.user = writer;
         this.marketBoard = orderItem;

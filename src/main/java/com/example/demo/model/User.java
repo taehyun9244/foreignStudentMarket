@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import com.example.demo.util.Timestamped;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

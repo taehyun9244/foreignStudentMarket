@@ -22,6 +22,7 @@ public class UploadFile extends Timestamped{
     @JsonIgnore
     private MarketBoard marketBoard;
 
+    //이미지생성 생성자
     public UploadFile(String uploadFileName, String storeFileName) {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;

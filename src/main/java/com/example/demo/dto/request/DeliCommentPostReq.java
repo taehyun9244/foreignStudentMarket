@@ -8,5 +8,4 @@ import lombok.Getter;
 public class DeliCommentPostReq {
     private String comment;
     private Long deliveryBoardId;
-    private String username;
 }

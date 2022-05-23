@@ -30,7 +30,7 @@ public class CommunityComment extends Timestamped {
     @JsonIgnore
     private CommunityBoard communityBoard;
 
-    // 커뮤니티 댓글 작성
+    // 커뮤니티댓글 작성 생성자
     public CommunityComment(User findUser, ComCommentPostReq postReq, CommunityBoard findCommunityBoard) {
         this.comment = postReq.getComComment();
         this.user = findUser;

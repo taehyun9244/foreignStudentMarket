@@ -15,5 +15,4 @@ public class ComBoardPostReq {
     @NotBlank(message = "지역을 입력해 주세요")
     private String location;
 
-    private String username;
 }

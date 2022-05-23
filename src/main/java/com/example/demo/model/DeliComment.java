@@ -15,7 +15,6 @@ public class DeliComment extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMENT_ID")
     private Long id;
 
     @Column(nullable = false)

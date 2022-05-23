@@ -1,6 +1,5 @@
 package com.example.demo.util;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,8 +7,8 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum CountryEnum {
-    
-    USA("USA", "United State America", "미국"),
+
+    USA("USA", "The United States", "미국"),
     JP("JP", "Japan", "일본"),
     CHA("CHA","China", "중국" ),
     FR("FR", "France", "프랑스"),

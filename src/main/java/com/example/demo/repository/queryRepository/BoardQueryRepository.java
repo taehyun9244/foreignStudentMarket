@@ -17,6 +17,7 @@ public class BoardQueryRepository {
     private final EntityManager em;
 
 
+    //운송게시글 전체조회 쿼리성능
     public List<DeliveryBoard> findAllDeliBoard(int offset, int limit) {
         return em.createQuery(
                 "select db from DeliveryBoard db" +
@@ -26,6 +27,7 @@ public class BoardQueryRepository {
                 .getResultList();
     }
 
+    //커뮤니티 게시글 전체조회 쿼리성능
     public List<CommunityBoard> findAllComBoard(int offset, int limit) {
         return em.createQuery(
                 "select cb from CommunityBoard  cb" +
@@ -35,6 +37,7 @@ public class BoardQueryRepository {
                 .getResultList();
     }
 
+    //마켓게시글 전체조회 쿼리성능
     public List<MarketBoard> findAllMarket(int offset, int limit) {
         return em.createQuery(
                 "select mk from MarketBoard  mk" +

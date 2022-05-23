@@ -13,7 +13,7 @@ public class CommentQueryRepository {
 
     private final EntityManager em;
 
-
+    //운송게시글 id의 댓글 전체 조회 쿼리성능
     public List<DeliComment> findAllDeliComment(Long deliveryBoardId){
         return em.createQuery(
                 "select distinct dc from DeliComment dc" +

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -56,7 +57,6 @@ public class MarketService {
 
 
     //게시글 작성
-
     @Transactional
     public void creatMarketBoard(MarketPostReq postDto, List<MultipartFile> multipartFiles, UserDetailsImpl userDetails) throws IOException {
         User user = userDetails.getUser();
@@ -71,4 +71,35 @@ public class MarketService {
     }
 
 
+    //게시글 수정
+    @Transactional
+    public MarketBoard editMarketBoard(Long marketId, UserDetailsImpl userDetails, MarketPostReq postReq, List<MultipartFile> multipartFiles) {
+        User user = userDetails.getUser();
+        User writer = userRepository.findByUsername(user.getUsername()).orElseThrow(
+                ()-> new RuntimeException("회원가입을 해 주세요")
+        );
+        MarketBoard findBoard = marketRepository.findById(marketId).orElseThrow(
+                ()-> new RuntimeException("존재하지 않는 게시글 입니다")
+        );
+        if (writer.equals(findBoard.getUser())) {
+            MarketBoard editMarketBoard = new MarketBoard(findBoard, postReq, multipartFiles);
+            marketRepository.save(editMarketBoard);
+        }
+        return new MarketBoard();
+    }
+
+    //게시글 삭제
+    @Transactional
+    public void deleteMarketBoard(Long marketId, UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        User writer = userRepository.findByUsername(user.getUsername()).orElseThrow(
+                ()-> new RuntimeException("회원가입을 해 주세요")
+        );
+        MarketBoard findBoard = marketRepository.findById(marketId).orElseThrow(
+                () -> new RuntimeException("존재하지 않는 게시글 입니다")
+        );
+        if (writer.equals(findBoard.getUser())){
+            marketRepository.delete(findBoard);
+        }
+    }
 }

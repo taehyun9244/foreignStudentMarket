@@ -15,7 +15,6 @@ import java.util.List;
 public class DeliveryBoard extends Timestamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "delivery_id")
     private Long id;
 
     @Column(nullable = false)
@@ -33,7 +32,7 @@ public class DeliveryBoard extends Timestamped {
     @Column(nullable = false)
     private String to_city;
 
-    @Column(name = "DELIVERY_PRICE", nullable = false)
+    @Column(nullable = false)
     private int price;
 
     @Column(nullable = false)
@@ -43,13 +42,13 @@ public class DeliveryBoard extends Timestamped {
     private int delivery_like;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "userId")
     private User user;
 
     @OneToMany(mappedBy = "deliveryBoard", cascade = CascadeType.REMOVE)
     private List<DeliComment> deliComment = new ArrayList<DeliComment>();
 
-    //게시글 작성 데이터 가공
+    //운송게시글 생성 생성자
     public DeliveryBoard(DeliveryBoardPostReq postReqDto, User writer){
         this.title = postReqDto.getTitle();
         this.body = postReqDto.getContents();
@@ -60,7 +59,7 @@ public class DeliveryBoard extends Timestamped {
         this.user = writer;
     }
 
-    //게시글 수정 데이터 가공
+    //운송게시글 수정 생성자
     public DeliveryBoard editDeliveryBoard(DeliveryBoardPostReq postReqDto){
         this.title = postReqDto.getTitle();
         this.body = postReqDto.getContents();

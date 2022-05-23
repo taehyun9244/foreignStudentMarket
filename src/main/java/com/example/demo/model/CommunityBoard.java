@@ -17,7 +17,6 @@ import java.util.List;
 public class CommunityBoard extends Timestamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMUNITY_ID", nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -39,13 +38,13 @@ public class CommunityBoard extends Timestamped {
     private int community_like;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "userId")
     private User user;
 
     @OneToMany(mappedBy = "communityBoard", cascade = CascadeType.REMOVE)
     private List<CommunityComment> comment = new ArrayList<CommunityComment>();
 
-    //커뮤니티 게시글 작성
+    //커뮤니티 게시글 작성 생성자
     public CommunityBoard(ComBoardPostReq postDto, User writer) {
         this.title = postDto.getTitle();
         this.subtitle = postDto.getSubtitle();
@@ -54,7 +53,7 @@ public class CommunityBoard extends Timestamped {
         this.user = writer;
     }
 
-    //커뮤니티 게시글 수정
+    //커뮤니티 게시글 수정 생성자
     public void editCommunityBoard(ComBoardDetailRes editDto) {
         this.id = editDto.getId();
         this.title = editDto.getTitle();

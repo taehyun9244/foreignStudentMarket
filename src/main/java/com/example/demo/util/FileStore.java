@@ -43,12 +43,11 @@ public class FileStore {
     }
 
     //이미지 파일 1장 저장
+    @Transactional
     public UploadFile saveFile(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty()){
             return null;
         }
-
-
         String originalFilename = multipartFile.getOriginalFilename();
         //서버에 저장하는 파일명
         String storeFileName = creatStoreFileName(originalFilename);
