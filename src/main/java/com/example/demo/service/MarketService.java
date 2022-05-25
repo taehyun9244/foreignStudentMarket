@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -73,7 +72,7 @@ public class MarketService {
 
     //게시글 수정
     @Transactional
-    public MarketBoard editMarketBoard(Long marketId, UserDetailsImpl userDetails, MarketPostReq postReq, List<MultipartFile> multipartFiles) {
+    public MarketBoard editMarketBoard(Long marketId, UserDetailsImpl userDetails, MarketPostReq postReq, List<MultipartFile> multipartFiles) throws IOException {
         User user = userDetails.getUser();
         User writer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("회원가입을 해 주세요")
@@ -82,7 +81,9 @@ public class MarketService {
                 ()-> new RuntimeException("존재하지 않는 게시글 입니다")
         );
         if (writer.equals(findBoard.getUser())) {
-            MarketBoard editMarketBoard = new MarketBoard(findBoard, postReq, multipartFiles);
+            List<UploadFile> uploadFiles = fileStore.saveFiles(multipartFiles);
+            List<UploadFile> saveImages = uploadFileRepository.saveAll(uploadFiles);
+            MarketBoard editMarketBoard = new MarketBoard(postReq, saveImages);
             marketRepository.save(editMarketBoard);
         }
         return new MarketBoard();

@@ -2,7 +2,6 @@ package com.example.demo.dto.reponse;
 
 import com.example.demo.model.Address;
 import com.example.demo.model.Order;
-import com.example.demo.util.OrderStatus;
 import lombok.Getter;
 
 
@@ -12,7 +11,7 @@ public class OrderListRes {
     private Long marketId;
     private String itemName;
     private int price;
-    private OrderStatus orderStatus;
+    private String orderStatus;
     private Address to_address;
 
 

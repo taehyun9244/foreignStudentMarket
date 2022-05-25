@@ -36,10 +36,10 @@ public class DeliveryBoard extends Timestamped {
     private int price;
 
     @Column(nullable = false)
-    private int count_comment;
+    private int countComment;
 
     @Column( nullable = false)
-    private int delivery_like;
+    private int boardLike;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -71,11 +71,11 @@ public class DeliveryBoard extends Timestamped {
 
     //댓글 작성시 +1
     public void addComment(int count){
-         this.count_comment = count_comment + 1;
+         this.countComment = countComment + 1;
     }
 
     //댓글 삭제시 -1
     public void removeComment(int count){
-        this.count_comment = count_comment - 1;
+        this.countComment = countComment - 1;
     }
 }

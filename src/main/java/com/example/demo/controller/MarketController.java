@@ -52,7 +52,7 @@ public class MarketController {
     public MarketBoard editMarketBoard(@PathVariable Long marketId,
                                        @AuthenticationPrincipal UserDetailsImpl userDetails,
                                        @RequestPart MarketPostReq postReq,
-                                       @RequestPart("file") List<MultipartFile> multipartFiles){
+                                       @RequestPart("file") List<MultipartFile> multipartFiles) throws IOException {
         return marketService.editMarketBoard(marketId, userDetails, postReq, multipartFiles);
     }
 

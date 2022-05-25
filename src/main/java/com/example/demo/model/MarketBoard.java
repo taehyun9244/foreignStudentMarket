@@ -6,7 +6,6 @@ import com.example.demo.util.CategoryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,8 +31,8 @@ public class MarketBoard extends Timestamped {
     @Column(nullable = false)
     private String location;
 
-    @Enumerated(EnumType.STRING)
-    private CategoryEnum category;
+    @Column(nullable = false)
+    private String category;
 
     @OneToMany(mappedBy = "marketBoard", cascade = CascadeType.ALL)
     private List<UploadFile> imageFiles = new ArrayList<UploadFile>();
@@ -58,7 +57,12 @@ public class MarketBoard extends Timestamped {
         this.imageFiles = saveImages;
     }
 
-    public MarketBoard(MarketBoard findBoard, MarketPostReq postReq, List<MultipartFile> multipartFiles) {
-        super();
+    //주문게시글 수정 생성자
+    public MarketBoard(MarketPostReq postReq, List<UploadFile> multipartFiles) {
+        this.itemName = postReq.getItemName();
+        this.body = postReq.getItemBody();
+        this.price = postReq.getPrice();
+        this.category = postReq.getCategory();
+        this.imageFiles = multipartFiles;
     }
 }

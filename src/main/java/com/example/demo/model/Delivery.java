@@ -15,11 +15,24 @@ public class Delivery {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
+    private String itemName;
+
     @Embedded
     private Address address;
 
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private DeliveryStatus deliveryStatus;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "payId")
+    private Pay pay;
+
+    public Delivery(User payer, Order orderItem, DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+        this.itemName = orderItem.getItemName();
+        this.address = payer.getAddress();
+        this.pay =
+    }
 
 }

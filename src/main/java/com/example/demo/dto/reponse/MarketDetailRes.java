@@ -2,7 +2,6 @@ package com.example.demo.dto.reponse;
 
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.UploadFile;
-import com.example.demo.util.CategoryEnum;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -15,7 +14,7 @@ public class MarketDetailRes {
     private String itemName;
     private String contents;
     private String location;
-    private CategoryEnum category;
+    private String category;
     private int price;
     private LocalDateTime creatAt;
     private List<UploadFile> uploadFiles;

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.reponse.OrderListRes;
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.OrderPostReq;
+import com.example.demo.model.Delivery;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.Order;
 import com.example.demo.model.User;
@@ -10,6 +11,7 @@ import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
+import com.example.demo.util.DeliveryStatus;
 import com.example.demo.util.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +42,7 @@ public class OrderService {
                 ()-> new RuntimeException("주문상품이 존재하지 않습니다")
         );
         //주문 생성
-        OrderStatus orderStatus = postDto.getOrderStatus();
-        Order order = new Order(buyer, orderItem, orderStatus);
+        Order order = new Order(buyer, orderItem, postDto);
         orderRepository.save(order);
     }
 

@@ -1,6 +1,5 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.util.CategoryEnum;
 import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
@@ -11,7 +10,7 @@ public class MarketPostReq {
     @NotBlank(message = "내용을 입력해 주세요")
     private String itemBody;
     @NotBlank(message = "카테고리를 설정해 주세요")
-    private CategoryEnum category;
+    private String category;
     @NotBlank(message = "배달 지역을 입력해 주세요")
     private String location;
     @NotBlank(message = "가격을 입력해 주세요")
