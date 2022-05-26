@@ -10,6 +10,7 @@ import com.example.demo.repository.PayRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.DeliveryStatus;
+import com.example.demo.util.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,21 @@ public class PayService {
     public Pay orderPay(Long orderId, UserDetailsImpl userDetails, PayReq payReq) {
         User user = userDetails.getUser();
         User payer = userRepository.findByUsername(user.getUsername()).orElseThrow(
-                ()-> new RuntimeException("")
+                ()-> new RuntimeException("회원이 아닙니다")
         );
         Order orderItem = orderRepository.findById(orderId).orElseThrow(
-                ()-> new RuntimeException("")
+                ()-> new RuntimeException("주문한 상품이 아닙니다")
         );
-        DeliveryStatus deliveryStatus = DeliveryStatus.DC;
-        Pay pay = new Pay(payer, orderItem, payReq);
-        Delivery delivery = new Delivery(payer, orderItem,deliveryStatus);
-        return payRepository.save(pay);
+        if (orderItem.getOrderStatus().equals(OrderStatus.CANCEL)){
+            throw new RuntimeException("주문이 취소된 상품입니다");
+        }else if(orderItem.getOrderStatus().equals(OrderStatus.ORDER)){
+            Pay pay = new Pay(payer, orderItem, payReq);
+            return payRepository.save(pay);
+        }
     }
+
+    //결제 취소
+
 }
+
+

@@ -25,8 +25,9 @@ public class OrderController {
     //주문취소
     @DeleteMapping("/markets/v1/orders/{orderId}")
     public void cancelOrder(@PathVariable Long orderId,
+                            @RequestParam String orderStatus,
                             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        orderService.cancelOrder(orderId, userDetails);
+        orderService.cancelOrder(orderId, userDetails, orderStatus);
     }
 
     //주문상품 리스트 조회

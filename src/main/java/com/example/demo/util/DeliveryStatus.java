@@ -10,7 +10,7 @@ public enum DeliveryStatus {
     OA("OA", "Order reception", "주문 접수"),
     DC("DC", "Deposit confirmation", "입금확인"),
     READY("READY", "Preparing for delivery", "배송준비중"),
-    SP("SP", "Shipping", "발송"),
+    SHP("SHP", "Shipping", "발송"),
     COMP("COMP", "Completion", "배송완료"),
     CANCEL("CANCEL", "Cancel", "배송취소");
 

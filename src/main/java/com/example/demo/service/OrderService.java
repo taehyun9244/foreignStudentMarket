@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.dto.reponse.OrderListRes;
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.OrderPostReq;
-import com.example.demo.model.Delivery;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.Order;
 import com.example.demo.model.User;
@@ -11,7 +10,6 @@ import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
-import com.example.demo.util.DeliveryStatus;
 import com.example.demo.util.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,17 +46,17 @@ public class OrderService {
 
     //주문취소
     @Transactional
-    public void  cancelOrder(Long orderId, UserDetailsImpl userDetails) {
+    public void  cancelOrder(Long orderId, UserDetailsImpl userDetails, String orderStatus) {
         User user = userDetails.getUser();
         User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("에러")
         );
         log.info("buyer ={}", buyer);
+
         Order cancelOrder = orderRepository.findById(orderId).orElseThrow(
                 ()-> new RuntimeException("주문이 없습니다")
         );
-        log.info("cancelOrder ={}", cancelOrder);
-            orderRepository.delete(cancelOrder);
+        cancelOrder.setOrderStatus(orderStatus);
     }
 
     //주문상품 리스트 조회

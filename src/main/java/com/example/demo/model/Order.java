@@ -5,6 +5,7 @@ import com.example.demo.util.DeliveryStatus;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -28,10 +29,7 @@ public class Order extends Timestamped {
     @JoinColumn(name = "marketId")
     private MarketBoard marketBoard;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "payId")
-    private Pay pay;
-
+    @Setter
     @Column(nullable = false)
     private String orderStatus;
 

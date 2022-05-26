@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.request.PayReq;
-import com.example.demo.util.DeliveryStatus;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
