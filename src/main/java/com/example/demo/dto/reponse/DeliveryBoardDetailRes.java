@@ -35,7 +35,7 @@ public class DeliveryBoardDetailRes {
         this.from_city = deliveryBoard.getFrom_city();
         this.from_country = deliveryBoard.getFrom_country();
         this.to_address = deliveryBoard.getTo_city();
-        this.countComment = deliveryBoard.getCount_comment();
+        this.countComment = deliveryBoard.getCountComment();
         this.price = deliveryBoard.getPrice();
         this.username = deliveryBoard.getUser().getUsername();
         this.createdAt = deliveryBoard.getCreatedAt();

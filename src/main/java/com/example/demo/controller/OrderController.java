@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.OrderPostReq;
+import com.example.demo.dto.request.CancelOrderReq;
+import com.example.demo.dto.request.OrderReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +19,21 @@ public class OrderController {
     //주문생성
     @PostMapping("/markets/v1/orders")
     public void creatOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                           @RequestBody OrderPostReq postDto){
+                           @RequestBody OrderReq postDto){
         orderService.creatOrder(postDto, userDetails);
     }
 
     //주문취소
-    @DeleteMapping("/markets/v1/orders/{orderId}")
-    public void cancelOrder(@PathVariable Long orderId,
-                            @RequestParam String orderStatus,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails){
-        orderService.cancelOrder(orderId, userDetails, orderStatus);
+    @DeleteMapping("/markets/v1/orders")
+    public void cancelOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                            @RequestBody CancelOrderReq cancelOrderReq){
+        orderService.cancelOrder(userDetails, cancelOrderReq);
     }
 
     //주문상품 리스트 조회
-    @GetMapping("/{userId}/v1/orderItems")
-    public Response orderList(@PathVariable Long userId){
-        return orderService.findOrderList(userId);
+    @GetMapping("/v1/orders/orderItems")
+    public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return orderService.findOrderList(userDetails);
     }
 
 

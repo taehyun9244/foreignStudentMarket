@@ -3,7 +3,9 @@ package com.example.demo.dto.request;
 import lombok.Getter;
 
 @Getter
-public class OrderPostReq {
-    private Long marketId;
+public class CancelOrderReq {
+
+    private Long orderId;
+    private Long payId;
     private String orderStatus;
 }

@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.request.OrderPostReq;
-import com.example.demo.util.DeliveryStatus;
+import com.example.demo.dto.request.OrderReq;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +34,7 @@ public class Order extends Timestamped {
 
 
     //주문생성 생성자
-    public Order(User writer, MarketBoard orderItem, OrderPostReq postReq) {
+    public Order(User writer, MarketBoard orderItem, OrderReq postReq) {
         this.user = writer;
         this.marketBoard = orderItem;
         this.orderStatus = postReq.getOrderStatus();

@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 
 import com.example.demo.dto.request.MarketPostReq;
-import com.example.demo.util.CategoryEnum;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,10 +39,6 @@ public class MarketBoard extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
-
-    @OneToOne
-    @JoinColumn(name = "orderId")
-    private Order order;
 
 
     //주문게시글 생성 생성자

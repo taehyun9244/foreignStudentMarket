@@ -37,7 +37,7 @@ public class DeliveryBoardSimRes {
         this.title = deliveryBoard.getTitle();
         this.from_city = deliveryBoard.getFrom_city();
         this.from_country = deliveryBoard.getFrom_country();
-        this.countComment = deliveryBoard.getCount_comment();
+        this.countComment = deliveryBoard.getCountComment();
         this.price = deliveryBoard.getPrice();
         this.createdAt = deliveryBoard.getCreatedAt();
         this.updateAt = deliveryBoard.getUpdateAt();

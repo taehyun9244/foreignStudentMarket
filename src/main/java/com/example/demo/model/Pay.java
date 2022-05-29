@@ -4,6 +4,7 @@ import com.example.demo.dto.request.PayReq;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -17,21 +18,17 @@ public class Pay extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private int payment;
+    private String itemName;
+    @Column(nullable = false)
+    private int itemPrice;
 
+    @Setter
     @Column(nullable = false)
     private String payStatus;
-
-    @Column(nullable = false)
-    private String itemName;
 
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "deliveryId")
-    private Delivery delivery;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "orderID")
@@ -39,8 +36,8 @@ public class Pay extends Timestamped {
 
     public Pay(User payer, Order orderItem, PayReq payReq) {
         this.user = payer;
-        this.payment = payReq.getPayment();
         this.itemName = payReq.getItemName();
+        this.itemPrice = payReq.getItemPrice();
         this.order = orderItem;
         this.payStatus = payReq.getPayStatus();
     }
