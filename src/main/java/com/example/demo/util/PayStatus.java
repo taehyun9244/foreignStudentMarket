@@ -9,8 +9,7 @@ import lombok.RequiredArgsConstructor;
 public enum PayStatus {
 
 //    WFD("WFD", "Waiting for deposit", "입금 대기"),
-    COMP("COMP", "Completion", "결제완료"),
-    REF("REF", "Refund", "환불");
+    COMP("COMP", "Completion", "결제완료");
 
     private final String code;
     private final String name;

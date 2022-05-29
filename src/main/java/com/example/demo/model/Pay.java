@@ -21,7 +21,6 @@ public class Pay extends Timestamped {
     private String itemName;
     @Column(nullable = false)
     private int itemPrice;
-
     @Setter
     @Column(nullable = false)
     private String payStatus;
@@ -40,5 +39,13 @@ public class Pay extends Timestamped {
         this.itemPrice = payReq.getItemPrice();
         this.order = orderItem;
         this.payStatus = payReq.getPayStatus();
+    }
+
+    public Pay(User payer, Order orderItem, String payStatus) {
+        this.user = payer;
+        this.order = orderItem;
+        this.itemName = orderItem.getItemName();
+        this.itemPrice = orderItem.getItemPrice();
+        this.payStatus = payStatus;
     }
 }

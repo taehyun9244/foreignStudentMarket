@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.CancelOrderReq;
 import com.example.demo.dto.request.OrderReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.OrderService;
@@ -24,10 +23,11 @@ public class OrderController {
     }
 
     //주문취소
-    @DeleteMapping("/markets/v1/orders")
+    @PostMapping("/markets/v1/orders/{orderId}")
     public void cancelOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                            @RequestBody CancelOrderReq cancelOrderReq){
-        orderService.cancelOrder(userDetails, cancelOrderReq);
+                            @RequestParam String orderStatus,
+                            @PathVariable Long orderId){
+        orderService.cancelOrder(userDetails, orderStatus, orderId);
     }
 
     //주문상품 리스트 조회

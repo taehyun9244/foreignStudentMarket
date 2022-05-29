@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.PayListRes;
 import com.example.demo.dto.reponse.Response;
-import com.example.demo.dto.request.CancelPayReq;
 import com.example.demo.dto.request.PayReq;
+import com.example.demo.model.Order;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.PayService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +22,11 @@ public class PayController {
          payService.orderPay(userDetails, payReq);
     }
 
-    //결제취소
-    @PatchMapping("/orderItems/v1/pays")
-    public void cancelPay( @AuthenticationPrincipal UserDetailsImpl userDetails,
-                           @RequestBody CancelPayReq cancelPayReq){
-         payService.cancelPay(userDetails, cancelPayReq);
+    @PostMapping("/orderItems/v2/pays")
+    public void orderPayA(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                          @RequestBody Order order,
+                          @RequestParam String payStatus){
+        payService.orderPayA(userDetails, order, payStatus);
     }
 
     //결제 리스트

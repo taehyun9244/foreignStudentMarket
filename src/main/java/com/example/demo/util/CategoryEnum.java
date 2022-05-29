@@ -16,4 +16,6 @@ public enum CategoryEnum {
     private final String code;
     private final String name;
     private final String nameKr;
+
+
 }

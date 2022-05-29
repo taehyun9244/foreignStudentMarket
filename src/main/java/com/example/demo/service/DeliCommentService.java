@@ -46,10 +46,10 @@ public class DeliCommentService {
     public void creatDeliComment(UserDetailsImpl userDetails, DeliCommentPostReq postReq, Long deliveryBoardId) {
         User user = userDetails.getUser();
         User writer= userRepository.findByUsername(user.getUsername()).orElseThrow(
-                ()-> new RuntimeException("회원가입을 해 주세요")
+                () -> new RuntimeException("회원가입을 해 주세요")
         );
         DeliveryBoard existBoardId = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 게시글입니다")
+                () -> new RuntimeException("존재하지 않는 게시글입니다")
         );
         List<DeliComment> countComment = deliCommentRepository.findByDeliveryBoardId(deliveryBoardId);
         int deliCommentSize = countComment.size();
@@ -62,10 +62,10 @@ public class DeliCommentService {
     public void deleteDeliComment(UserDetailsImpl userDetails, Long commentId, Long deliveryBoardId) {
         User user = userDetails.getUser();
         DeliComment findDeliComment = deliCommentRepository.findById(commentId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 댓글입니다")
+                () -> new RuntimeException("존재하지 않는 댓글입니다")
         );
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 게시글입니다")
+                () -> new RuntimeException("존재하지 않는 게시글입니다")
         );
         if (user.getUsername().equals(findDeliComment.getUser().getUsername())){
             List<DeliComment> countComment = deliCommentRepository.findByDeliveryBoardId(deliveryBoardId);

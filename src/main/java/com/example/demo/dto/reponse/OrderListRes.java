@@ -12,7 +12,10 @@ public class OrderListRes {
     private String itemName;
     private int price;
     private String orderStatus;
+    private String seller;
+    private String buyer;
     private Address to_address;
+
 
 
     public OrderListRes(Order order) {
@@ -20,6 +23,9 @@ public class OrderListRes {
         this.itemName = order.getMarketBoard().getItemName();
         this.price = order.getMarketBoard().getPrice();
         this.orderStatus = order.getOrderStatus();
+        this.seller = order.getMarketBoard().getUser().getUsername();
+        this.buyer = order.getUser().getUsername();
         this.to_address = order.getUser().getAddress();
+
     }
 }

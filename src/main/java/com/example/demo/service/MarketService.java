@@ -75,10 +75,10 @@ public class MarketService {
     public MarketBoard editMarketBoard(Long marketId, UserDetailsImpl userDetails, MarketPostReq postReq, List<MultipartFile> multipartFiles) throws IOException {
         User user = userDetails.getUser();
         User writer = userRepository.findByUsername(user.getUsername()).orElseThrow(
-                ()-> new RuntimeException("회원가입을 해 주세요")
+                () -> new RuntimeException("회원가입을 해 주세요")
         );
         MarketBoard findBoard = marketRepository.findById(marketId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 게시글 입니다")
+                () -> new RuntimeException("존재하지 않는 게시글 입니다")
         );
         if (writer.equals(findBoard.getUser())) {
             List<UploadFile> uploadFiles = fileStore.saveFiles(multipartFiles);

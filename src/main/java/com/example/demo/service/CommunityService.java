@@ -51,7 +51,7 @@ public class CommunityService {
     public void postComBoard(ComBoardPostReq postDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
        User findUser =  userRepository.findByUsername(user.getUsername()).orElseThrow(
-               ()-> new IllegalArgumentException("가입된 유저가 아닙니다.")
+               () -> new IllegalArgumentException("가입된 유저가 아닙니다.")
        );
        CommunityBoard communityBoard = new CommunityBoard(postDto, findUser);
        communityRepository.save(communityBoard);
@@ -61,7 +61,7 @@ public class CommunityService {
     public void editCommunityBoard(Long communityBoardId, ComBoardDetailRes detailDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityBoardId).orElseThrow(
-                ()-> new IllegalArgumentException("존재하지 않은 게시글입니다")
+                () -> new IllegalArgumentException("존재하지 않은 게시글입니다")
         );
         if (user.getUsername().equals(communityBoard.getUser().getUsername())){
             communityBoard.editCommunityBoard(detailDto);
@@ -72,7 +72,7 @@ public class CommunityService {
     public void deleteComBoard(Long communityId, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityId).orElseThrow(
-                ()-> new RuntimeException("게시글이 존재하지 않습니다")
+                () -> new RuntimeException("게시글이 존재하지 않습니다")
         );
         if (user.getUsername().equals(communityBoard.getUser().getUsername())){
             communityRepository.delete(communityBoard);

@@ -46,7 +46,7 @@ public class UserService {
     //유저 로그인
     public String createToken(SignUpReq signUpRequestDto) {
         User user = userRepository.findByUsername(signUpRequestDto.getUsername())
-                .orElseThrow(()->new IllegalArgumentException("가입되지 않은 유저입니다"));
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 유저입니다"));
         if (!passwordEncoder.matches(signUpRequestDto.getPassword(), user.getPassword())){
             throw new RuntimeException("잘못된 비밀번호입니다");
         }

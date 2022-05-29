@@ -41,10 +41,10 @@ public class ComCommentService {
     public void creatComComment(UserDetailsImpl userDetails, ComCommentPostReq postReq, Long communityBoardId) {
         User writer = userDetails.getUser();
         User findUser = userRepository.findByUsername(writer.getUsername()).orElseThrow(
-                ()-> new RuntimeException("회원가입을 해 주세요")
+                () -> new RuntimeException("회원가입을 해 주세요")
         );
         CommunityBoard findCommunityBoard = communityRepository.findById(communityBoardId).orElseThrow(
-                ()->new RuntimeException("게시글이 존재하지 않습니다")
+                () -> new RuntimeException("게시글이 존재하지 않습니다")
         );
         List<CommunityComment> communityComments = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(findCommunityBoard.getId());
         int count = communityComments.size();
@@ -57,10 +57,10 @@ public class ComCommentService {
     public void deleteComComment(UserDetailsImpl userDetails, Long comCommentId, Long communityBoardId) {
         User writer = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityBoardId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 게시글입니다")
+                () -> new RuntimeException("존재하지 않는 게시글입니다")
         );
         CommunityComment communityComment = comCommentRepository.findById(comCommentId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않은 댓글입니다")
+                () -> new RuntimeException("존재하지 않은 댓글입니다")
         );
         if (writer.getUsername().equals(communityComment.getUser().getUsername())){
             List<CommunityComment> countComment = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(communityBoardId);

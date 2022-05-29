@@ -20,6 +20,12 @@ public class Order extends Timestamped {
     @Column(nullable = false)
     private String itemName;
 
+    @Column(nullable = false)
+    private int itemPrice;
+    @Setter
+    @Column(nullable = false)
+    private String orderStatus;
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
@@ -28,9 +34,6 @@ public class Order extends Timestamped {
     @JoinColumn(name = "marketId")
     private MarketBoard marketBoard;
 
-    @Setter
-    @Column(nullable = false)
-    private String orderStatus;
 
 
     //주문생성 생성자
@@ -39,5 +42,6 @@ public class Order extends Timestamped {
         this.marketBoard = orderItem;
         this.orderStatus = postReq.getOrderStatus();
         this.itemName = orderItem.getItemName();
+        this.itemPrice = orderItem.getPrice();
     }
 }

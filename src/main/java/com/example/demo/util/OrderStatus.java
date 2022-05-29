@@ -12,4 +12,7 @@ public enum OrderStatus {
     private final String code;
     private final String name;
     private final String nameKr;
+
+//    static public boolean orderStatus(String code) {
+//        if (code.equals(ORDER)){
 }

@@ -43,7 +43,7 @@ public class DeliveryBoardService {
     @Transactional(readOnly = true)
     public DeliveryBoardDetailRes getBoardDetail(Long deliveryBoardId) {
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryBoardId).orElseThrow(
-                ()-> new IllegalArgumentException("게시글이 존재하지 않습니다")
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
         );
         return new DeliveryBoardDetailRes(deliveryBoard);
     }
@@ -52,7 +52,7 @@ public class DeliveryBoardService {
     public void creatDeliveryBoard(DeliveryBoardPostReq postReqDto, UserDetailsImpl userDetails) {
             User user = userDetails.getUser();
             User findUser = userRepository.findByUsername(user.getUsername()).orElseThrow(
-                    ()-> new RuntimeException("회원가입을 해주세요 가입되지 않았습니다")
+                    () -> new RuntimeException("회원가입을 해주세요 가입되지 않았습니다")
             );
             DeliveryBoard deliveryBoard = new DeliveryBoard(postReqDto,findUser);
             deliveryBoardRepository.save(deliveryBoard);
@@ -62,7 +62,7 @@ public class DeliveryBoardService {
     public DeliveryBoard editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReq postReqDto){
         User user = userDetails.getUser();
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
-                .orElseThrow( ()->new RuntimeException("존재하지 않는 게시글입니다")
+                .orElseThrow( () ->new RuntimeException("존재하지 않는 게시글입니다")
         );
         if (user.getUsername().equals(deliveryBoard.getUser().getUsername())){
             return deliveryBoard.editDeliveryBoard(postReqDto);
@@ -75,7 +75,7 @@ public class DeliveryBoardService {
     public void deleteDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails){
         User user = userDetails.getUser();
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
-                .orElseThrow( ()-> new RuntimeException("존재하지 않는 게시글입니다")
+                .orElseThrow( () -> new RuntimeException("존재하지 않는 게시글입니다")
         );
         if (user.getUsername().equals(deliveryBoard.getUser().getUsername())){
             deliveryBoardRepository.delete(deliveryBoard);
