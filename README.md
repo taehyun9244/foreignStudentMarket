@@ -32,17 +32,17 @@
 - 운송게시판, 커뮤니케이션 게시판 작성가능 + 각각의 게시판 댓글
 - 중고게시판에 상품 등록
 - 등록된 상품 주문
-- 주문한 삼품 결제
+- 주문한 상품 결제
 - 결제된 상품 배달
 
 --- 
 
 ## 사용한 Stack
 
-- Java
-- SpringBoot
+- Java11
+- SpringBoot2.6.3
 - JPA
-- QueryDSL
+- QueryDSL 5.0.0
 - H2 DataBase
 
 ---
