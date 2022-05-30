@@ -42,6 +42,9 @@ public class User extends Timestamped{
     private List<CommunityComment> communityComments = new ArrayList<CommunityComment>();
 
     @OneToMany(mappedBy = "user")
+    private List<MarketBoard> marketBoards = new ArrayList<MarketBoard>();
+
+    @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<Order>();
 
     @OneToMany(mappedBy = "user")

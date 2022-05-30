@@ -5,6 +5,7 @@ import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.OrderReq;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.Order;
+import com.example.demo.model.Pay;
 import com.example.demo.model.User;
 import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.OrderRepository;
@@ -12,6 +13,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +32,7 @@ public class OrderService {
 
     //주문생성
     @Transactional
-    public void creatOrder(OrderReq postDto, UserDetailsImpl userDetails) {
+    public Order creatOrder(OrderReq postDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("회원가입 후 주문 할 수 있습니다")
@@ -39,12 +41,12 @@ public class OrderService {
                 ()-> new RuntimeException("주문상품이 존재하지 않습니다")
         );
         Order order = new Order(buyer, orderItem, postDto);
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     //주문취소
     @Transactional
-    public void  cancelOrder(UserDetailsImpl userDetails, String orderStatus, Long orderId) {
+    public void cancelOrder(UserDetailsImpl userDetails, String orderStatus, Long orderId) {
         User user = userDetails.getUser();
         User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("에러")

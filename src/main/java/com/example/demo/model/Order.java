@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import com.example.demo.dto.request.OrderReq;
 import com.example.demo.util.Timestamped;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,10 +29,12 @@ public class Order extends Timestamped {
 
     @ManyToOne
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
 
     @OneToOne
     @JoinColumn(name = "marketId")
+    @JsonIgnore
     private MarketBoard marketBoard;
 
 

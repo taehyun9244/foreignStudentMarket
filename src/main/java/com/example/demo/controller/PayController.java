@@ -22,13 +22,6 @@ public class PayController {
          payService.orderPay(userDetails, payReq);
     }
 
-    @PostMapping("/orderItems/v2/pays")
-    public void orderPayA(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                          @RequestBody Order order,
-                          @RequestParam String payStatus){
-        payService.orderPayA(userDetails, order, payStatus);
-    }
-
     //결제 리스트
     @GetMapping("/api/v1/payItems")
     public Response payList(@AuthenticationPrincipal UserDetailsImpl userDetails){

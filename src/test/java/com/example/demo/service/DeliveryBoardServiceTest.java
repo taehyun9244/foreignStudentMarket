@@ -1,7 +1,4 @@
 //package com.example.demo.service;
-//import com.example.demo.dto.reponse.DeliveryBoardDetailResDto;
-//import com.example.demo.dto.reponse.DeliveryBoardSimResDto;
-//import com.example.demo.dto.request.DeliveryBoardPostReqDto;
 //import com.example.demo.model.DeliveryBoard;
 //import com.example.demo.model.User;
 //import com.example.demo.repository.DeliveryBoardRepository;

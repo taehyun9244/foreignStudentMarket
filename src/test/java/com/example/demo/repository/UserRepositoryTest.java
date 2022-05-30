@@ -1,52 +1,85 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.Address;
 import com.example.demo.model.User;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 @DataJpaTest
 class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
+    private User namUser;
+    private User ayaUser;
+    private User doUser;
 
+    @BeforeEach
+    public void setUp(){
+
+        //User nam
+        Address namAddress = new Address("Seoul", "Seocho", "132");
+        namUser = new User("nam", "1234", "20220404", "123@naver.com",
+                "010-1111-1111", namAddress);
+
+        //User aya
+        Address ayaAddress = new Address("Tokyo", "Sibuya", "155");
+        ayaUser = new User("aya", "1234", "20220528", "999@naver.com",
+                "080-9999-9999", ayaAddress);
+
+        //User do
+        Address doAddress = new Address("NewYork", "BingHamton", "777");
+        doUser = new User("nam", "1234", "20220529", "777@naver.com",
+                "080-9999-9999", doAddress);
+    }
 
     @Test
     @DisplayName("유저 저장 성공")
     void saveUser(){
+
         //given
-        User user = new User("taehyun", "1234", "19920404", "namtaehyun@naver.com",
-                "010-1111-1111", "seocho");
+        User saveUser = userRepository.save(namUser);
 
         //when
-        User saveUser = userRepository.save(user);
-
-        //then
-        User findUser = userRepository.findById(saveUser.getId()).orElseThrow(
+        User findUser = userRepository.findByUsername(namUser.getUsername()).orElseThrow(
                 ()-> new RuntimeException("존재 하지 않는 아이디입니다")
         );
-        Assertions.assertThat(findUser).isEqualTo(saveUser);
-
+        //then
+        Assertions.assertThat(findUser.getUsername()).isEqualTo(saveUser.getUsername());
     }
 
     @Test
-    @DisplayName("유저 저장 실패")
+    @DisplayName("중복유저 아이디 회원가입 실패")
     void saveUserFail(){
-        //given
-        User user = new User();
-        //when
-        userRepository.save(user);
+
+        //given & when
+        User nam = userRepository.save(namUser);
         //then
-        Optional<User> empty = Optional.empty();
-        assertFalse(empty.isPresent());
+        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class,
+                ()->  userRepository.save(doUser));
+    }
+
+    @Test
+    @DisplayName("중복유저 번호로 회원가입 실패")
+    void findByDuplicatePhoneNumber() {
+
+        //given
+        User namUserPhone = userRepository.save(ayaUser);
+        User byPhoneNumber = userRepository.findByPhoneNumber(namUserPhone.getPhoneNumber()).orElseThrow(
+                () -> new RuntimeException()
+        );
+
+        //when
+        User doUserPhone = userRepository.save(doUser);
+
+        //then
+        Assertions.fail("등록된 핸드폰 번호입니다").equals(doUserPhone.getPhoneNumber());
     }
 
 
@@ -54,33 +87,32 @@ class UserRepositoryTest {
     @DisplayName("유저 찾기 성공")
     void findByUsername() {
         //given
-        User user = new User("taehyun", "1234", "19920404", "namtaehyun@naver.com",
-                "010-1111-1111", "seocho");
-        //when
-        User saveUser = userRepository.save(user);
+        User saveUser = userRepository.save(namUser);
 
-        //then
+        //when
         User findUser = userRepository.findByUsername(saveUser.getUsername()).orElseThrow(
                 ()-> new RuntimeException("존재하는 유저가 없습니다")
         );
-        Assertions.assertThat(findUser.getUsername()).isEqualTo(saveUser.getUsername());
 
+        //then
+        Assertions.assertThat(findUser.getUsername()).isEqualTo(saveUser.getUsername());
     }
+
+
 
     @Test
     @DisplayName("유저의 전화번호 찾기 성공")
     void findByPhoneNumber() {
 
         //given
-        User user = new User("taehyun", "1234", "19920404", "namtaehyun@naver.com",
-                "010-1111-1111", "seocho");
-        //when
-        User saveUserPhone = userRepository.save(user);
+        User saveUserPhone = userRepository.save(namUser);
 
-        //then
+        //when
         User findUser = userRepository.findByPhoneNumber(saveUserPhone.getPhoneNumber()).orElseThrow(
                 ()-> new RuntimeException("등록되어 있는 번호가 없습니다")
         );
+
+        //then
         Assertions.assertThat(findUser.getUsername()).isEqualTo(saveUserPhone.getUsername());
     }
 
@@ -88,19 +120,14 @@ class UserRepositoryTest {
     @DisplayName("유저 전체 조회 성공")
     void findUserAll(){
         //given
-        User user1 = new User("taehyun", "1234", "19920404", "namtaehyun@naver.com",
-                "010-1111-1111", "seocho");
-        User user2 = new User("ayako", "5678", "19970528", "ayako@naver.com",
-                "010-2222-2222", "simokitazawa");
-
-        userRepository.save(user1);
-        userRepository.save(user2);
+        userRepository.save(namUser);
+        userRepository.save(ayaUser);
 
         //when
         List<User> result = userRepository.findAll();
 
         //then
         Assertions.assertThat(result.size()).isEqualTo(2);
-        Assertions.assertThat(result).contains(user1, user2);
+        Assertions.assertThat(result).contains(namUser, ayaUser);
     }
 }

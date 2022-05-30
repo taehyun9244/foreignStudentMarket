@@ -34,8 +34,9 @@ public class DeliveryService {
                 () -> new RuntimeException("결제 정보를 찾을 수 없습니다")
         );
 
+        boolean exist = payer.getPays().contains(pay);
         Delivery delivery = new Delivery(pay, deliveryReq, payer);
-        if (pay.getPayStatus().equals(PayStatus.COMP)){
+        if ( exist == true && pay.getPayStatus().equals(PayStatus.COMP.getCode())){
             deliveryRepository.save(delivery);
         }
     }

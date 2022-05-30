@@ -39,12 +39,16 @@ public class PayService {
         Order orderItem = orderRepository.findById(payReq.getOrderId()).orElseThrow(
                 () -> new RuntimeException("주문한 상품이 아닙니다")
         );
-        if (orderItem.getOrderStatus().equals(OrderStatus.CANCEL)) {
-            throw new RuntimeException("주문이 취소된 상품입니다");
-        }
-        Pay pay = new Pay(payer, orderItem, payReq);
-        payRepository.save(pay);
-        }
+
+        boolean exist = payer.getOrders().contains(orderItem);
+        log.info("orderItem.getStatus ={}", orderItem.getOrderStatus());
+        log.info("exist = {}", exist);
+
+        if (exist == true && orderItem.getOrderStatus().equals(OrderStatus.ORDER.getCode())){
+            Pay pay = new Pay(payer, orderItem, payReq);
+            payRepository.save(pay);
+        }else throw new RuntimeException("존재하지 않는 상품입니다");
+    }
 
     //결제 상품 리스트
     @Transactional(readOnly = true)
@@ -59,23 +63,6 @@ public class PayService {
                 .collect(Collectors.toList());
         return new Response(collect);
     }
-
-    public void orderPayA(UserDetailsImpl userDetails, Order order, String payStatus) {
-        User user = userDetails.getUser();
-        User payer = userRepository.findByUsername(user.getUsername()).orElseThrow(
-                () -> new RuntimeException("회원이 아닙니다")
-        );
-
-        Order orderItem = orderRepository.findById(order.getId()).orElseThrow(
-                () -> new RuntimeException("주문된 상품이 아닙니다")
-        );
-        if (orderItem.getOrderStatus().equals(OrderStatus.CANCEL)) {
-            throw new RuntimeException("주문이 취소된 상품입니다");
-        }
-        Pay pay = new Pay(payer, orderItem, payStatus);
-        payRepository.save(pay);
-    }
-
 }
 
 

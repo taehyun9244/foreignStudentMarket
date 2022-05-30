@@ -2,9 +2,11 @@ package com.example.demo.service;
 
 
 import com.example.demo.dto.request.SignUpReq;
+import com.example.demo.model.Address;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,21 +32,33 @@ class UserServiceTest {
     @Spy
     private PasswordEncoder mockPasswordEncoder;
 
+    private SignUpReq namSignUpReq;
+    private SignUpReq ayaSignUpReq;
+    private SignUpReq doSignUpReq;
 
+    @BeforeEach
+    public void setUp(){
+        Address namAddress = new Address("Seoul", "Seocho", "132");
+        namSignUpReq = new SignUpReq("nam", mockPasswordEncoder.encode("1234"), "20220404",
+                "123@naver.com", "010-1111-1111", namAddress);
+
+        Address ayaAddress = new Address("Tokyo", "Sibuya", "155");
+        ayaSignUpReq = new SignUpReq("aya", mockPasswordEncoder.encode("1234"), "20220528",
+                "999@naver.com", "080-9999-9999", ayaAddress);
+
+        Address doAddress = new Address("NewYork", "BingHamton", "777");
+        doSignUpReq = new SignUpReq("nam", mockPasswordEncoder.encode("1234"), "20220528",
+                "999@naver.com", "080-9999-9999", doAddress);
+    }
 
     @Test
     @DisplayName("회원가입 아이디 중복으로 실패")
     void registerUsernameDuplicateTest(){
-        //given
-        SignUpReq signUpRequestFailDto1 = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
-                "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
-        SignUpReq signUpRequestFailDto2 = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
-                "19970528", "ayako@naver.com", "010-2222-2222", "sibuya");
 
-        //when & then
-        userService.registerUser(signUpRequestFailDto1);
+        //given & when & then
+        userService.registerUser(namSignUpReq);
         try {
-            userService.registerUser(signUpRequestFailDto2);
+            userService.registerUser(doSignUpReq);
         }catch (IllegalArgumentException e){
             Assertions.assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다 or 이미 등록되어 있는 아이디 입니다");
             fail();
@@ -55,18 +69,12 @@ class UserServiceTest {
     @Test
     @DisplayName("회원가입 핸드폰 번호 중복으로 실패")
     void registerDuplicatePhoneTest(){
-        //given
-        SignUpReq signUpRequestFailDto1 = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
-                "19970528", "ayako@naver.com", "010-1111-1111", "sibuya");
-        SignUpReq signUpRequestFailDto2 = new SignUpReq("usernameB", mockPasswordEncoder.encode("5678"),
-                "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
 
-        //when
-        userService.registerUser(signUpRequestFailDto1);
+        //given & when & then
+        userService.registerUser(ayaSignUpReq);
 
-        //then
         try {
-            userService.registerUser(signUpRequestFailDto2);
+            userService.registerUser(doSignUpReq);
         }catch (IllegalArgumentException e){
             Assertions.assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다 or 이미 등록되어 있는 번호입니다");
             fail();
@@ -76,17 +84,16 @@ class UserServiceTest {
     @Test
     @DisplayName("회원가입 성공")
     void registerUserTest(){
-        SignUpReq signUpRequestDto = new SignUpReq("usernameA", mockPasswordEncoder.encode("1234"),
-                "19920404", "namtaehyun@naver.com", "010-1111-1111", "seocho");
-        given(mockUserRepository.save(argThat(User -> User.getUsername().equals("usernameA"))))
-                .willReturn(new User(signUpRequestDto.getUsername(), signUpRequestDto.getPassword(), signUpRequestDto.getBirthday()
-                        , signUpRequestDto.getEmail(), signUpRequestDto.getPhoneNumber(), signUpRequestDto.getAddress()));
+       //given
+        given(mockUserRepository.save(argThat(User -> User.getUsername().equals("nam"))))
+                .willReturn(new User(namSignUpReq.getUsername(), namSignUpReq.getPassword(), namSignUpReq.getBirthday()
+                        , namSignUpReq.getEmail(), namSignUpReq.getPhoneNumber(), namSignUpReq.getAddress()));
 
         //when
-        userService.registerUser(signUpRequestDto);
+        userService.registerUser(namSignUpReq);
 
         //then
-        verify(mockUserRepository).save(argThat(User -> User.getUsername().equals("usernameA")));
+        verify(mockUserRepository).save(argThat(User -> User.getUsername().equals("nam")));
     }
 
 
