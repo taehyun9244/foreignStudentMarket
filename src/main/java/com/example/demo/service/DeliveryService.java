@@ -10,12 +10,13 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.PayStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-
+@Slf4j
 public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
@@ -35,8 +36,11 @@ public class DeliveryService {
         );
 
         boolean exist = payer.getPays().contains(pay);
-        Delivery delivery = new Delivery(pay, deliveryReq, payer);
+        log.info("exist ={}", exist);
+        log.info("pay.getStatus ={}", pay.getPayStatus());
+
         if ( exist == true && pay.getPayStatus().equals(PayStatus.COMP.getCode())){
+            Delivery delivery = new Delivery(pay, deliveryReq, payer);
             deliveryRepository.save(delivery);
         }
     }

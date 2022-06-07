@@ -1,208 +1,204 @@
-//package com.example.demo.service;
-//import com.example.demo.model.DeliveryBoard;
-//import com.example.demo.model.User;
-//import com.example.demo.repository.DeliveryBoardRepository;
-//import com.example.demo.security.UserDetailsImpl;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.Spy;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.assertj.core.api.Assertions.*;
-//import static org.junit.jupiter.api.Assertions.fail;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.Mockito.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//class DeliveryBoardServiceTest {
-//
-//    @InjectMocks
-//    private DeliveryBoardService deliveryBoardService;
-//
-//    @Mock
-//    private DeliveryBoardRepository mockDeliveryBoardRepository;
-//
-//    @Spy
-//    private PasswordEncoder mockPasswordEncoder;
-//
-//    private UserDetailsImpl userDetailsNull;
-//    private UserDetailsImpl taehyunRegister;
-//    private UserDetailsImpl ayakoRegister;
-//    private DeliveryBoard deliveryBoardA;
-//    private DeliveryBoard deliveryBoardB;
-//
-//    @BeforeEach
-//    public void setUp(){
-//
-//        //User: null
-//        userDetailsNull = null;
-//
-//        //User: Nam, BoardA: Korea
-//        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
-//                "Korea", "Seoul-Seocho", "Korea", "Seoul-Seocho", 50000);
-//        User taehyun = new User("taehyun", mockPasswordEncoder.encode("1234"),
-//                "19920404", "namtaehyun@naver.com", "010-1111-1111", "Seocho");
-//        taehyunRegister =  new UserDetailsImpl(taehyun);
-//        deliveryBoardA = new DeliveryBoard(postReqDto, taehyunRegister.getUser());
-//
-//        //User: ayako, BoardB: Japan
-//        DeliveryBoardPostReqDto postReqDto2 = new DeliveryBoardPostReqDto( "미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
-//                "USA", "NewYork", "Japan", "Tokyo-Sibuya", 100000);
-//        User ayako = new User("ayako", mockPasswordEncoder.encode("1234"),
-//                "19970528", "ayako@naver.com", "010-2222-2222", "sibuya");
-//        ayakoRegister = new UserDetailsImpl(ayako);
-//        deliveryBoardB = new DeliveryBoard(postReqDto2, ayakoRegister.getUser());
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 작성 실패")
-//    void creatDeliveryBoardFailTest() {
-//        //given
-//        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
-//                "Korea", "Seoul-Seocho", "Japan", "Tokyo-Sibuya", 50000);
-//        UserDetailsImpl userDetails = userDetailsNull;
-//
-//        //when & then
-//        Assertions.assertThrows(RuntimeException.class,
-//                ()->deliveryBoardService.creatDeliveryBoard(postReqDto, userDetails));
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 작성 성공")
-//    void creatDeliveryBoardTest() {
-//        //given
-//        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto("배송모집합니다", "5명모집이고 상자크기는 '대'입니다",
-//                "Korea", "Seoul-Seocho", "Japan", "Tokyo-Sibuya", 50000);
-//        User writer = new User("username", mockPasswordEncoder.encode("1234"),
-//                "19920404", "namtaehyun@naver.com", "010-1111-1111", "Seocho");
-//        doReturn(new DeliveryBoard(postReqDto, writer)).when(mockDeliveryBoardRepository).save(any(DeliveryBoard.class));
-//
-//        //when
-//        DeliveryBoard deliveryBoard = new DeliveryBoard(postReqDto, writer);
-//        DeliveryBoard saveDeliveryBoard = mockDeliveryBoardRepository.save(deliveryBoard);
-//
-//        //then
-//        assertThat(saveDeliveryBoard.getTitle()).isEqualTo(postReqDto.getTitle());
-//        assertThat(saveDeliveryBoard.getUser().getUsername()).isEqualTo(writer.getUsername());
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 전체 조회")
-//    void getBoardSimTest() {
-//        //given
-//        List<DeliveryBoard> deliveryBoards = new ArrayList<>();
-//        deliveryBoards.add(deliveryBoardA);
-//        deliveryBoards.add(deliveryBoardB);
-//
-//        //when
-//        when(mockDeliveryBoardRepository.findAllByOrderByCreatedAtDesc()).thenReturn(deliveryBoards);
-//        List<DeliveryBoardSimResDto> simResDtos = deliveryBoardService.getBoardSim();
-//
-//        //then
-//        assertThat(simResDtos.size()).isEqualTo(2);
-//    }
-//
-//
-//    @Test
-//    @DisplayName("운송 게시판 상세 조회 실패")
-//    void getBoardDetailFailTest() {
-//        //given
-//        DeliveryBoardPostReqDto postReqDto = new DeliveryBoardPostReqDto();
-//        User writer = new User();
-//        DeliveryBoard saveDeliveryBoard = new DeliveryBoard(postReqDto, writer);
-//
-//        //when & then
-//        try {
-//            mockDeliveryBoardRepository.findById(saveDeliveryBoard.getId());
-//        }catch (IllegalArgumentException e){
-//            assertThat(e.getMessage()).isEqualTo("게시글이 없습니다");
-//            fail();
-//        }
-//    }
-//
-//
-//    @Test
-//    @DisplayName("운송 게시판 상세 조회 성공")
-//    void getBoardDetailTest() {
-//        //given
-//        Long boardId = deliveryBoardA.getId();
-//        when(mockDeliveryBoardRepository.findById(boardId)).thenReturn(Optional.of(deliveryBoardA));
-//
-//        //when
-//        DeliveryBoardDetailResDto detailResDto = deliveryBoardService.getBoardDetail(boardId);
-//
-//        //then
-//        assertThat(detailResDto.getId()).isEqualTo(deliveryBoardA.getId());
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 작성자 불일치로 수정 실패")
-//    void editDeliveryBoardFailTest(){
-//        //given
-//        UserDetailsImpl writer = ayakoRegister;
-//        Long boardId = deliveryBoardA.getId();
-//        when(mockDeliveryBoardRepository.findById(boardId)).thenReturn(Optional.of(deliveryBoardA));
-//
-//        //when & then
-//        Assertions.assertThrows(RuntimeException.class,
-//                ()->deliveryBoardService.editDeliveryBoard(boardId, writer, new DeliveryBoardPostReqDto("미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
-//                        "USA", "NewYork", "Japan", "Tokyo-Sibuya", 100000)));
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 작성자 일치로 수정 성공")
-//    void editDeliveryBoardTest() {
-//        //given
-//        UserDetailsImpl writer = taehyunRegister;
-//        Long boardId = deliveryBoardA.getId();
-//        when(mockDeliveryBoardRepository.findById(boardId)).thenReturn(Optional.of(deliveryBoardA));
-//
-//        //when
-//        deliveryBoardService.editDeliveryBoard(boardId, writer, new DeliveryBoardPostReqDto("미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다",
-//                "USA", "NewYork", "Japan", "Tokyo-Sibuya", 100000));
-//
-//        //then
-//        assertThat(deliveryBoardA.getUser()).isEqualTo(writer.getUser());
-//        org.assertj.core.api.Assertions.assertThat(deliveryBoardA.getTitle()).isEqualTo("미국배송모집합니다");
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 작성자 불일치로 삭제 실패")
-//    void deleteDeliveryBoardFailTest(){
-//        //given
-//        UserDetailsImpl writer = ayakoRegister;
-//        Long boardId = deliveryBoardA.getId();
-//        when(mockDeliveryBoardRepository.findById(boardId)).thenReturn(Optional.of(deliveryBoardA));
-//
-//        //when & then
-//        Assertions.assertThrows(RuntimeException.class,
-//                ()->deliveryBoardService.deleteDeliveryBoard(boardId, writer));
-//
-//    }
-//
-//    @Test
-//    @DisplayName("운송 게시판 작성자 일치로 삭제 성공")
-//    void deleteDeliveryBoardTest() {
-//        //given
-//        UserDetailsImpl writer = taehyunRegister;
-//        Long boardId = deliveryBoardA.getId();
-//        when(mockDeliveryBoardRepository.findById(boardId)).thenReturn(Optional.of(deliveryBoardA));
-//
-//        //when
-//        deliveryBoardService.deleteDeliveryBoard(boardId, writer);
-//
-//        //then
-//        assertThat(deliveryBoardA.getUser()).isEqualTo(writer.getUser());
-//    }
-//}
+package com.example.demo.service;
+import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
+import com.example.demo.dto.reponse.DeliveryBoardSimRes;
+import com.example.demo.dto.reponse.Response;
+import com.example.demo.dto.request.DeliveryBoardPostReq;
+import com.example.demo.model.Address;
+import com.example.demo.model.DeliveryBoard;
+import com.example.demo.model.User;
+import com.example.demo.repository.DeliveryBoardRepository;
+import com.example.demo.security.UserDetailsImpl;
+import com.example.demo.util.CountryEnum;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+@Slf4j
+class DeliveryBoardServiceTest {
+
+    @InjectMocks
+    private DeliveryBoardService deliveryBoardService;
+
+    @Mock
+    private DeliveryBoardRepository mockDeliveryBoardRepository;
+    private UserDetailsImpl namRegister;
+    private UserDetailsImpl ayaRegister;
+    private UserDetailsImpl userDetailsNull;
+    private DeliveryBoard namDeliveryBoard;
+    private DeliveryBoard ayaDeliveryBoard;
+    private DeliveryBoardPostReq namPostReq;
+    private DeliveryBoardPostReq ayaPostReq;
+
+
+    @BeforeEach
+    public void setUp(){
+
+        //User: null
+        userDetailsNull = null;
+
+        //User: Nam, namBoard: USA
+        CountryEnum namCountry = CountryEnum.USA;
+        namPostReq = new DeliveryBoardPostReq("title", "contents", "NewYork", namCountry, 1000);
+
+        Address namAddress = new Address("Seoul", "Seocho", "132");
+        User nam = new User("nam", "1234", "20220404", "123@naver.com", "010-1111-1111", namAddress);
+
+        namRegister =  new UserDetailsImpl(nam);
+        namDeliveryBoard = new DeliveryBoard(namPostReq, namRegister.getUser());
+
+        //User: aya, ayaBoard: Japan
+        CountryEnum ayaCountry = CountryEnum.JP;
+        ayaPostReq = new DeliveryBoardPostReq( "title", "contents", "Sibuya", ayaCountry, 99999);
+
+        Address ayaAddress = new Address("Tokyo", "Sibuya", "155");
+        User aya = new User("aya", "1234", "20220528", "999@naver.com", "080-9999-9999", ayaAddress);
+
+        ayaRegister = new UserDetailsImpl(aya);
+        ayaDeliveryBoard = new DeliveryBoard(ayaPostReq, ayaRegister.getUser());
+    }
+
+    @Test
+    @DisplayName("운송 게시판 작성 실패")
+    void creatDeliveryBoardFailTest() {
+        //given
+        UserDetailsImpl userDetails = userDetailsNull;
+
+        //when & then
+        Assertions.assertThrows(RuntimeException.class,
+                ()->deliveryBoardService.creatDeliveryBoard(namPostReq, userDetails));
+    }
+
+    @Test
+    @DisplayName("운송 게시판 작성 성공")
+    void creatDeliveryBoardTest() {
+        //given
+        doReturn(new DeliveryBoard(namPostReq, namRegister.getUser())).when(mockDeliveryBoardRepository).save(any(DeliveryBoard.class));
+
+        //when
+        DeliveryBoard saveDeliveryBoard = mockDeliveryBoardRepository.save(namDeliveryBoard);
+
+        //then
+        assertThat(saveDeliveryBoard.getTitle()).isEqualTo(namPostReq.getTitle());
+        assertThat(saveDeliveryBoard.getUser().getUsername()).isEqualTo(namRegister.getUser().getUsername());
+    }
+
+    @Test
+    @DisplayName("운송 게시판 전체 조회")
+    void getBoardSimTest() {
+        //given
+        List<DeliveryBoard> deliveryBoards = new ArrayList<>();
+        deliveryBoards.add(namDeliveryBoard);
+        deliveryBoards.add(ayaDeliveryBoard);
+
+        //when
+        when(mockDeliveryBoardRepository.findAllByOrderByCreatedAtDesc()).thenReturn(deliveryBoards);
+        Response<List<DeliveryBoardSimRes>> boardSimResList = deliveryBoardService.getBoardSim(0, 1);
+        log.info("boardSimResList = {}", boardSimResList);
+
+        //then
+        assertThat(boardSimResList).isEqualTo(2);
+    }
+
+
+    @Test
+    @DisplayName("운송 게시판 상세 조회 실패")
+    void getBoardDetailFailTest() {
+        //given
+        DeliveryBoardPostReq nullPostReq = new DeliveryBoardPostReq();
+        DeliveryBoard saveDeliveryBoard = new DeliveryBoard(nullPostReq, namRegister.getUser());
+
+        //when & then
+        try {
+            mockDeliveryBoardRepository.findById(saveDeliveryBoard.getId());
+        }catch (IllegalArgumentException e){
+            assertThat(e.getMessage()).isEqualTo("게시글이 없습니다");
+            fail();
+        }
+    }
+
+
+    @Test
+    @DisplayName("운송 게시판 상세 조회 성공")
+    void getBoardDetailTest() {
+        //given
+        when(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).thenReturn(Optional.of(namDeliveryBoard));
+
+        //when
+        DeliveryBoardDetailRes detailResDto = deliveryBoardService.getBoardDetail(namDeliveryBoard.getId());
+
+        //then
+        assertThat(detailResDto.getId()).isEqualTo(namDeliveryBoard.getId());
+    }
+
+    @Test
+    @DisplayName("운송 게시판 작성자 불일치로 수정 실패")
+    void editDeliveryBoardFailTest(){
+        //given
+        Long namBoardId = namDeliveryBoard.getId();
+        when(mockDeliveryBoardRepository.findById(namBoardId)).thenReturn(Optional.of(namDeliveryBoard));
+
+        //when & then
+        Assertions.assertThrows(RuntimeException.class,
+                ()->deliveryBoardService.editDeliveryBoard(namBoardId, ayaRegister, namPostReq));
+    }
+
+    @Test
+    @DisplayName("운송 게시판 작성자 일치로 수정 성공")
+    void editDeliveryBoardTest() {
+        //given
+        CountryEnum editCountry = CountryEnum.FR;
+        when(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).thenReturn(Optional.of(namDeliveryBoard));
+
+        //when
+        deliveryBoardService.editDeliveryBoard(namDeliveryBoard.getId(), namRegister,
+                new DeliveryBoardPostReq("미국배송모집합니다", "5명모집이고 상자크기는 '중'입니다", "Saitama", editCountry, 100000));
+
+        //then
+        assertThat(namDeliveryBoard.getUser()).isEqualTo(namRegister.getUser());
+        org.assertj.core.api.Assertions.assertThat(namDeliveryBoard.getTitle()).isEqualTo("미국배송모집합니다");
+    }
+
+    @Test
+    @DisplayName("운송 게시판 작성자 불일치로 삭제 실패")
+    void deleteDeliveryBoardFailTest(){
+        //given
+        when(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).thenReturn(Optional.of(namDeliveryBoard));
+
+        //when & then
+        Assertions.assertThrows(RuntimeException.class,
+                ()->deliveryBoardService.deleteDeliveryBoard(namDeliveryBoard.getId(), ayaRegister));
+
+    }
+
+    @Test
+    @DisplayName("운송 게시판 작성자 일치로 삭제 성공")
+    void deleteDeliveryBoardTest() {
+        //given
+        when(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).thenReturn(Optional.of(namDeliveryBoard));
+
+        //when
+        deliveryBoardService.deleteDeliveryBoard(namDeliveryBoard.getId(), namRegister);
+
+        //then
+        assertThat(namDeliveryBoard.getUser()).isEqualTo(namRegister.getUser());
+    }
+
+
+}

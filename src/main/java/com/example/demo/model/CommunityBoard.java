@@ -34,9 +34,6 @@ public class CommunityBoard extends Timestamped {
     @Column(nullable = false)
     private int countComment;
 
-    @Column(nullable = false)
-    private int community_like;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private User user;

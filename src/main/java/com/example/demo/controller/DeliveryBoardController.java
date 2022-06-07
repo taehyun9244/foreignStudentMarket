@@ -7,11 +7,14 @@ import com.example.demo.model.DeliveryBoard;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class DeliveryBoardController {
 
     private final DeliveryBoardService deliveryBoardService;
@@ -23,10 +26,28 @@ public class DeliveryBoardController {
         return deliveryBoardService.getBoardSim(offset, limit);
     }
 
-    //운송 게시글 상세 조회
+    //운송 게시글 전체 조회 querydsl-> dto 조회
+    @GetMapping("/deliveryBoardsV2")
+    public Response getBoardSimV2(Pageable pageable) {
+        return deliveryBoardService.getBoardSimV2(pageable);
+    }
+
+    //운송 게시글 전체 조회 querydsl-> entity 조회
+    @GetMapping("/deliveryBoardsV3")
+    public Response getBoardSimV3(Pageable pageable) {
+        return deliveryBoardService.getBoardSimV3(pageable);
+    }
+
+    //운송 게시글 상세 조회 en
     @GetMapping("/deliveryBoards/{deliveryBoardsId}")
     public DeliveryBoardDetailRes getBoardDetail(@PathVariable Long deliveryBoardsId){
         return deliveryBoardService.getBoardDetail(deliveryBoardsId);
+    }
+
+    //운송 게시글 상세 조회 dto
+    @GetMapping("/deliveryBoardsV2/{deliveryBoardsId}")
+    public DeliveryBoardDetailRes getBoardDetailV2(@PathVariable Long deliveryBoardsId){
+        return deliveryBoardService.getBoardDetailV2(deliveryBoardsId);
     }
 
     //운송 게시글 작성
@@ -37,7 +58,7 @@ public class DeliveryBoardController {
     }
 
     //운송 게시글 수정
-    @PatchMapping("/deliveryBoards/{deliveryBoardsId}")
+    @PutMapping("/deliveryBoards/{deliveryBoardsId}")
     public DeliveryBoard editDeliveryBoard(@PathVariable Long deliveryBoardsId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
                                            @RequestBody DeliveryBoardPostReq postReqDto){

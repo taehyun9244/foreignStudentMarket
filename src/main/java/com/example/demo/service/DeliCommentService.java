@@ -9,10 +9,14 @@ import com.example.demo.model.User;
 import com.example.demo.repository.DeliCommentRepository;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
+import com.example.demo.repository.queryRepository.AllCommentQueryRepository;
 import com.example.demo.repository.queryRepository.CommentQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +34,28 @@ public class DeliCommentService {
     private final DeliCommentRepository deliCommentRepository;
     private final CommentQueryRepository queryRepository;
     private final UserRepository userRepository;
+    private final AllCommentQueryRepository allCommentQueryRepository;
 
 
     //DeliveryBoard 댓글 조회
     @Transactional(readOnly = true)
     public Response getDeliComment(Long deliveryBoardId){
         List<DeliComment> findDeliBoardComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
+        List<DeliCommentRes> resDtos = findDeliBoardComment.stream()
+                .map(deliComment -> new DeliCommentRes(deliComment))
+                .collect(toList());
+        return new Response<>(resDtos);
+    }
+
+    //dto
+    public Response getDeliCommentV2(Long deliveryBoardId, Pageable pageable) {
+        Page<DeliCommentRes> findDeliBoardComment = allCommentQueryRepository.findDeliCommentDto(deliveryBoardId, pageable);
+        return new Response<>(findDeliBoardComment);
+    }
+
+    //entity
+    public Response getDeliCommentV3(Long deliveryBoardId, Pageable pageable) {
+        Page<DeliComment> findDeliBoardComment = allCommentQueryRepository.findAllDeliCommentEntity(deliveryBoardId, pageable);
         List<DeliCommentRes> resDtos = findDeliBoardComment.stream()
                 .map(deliComment -> new DeliCommentRes(deliComment))
                 .collect(toList());
@@ -74,4 +94,5 @@ public class DeliCommentService {
             deliCommentRepository.delete(findDeliComment);
         }else throw new RuntimeException("댓글 작성자가 아닙니다");
     }
+
 }

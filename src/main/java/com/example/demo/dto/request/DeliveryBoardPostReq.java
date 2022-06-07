@@ -21,5 +21,4 @@ public class DeliveryBoardPostReq {
     private CountryEnum from_country;
     @NotBlank(message = "운송료를 입력해 주세요")
     private int price;
-
 }

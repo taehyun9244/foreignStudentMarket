@@ -25,10 +25,7 @@ public class OrderController {
     @PostMapping("/markets/v1/orders")
     public Order creatOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @RequestBody OrderReq postDto){
-        EntityModel entityModel = EntityModel.of(order);
-        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).orderList(userDetails));
-        entityModel.add(linkTo.withRel("cancelOrder"));
-       return orderService.creatOrder(postDto, userDetails);
+      return orderService.creatOrder(postDto, userDetails);
     }
 
     //주문취소

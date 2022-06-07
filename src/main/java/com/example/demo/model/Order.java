@@ -37,8 +37,6 @@ public class Order extends Timestamped {
     @JsonIgnore
     private MarketBoard marketBoard;
 
-
-
     //주문생성 생성자
     public Order(User writer, MarketBoard orderItem, OrderReq postReq) {
         this.user = writer;

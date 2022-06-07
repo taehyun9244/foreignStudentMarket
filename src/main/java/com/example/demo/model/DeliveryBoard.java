@@ -38,9 +38,6 @@ public class DeliveryBoard extends Timestamped {
     @Column(nullable = false)
     private int countComment;
 
-    @Column( nullable = false)
-    private int boardLike;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;

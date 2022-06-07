@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DeliveryBoardRepository extends JpaRepository<DeliveryBoard, Long> {
+public interface DeliveryBoardRepository extends JpaRepository<DeliveryBoard, Long>{
     List<DeliveryBoard> findAllByOrderByCreatedAtDesc();
 }
