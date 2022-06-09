@@ -35,19 +35,20 @@ public class AllCommentQueryRepository {
                         deliComment.user.username,
                         deliComment.deliveryBoard.id.as("deliveryBoardId")))
                 .from(deliComment)
-                .orderBy(deliComment.createdAt.desc())
                 .join(deliComment.deliveryBoard)
+                .on(deliComment.deliveryBoard.id.eq(deliveryBoardId))
                 .join(deliComment.user)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .where(boardIdEq(deliveryBoardId))
+                .orderBy(deliComment.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
                 .select(deliComment.count())
                 .from(deliComment)
-                .leftJoin(deliComment.user, user)
-                .leftJoin(deliComment.deliveryBoard, deliveryBoard);
+                .join(deliComment.user, user)
+                .join(deliComment.deliveryBoard, deliveryBoard);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery :: fetchOne);
     }

@@ -34,6 +34,6 @@ public class ComBoardDetailRes {
         this.username = communityBoard.getUser().getUsername();
         this.createdAt = communityBoard.getCreatedAt();
         this.updateAt = communityBoard.getUpdateAt();
-        this.comment = communityBoard.getComment();
+        this.comment = communityBoard.getComments();
     }
 }

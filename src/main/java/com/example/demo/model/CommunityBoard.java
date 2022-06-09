@@ -39,7 +39,7 @@ public class CommunityBoard extends Timestamped {
     private User user;
 
     @OneToMany(mappedBy = "communityBoard", cascade = CascadeType.REMOVE)
-    private List<CommunityComment> comment = new ArrayList<CommunityComment>();
+    private List<CommunityComment> comments = new ArrayList<CommunityComment>();
 
     //커뮤니티 게시글 작성 생성자
     public CommunityBoard(ComBoardPostReq postDto, User writer) {

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Map;
 
 import static com.example.demo.model.QCommunityBoard.*;
 import static com.example.demo.model.QCommunityComment.*;
@@ -64,12 +63,12 @@ public class AllBoardQueryRepository {
 
     //운송 게시글 상세 조회 Dto
     public List<DeliveryBoardDetailRes> findByDeliveryBoardIdDto(Long deliveryId){
-        return  queryFactory
+        return queryFactory
                 .from(deliveryBoard)
-                .join(deliveryBoard.user, user)
-                .on(deliveryBoard.user.id.eq(user.id))
                 .leftJoin(deliveryBoard.deliComments, deliComment)
                 .on(deliveryBoard.id.eq(deliComment.deliveryBoard.id))
+                .join(deliveryBoard.user)
+                .leftJoin(deliComment.user)
                 .where(boardIdEq(deliveryId))
                 .orderBy(deliComment.createdAt.desc())
                 .transform(groupBy(deliveryBoard.id).list(Projections.constructor(DeliveryBoardDetailRes.class,
@@ -89,7 +88,6 @@ public class AllBoardQueryRepository {
                                         deliComment.comment,
                                         deliComment.user.username,
                                         deliComment.deliveryBoard.id.as("deliveryBoardId")).as("comments")))));
-
     }
 
     //커뮤니티 게시글 전체 조회 Dto
@@ -106,8 +104,7 @@ public class AllBoardQueryRepository {
                         communityBoard.updateAt))
                 .from(communityBoard)
                 .orderBy(communityBoard.createdAt.desc())
-                .leftJoin(communityBoard.user, user)
-                .leftJoin(communityBoard.comment, communityComment)
+                .join(user)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -115,17 +112,23 @@ public class AllBoardQueryRepository {
         JPAQuery<Long> countQuery = queryFactory
                 .select(communityBoard.count())
                 .from(communityBoard)
-                .leftJoin(communityBoard.user, user)
-                .leftJoin(communityBoard.comment, communityComment);
+                .join(user);
 
         return PageableExecutionUtils.getPage(communityBoards, pageable, countQuery :: fetchOne);
 
     }
 
     //커뮤니티 게시글 상세 조회 Dto
-    public ComBoardDetailRes findByCommunityBoardIdDto(Long communityId){
+    public List<ComBoardDetailRes> findByCommunityBoardIdDto(Long communityId){
         return queryFactory
-                .select(Projections.constructor(ComBoardDetailRes.class,
+                .from(communityBoard)
+                .leftJoin(communityBoard.comments, communityComment)
+                .on(communityBoard.id.eq(communityComment.communityBoard.id))
+                .leftJoin(communityBoard.user)
+                .leftJoin(communityComment.user)
+                .where(boardIdEq(communityId))
+                .orderBy(communityComment.createdAt.desc())
+                .transform(groupBy(communityBoard.id).list(Projections.constructor(ComBoardDetailRes.class,
                         communityBoard.id,
                         communityBoard.title,
                         communityBoard.subtitle,
@@ -134,19 +137,16 @@ public class AllBoardQueryRepository {
                         communityBoard.user.username,
                         communityBoard.createdAt,
                         communityBoard.updateAt,
-                        Projections.list(
-                                Projections.constructor(ComCommentRes.class,
+                                list(Projections.constructor(DeliCommentRes.class,
                                         communityComment.id,
                                         communityComment.comment.as("comComment"),
                                         communityComment.user.username,
-                                        communityComment.communityBoard.id.as("communityBoardId")))
-                ))
-                .from(communityBoard)
-                .join(communityBoard.user, user)
-                .join(communityBoard.comment, communityComment)
-                .where(boardIdEq(communityId))
-                .fetchOne();
+                                        communityComment.communityBoard.id.as("communityBoardId")).as("comments")))));
     }
+
+    //마켓 게시글 전체 조회 Dto
+
+    //마켓 게시글 상세 조회 Dto
 
     private BooleanExpression boardIdEq(Long id) {
         return id != null ? deliveryBoard.id.eq(id) : deliveryBoard.isNull();

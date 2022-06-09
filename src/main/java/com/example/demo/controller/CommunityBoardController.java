@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class CommunityBoardController {
@@ -33,8 +35,8 @@ public class CommunityBoardController {
 
     //커뮤니티 게시판 상세조회
     @GetMapping("/communities/{communityId}")
-    public ComBoardDetailRes getComBoardDetail(@PathVariable Long communityId){
-        return communityService.getComBoardDetail(communityId);
+    public List<ComBoardDetailRes> getComBoardDetailV2(@PathVariable Long communityId){
+        return communityService.getComBoardDetailV2(communityId);
     }
 
     //커뮤니티 게시판 작성

@@ -12,6 +12,7 @@ import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
 import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
@@ -32,7 +34,7 @@ public class CommunityService {
     private final AllBoardQueryRepository allBoardQueryRepository;
 
 
-    //커뮤니티 게시판 전체조회
+    //커뮤니티 게시판 전체조회 Jpql
     @Transactional(readOnly = true)
     public Response getCommunityBoard(int offset, int limit) {
         List<CommunityBoard> communityBoards = queryRepository.findAllComBoard(offset, limit);
@@ -49,13 +51,12 @@ public class CommunityService {
         return new Response<>(communityBoards);
     }
 
-    //커뮤니티 게시판 상세조회
+    //커뮤니티 게시판 상세조회 dto
     @Transactional(readOnly = true)
-    public ComBoardDetailRes getComBoardDetail(Long communityId) {
-        CommunityBoard communityBoard = communityRepository.findById(communityId).orElseThrow(
-                () -> new RuntimeException("게시글이 존재하지 않습니다")
-        );
-        return new ComBoardDetailRes(communityBoard);
+    public  List<ComBoardDetailRes> getComBoardDetailV2(Long communityId) {
+        List<ComBoardDetailRes> findById = allBoardQueryRepository.findByCommunityBoardIdDto(communityId);
+        log.info("findById = {}", findById);
+        return findById;
     }
 
     //커뮤니티 게시판 작성
