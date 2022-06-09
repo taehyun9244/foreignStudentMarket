@@ -10,7 +10,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.UploadFileRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.queryRepository.BoardQueryRepository;
+import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.FileStore;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class MarketService {
     private final MarketRepository marketRepository;
     private final UserRepository userRepository;
     private final UploadFileRepository uploadFileRepository;
-    private final BoardQueryRepository queryRepository;
+    private final JpqlBoardQueryRepository queryRepository;
     private final FileStore fileStore;
 
     //전체 게시글 조회

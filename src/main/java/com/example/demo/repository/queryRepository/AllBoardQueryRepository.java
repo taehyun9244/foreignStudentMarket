@@ -1,10 +1,6 @@
 package com.example.demo.repository.queryRepository;
 
-import com.example.demo.dto.reponse.DeliCommentRes;
-import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
-import com.example.demo.dto.reponse.DeliveryBoardSimRes;
-import com.example.demo.model.DeliComment;
-import com.example.demo.model.DeliveryBoard;
+import com.example.demo.dto.reponse.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -17,10 +13,15 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 
+import static com.example.demo.model.QCommunityBoard.*;
+import static com.example.demo.model.QCommunityComment.*;
 import static com.example.demo.model.QDeliComment.*;
 import static com.example.demo.model.QDeliveryBoard.*;
 import static com.example.demo.model.QUser.*;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 
 @Repository
 public class AllBoardQueryRepository {
@@ -32,8 +33,8 @@ public class AllBoardQueryRepository {
     }
 
     //운송 게시글 전체 조회 dto
-    public Page<DeliveryBoardSimRes> findByDeliveryBoardDtoAll(Pageable pageable){
-        List<DeliveryBoardSimRes> deliBoardListAll = queryFactory
+    public Page<DeliveryBoardSimRes> findByDeliveryBoardAllDto(Pageable pageable){
+        List<DeliveryBoardSimRes> deliveryBoards = queryFactory
                 .select(Projections.constructor(DeliveryBoardSimRes.class,
                         deliveryBoard.id,
                         deliveryBoard.title,
@@ -45,8 +46,8 @@ public class AllBoardQueryRepository {
                         deliveryBoard.createdAt,
                         deliveryBoard.updateAt))
                 .from(deliveryBoard)
-                .leftJoin(deliveryBoard.user, user)
-                .leftJoin(deliveryBoard.deliComment, deliComment)
+                .join(user)
+                .on(deliveryBoard.user.id.eq(user.id))
                 .orderBy(deliveryBoard.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -55,71 +56,99 @@ public class AllBoardQueryRepository {
         JPAQuery<Long> countQuery = queryFactory
                 .select(deliveryBoard.count())
                 .from(deliveryBoard)
-                .leftJoin(deliveryBoard.user, user)
-                .leftJoin(deliveryBoard.deliComment, deliComment);
+                .join(user);
 
-        return PageableExecutionUtils.getPage(deliBoardListAll, pageable, countQuery :: fetchOne);
+        return PageableExecutionUtils.getPage(deliveryBoards, pageable, countQuery :: fetchOne);
     }
 
-    //운송 게시글 전체 조회 entity
-    public Page<DeliveryBoard> findByBoardEntityAll(Pageable pageable){
-        List<DeliveryBoard> deliBoardListAll = queryFactory
-                .selectFrom(deliveryBoard)
-                .leftJoin(deliveryBoard.deliComment, deliComment)
-                .leftJoin(deliveryBoard.user, user)
-                .fetchJoin()
-                .orderBy(deliveryBoard.createdAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        JPAQuery<Long> countQuery = queryFactory
-                .select(deliveryBoard.count())
-                .from(deliveryBoard)
-                .leftJoin(deliveryBoard.user, user)
-                .leftJoin(deliveryBoard.deliComment, deliComment);
-
-        return PageableExecutionUtils.getPage(deliBoardListAll, pageable, countQuery :: fetchOne);
-    }
 
     //운송 게시글 상세 조회 Dto
-    public DeliveryBoardDetailRes findByIdQueryDto(Long deliveryId){
-        return queryFactory
-                .select(Projections.constructor(DeliveryBoardDetailRes.class,
-                        deliveryBoard.id,
-                        deliveryBoard.title,
-                        deliveryBoard.body.as("contents"),
-                        deliveryBoard.from_city,
-                        deliveryBoard.from_country,
-                        deliveryBoard.to_city.as("to_address"),
-                        deliveryBoard.countComment,
-                        deliveryBoard.price,
-                        deliveryBoard.user.username,
-                        deliveryBoard.createdAt,
-                        deliveryBoard.updateAt,
-                        deliveryBoard.deliComment.as("comment")))
+    public List<DeliveryBoardDetailRes> findByDeliveryBoardIdDto(Long deliveryId){
+        return  queryFactory
                 .from(deliveryBoard)
-                .where(boardIdEq(deliveryId))
                 .join(deliveryBoard.user, user)
-                .join(deliveryBoard.deliComment, deliComment)
-                .orderBy(deliComment.createdAt.desc())
-                .fetchOne();
-    }
-
-    //운송 게시글 상세 조회 entity
-    public DeliveryBoard findByBoardIdQueryEntity(Long deliveryId){
-        return queryFactory
-                .selectFrom(deliveryBoard)
+                .on(deliveryBoard.user.id.eq(user.id))
+                .leftJoin(deliveryBoard.deliComments, deliComment)
+                .on(deliveryBoard.id.eq(deliComment.deliveryBoard.id))
                 .where(boardIdEq(deliveryId))
-                .leftJoin(deliveryBoard.user, user)
-                .leftJoin(deliveryBoard.deliComment, deliComment)
                 .orderBy(deliComment.createdAt.desc())
-                .fetchJoin()
+                .transform(groupBy(deliveryBoard.id).list(Projections.constructor(DeliveryBoardDetailRes.class,
+                                deliveryBoard.id,
+                                deliveryBoard.title,
+                                deliveryBoard.body.as("contents"),
+                                deliveryBoard.from_city,
+                                deliveryBoard.from_country,
+                                deliveryBoard.to_city.as("to_address"),
+                                deliveryBoard.countComment,
+                                deliveryBoard.price,
+                                deliveryBoard.user.username,
+                                deliveryBoard.createdAt,
+                                deliveryBoard.updateAt,
+                                list(Projections.constructor(DeliCommentRes.class,
+                                        deliComment.id,
+                                        deliComment.comment,
+                                        deliComment.user.username,
+                                        deliComment.deliveryBoard.id.as("deliveryBoardId")).as("comments")))));
+
+    }
+
+    //커뮤니티 게시글 전체 조회 Dto
+    public Page<ComBoardSimRes> findCommunityBoardAllDto(Pageable pageable){
+        List<ComBoardSimRes> communityBoards = queryFactory
+                .select(Projections.constructor(ComBoardSimRes.class,
+                        communityBoard.id,
+                        communityBoard.title,
+                        communityBoard.subtitle,
+                        communityBoard.location,
+                        communityBoard.user.username,
+                        communityBoard.countComment.as("commentCount"),
+                        communityBoard.createdAt,
+                        communityBoard.updateAt))
+                .from(communityBoard)
+                .orderBy(communityBoard.createdAt.desc())
+                .leftJoin(communityBoard.user, user)
+                .leftJoin(communityBoard.comment, communityComment)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(communityBoard.count())
+                .from(communityBoard)
+                .leftJoin(communityBoard.user, user)
+                .leftJoin(communityBoard.comment, communityComment);
+
+        return PageableExecutionUtils.getPage(communityBoards, pageable, countQuery :: fetchOne);
+
+    }
+
+    //커뮤니티 게시글 상세 조회 Dto
+    public ComBoardDetailRes findByCommunityBoardIdDto(Long communityId){
+        return queryFactory
+                .select(Projections.constructor(ComBoardDetailRes.class,
+                        communityBoard.id,
+                        communityBoard.title,
+                        communityBoard.subtitle,
+                        communityBoard.location,
+                        communityBoard.body.as("contents"),
+                        communityBoard.user.username,
+                        communityBoard.createdAt,
+                        communityBoard.updateAt,
+                        Projections.list(
+                                Projections.constructor(ComCommentRes.class,
+                                        communityComment.id,
+                                        communityComment.comment.as("comComment"),
+                                        communityComment.user.username,
+                                        communityComment.communityBoard.id.as("communityBoardId")))
+                ))
+                .from(communityBoard)
+                .join(communityBoard.user, user)
+                .join(communityBoard.comment, communityComment)
+                .where(boardIdEq(communityId))
                 .fetchOne();
     }
 
-
-    private BooleanExpression boardIdEq(Long deliveryId) {
-        return deliveryId != null ? deliveryBoard.id.eq(deliveryId) : deliveryBoard.isNull();
+    private BooleanExpression boardIdEq(Long id) {
+        return id != null ? deliveryBoard.id.eq(id) : deliveryBoard.isNull();
     }
 }

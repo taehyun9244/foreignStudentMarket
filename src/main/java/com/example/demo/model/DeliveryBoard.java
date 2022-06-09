@@ -43,7 +43,7 @@ public class DeliveryBoard extends Timestamped {
     private User user;
 
     @OneToMany(mappedBy = "deliveryBoard", cascade = CascadeType.REMOVE)
-    private List<DeliComment> deliComment = new ArrayList<DeliComment>();
+    private List<DeliComment> deliComments = new ArrayList<DeliComment>();
 
     //운송게시글 생성 생성자
     public DeliveryBoard(DeliveryBoardPostReq postReqDto, User writer){

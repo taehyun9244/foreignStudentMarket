@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.PayReq;
-import com.example.demo.model.Order;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.PayService;
 import lombok.RequiredArgsConstructor;

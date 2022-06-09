@@ -7,6 +7,7 @@ import com.example.demo.dto.request.ComBoardPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.CommunityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,12 @@ public class CommunityBoardController {
     public Response getCommunityBoard(@RequestParam(value ="offset", defaultValue = "0") int offset,
                                       @RequestParam(value = "limit", defaultValue = "100")int limit){
         return communityService.getCommunityBoard(offset, limit);
+    }
+
+    //querydsl -> dto 전체 조회
+    @GetMapping("/communitiesV2")
+    public Response getCommunityBoardV2(Pageable pageable){
+        return communityService.getCommunityBoardV2(pageable);
     }
 
     //커뮤니티 게시판 상세조회

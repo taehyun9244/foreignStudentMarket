@@ -17,21 +17,15 @@ public class DeliCommentController {
     private final DeliCommentService deliCommentService;
 
     //Delivery 댓글조회
-    @GetMapping("/deliveryBoard/{deliveryBoardId}/comments")
+    @GetMapping("/deliveryBoards/{deliveryBoardId}/comments")
     public Response getDeliComment(@PathVariable Long deliveryBoardId){
         return deliCommentService.getDeliComment(deliveryBoardId);
     }
 
     //dto
-    @GetMapping("/deliveryBoard/{deliveryBoardId}/commentsV2")
+    @GetMapping("/deliveryBoards/{deliveryBoardId}/commentsV2")
     public Response getDeliCommentV2(@PathVariable Long deliveryBoardId, Pageable pageable){
         return deliCommentService.getDeliCommentV2(deliveryBoardId, pageable);
-    }
-
-    //entity
-    @GetMapping("/deliveryBoard/{deliveryBoardId}/commentsV3")
-    public Response getDeliCommentV3(@PathVariable Long deliveryBoardId, Pageable pageable){
-        return deliCommentService.getDeliCommentV3(deliveryBoardId, pageable);
     }
 
     //Delivery 댓글작성

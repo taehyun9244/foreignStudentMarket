@@ -4,8 +4,6 @@ package com.example.demo.repository.queryRepository;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.MarketBoard;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +12,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardQueryRepository {
+public class JpqlBoardQueryRepository {
 
     private final EntityManager em;
 

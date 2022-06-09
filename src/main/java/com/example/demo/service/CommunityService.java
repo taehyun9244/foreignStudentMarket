@@ -8,9 +8,12 @@ import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommunityRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.queryRepository.BoardQueryRepository;
+import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
+import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +27,9 @@ public class CommunityService {
 
     private final CommunityRepository communityRepository;
 
-    private final BoardQueryRepository queryRepository;
+    private final JpqlBoardQueryRepository queryRepository;
     private final UserRepository userRepository;
+    private final AllBoardQueryRepository allBoardQueryRepository;
 
 
     //커뮤니티 게시판 전체조회
@@ -36,6 +40,13 @@ public class CommunityService {
         for (CommunityBoard communityBoard : communityBoards)
             simResDtos.add(new ComBoardSimRes(communityBoard));
         return new Response<>(simResDtos);
+    }
+
+    //커뮤니티 게시판 전체조회 querydsl -> dto
+    @Transactional(readOnly = true)
+    public Response getCommunityBoardV2(Pageable pageable) {
+        Page<ComBoardSimRes> communityBoards = allBoardQueryRepository.findCommunityBoardAllDto(pageable);
+        return new Response<>(communityBoards);
     }
 
     //커뮤니티 게시판 상세조회

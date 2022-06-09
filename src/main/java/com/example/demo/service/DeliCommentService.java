@@ -9,9 +9,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.DeliCommentRepository;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
 import com.example.demo.repository.queryRepository.AllCommentQueryRepository;
-import com.example.demo.repository.queryRepository.CommentQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +22,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +31,6 @@ public class DeliCommentService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
     private final DeliCommentRepository deliCommentRepository;
-    private final CommentQueryRepository queryRepository;
     private final UserRepository userRepository;
     private final AllCommentQueryRepository allCommentQueryRepository;
 
@@ -48,18 +46,11 @@ public class DeliCommentService {
     }
 
     //dto
+    @Transactional(readOnly = true)
     public Response getDeliCommentV2(Long deliveryBoardId, Pageable pageable) {
         Page<DeliCommentRes> findDeliBoardComment = allCommentQueryRepository.findDeliCommentDto(deliveryBoardId, pageable);
+        log.info("findDeliBoardComment={}", findDeliBoardComment);
         return new Response<>(findDeliBoardComment);
-    }
-
-    //entity
-    public Response getDeliCommentV3(Long deliveryBoardId, Pageable pageable) {
-        Page<DeliComment> findDeliBoardComment = allCommentQueryRepository.findAllDeliCommentEntity(deliveryBoardId, pageable);
-        List<DeliCommentRes> resDtos = findDeliBoardComment.stream()
-                .map(deliComment -> new DeliCommentRes(deliComment))
-                .collect(toList());
-        return new Response<>(resDtos);
     }
 
     //DeliveryBoard 댓글 작성

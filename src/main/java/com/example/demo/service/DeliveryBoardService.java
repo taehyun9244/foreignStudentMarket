@@ -10,7 +10,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
-import com.example.demo.repository.queryRepository.BoardQueryRepository;
+import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class DeliveryBoardService {
 
     private final DeliveryBoardRepository deliveryBoardRepository;
-    private final BoardQueryRepository queryRepository;
+    private final JpqlBoardQueryRepository queryRepository;
     private final UserRepository userRepository;
     private final AllBoardQueryRepository allBoardQueryRepository;
 
@@ -46,36 +46,23 @@ public class DeliveryBoardService {
     }
 
 
-    //운송 게시글 전체 조회 querydsl-> dto 조회
+    //운송 게시글 전체 조회 -> dto
     @Transactional(readOnly = true)
     public Response getBoardSimV2(Pageable pageable) {
-        Page<DeliveryBoardSimRes> collect = allBoardQueryRepository.findByDeliveryBoardDtoAll(pageable);
-        return new Response(collect);
+        Page<DeliveryBoardSimRes> deliveryBoards = allBoardQueryRepository.findByDeliveryBoardAllDto(pageable);
+        for (DeliveryBoardSimRes deliveryBoard : deliveryBoards) {
+            log.info("deliveryBoard = {}", deliveryBoard);
+        }
+        return new Response(deliveryBoards);
     }
 
-
-    //운송 게시글 전체 조회 querydsl-> entity 조회
-    @Transactional(readOnly = true)
-    public Response getBoardSimV3(Pageable pageable) {
-        Page<DeliveryBoard> deliveryBoards = allBoardQueryRepository.findByBoardEntityAll(pageable);
-        List<DeliveryBoardSimRes> collect = deliveryBoards.stream()
-                .map(deliveryBoard -> new DeliveryBoardSimRes(deliveryBoard))
-                .collect(Collectors.toList());
-        return new Response(collect);
-    }
-
-
-    //운송 게시글 상세 조회 -> entity
-    @Transactional(readOnly = true)
-    public DeliveryBoardDetailRes getBoardDetail(Long deliveryBoardId) {
-        DeliveryBoard deliveryBoard = allBoardQueryRepository.findByBoardIdQueryEntity(deliveryBoardId);
-        return new DeliveryBoardDetailRes(deliveryBoard);
-    }
 
     //운송 게시글 상세 조회 -> dto
     @Transactional(readOnly = true)
-    public DeliveryBoardDetailRes getBoardDetailV2(Long deliveryBoardsId) {
-        return allBoardQueryRepository.findByIdQueryDto(deliveryBoardsId);
+    public List<DeliveryBoardDetailRes> getBoardDetailV2(Long deliveryBoardsId) {
+        List<DeliveryBoardDetailRes> findById = allBoardQueryRepository.findByDeliveryBoardIdDto(deliveryBoardsId);
+        log.info("findById ={}", findById);
+        return findById;
     }
 
 

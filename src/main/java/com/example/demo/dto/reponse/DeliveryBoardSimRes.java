@@ -2,7 +2,6 @@ package com.example.demo.dto.reponse;
 
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.util.CountryEnum;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
