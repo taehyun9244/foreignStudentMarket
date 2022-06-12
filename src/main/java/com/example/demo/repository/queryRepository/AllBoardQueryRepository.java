@@ -1,7 +1,6 @@
 package com.example.demo.repository.queryRepository;
 
 import com.example.demo.dto.reponse.*;
-import com.example.demo.model.UploadFile;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -33,6 +32,7 @@ public class AllBoardQueryRepository {
     public AllBoardQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
+
 
     //운송 게시글 전체 조회 dto
     public Page<DeliveryBoardSimRes> findByDeliveryBoardAllDto(Pageable pageable){
@@ -71,11 +71,8 @@ public class AllBoardQueryRepository {
         return queryFactory
                 .from(deliveryBoard)
                 .leftJoin(deliveryBoard.deliComments, deliComment)
-                .on(deliveryBoard.id.eq(deliComment.deliveryBoard.id))
-                .join(deliveryBoard.user)
-                .on(deliveryBoard.user.id.eq(user.id))
-                .leftJoin(deliComment.user)
-                .on(deliComment.user.id.eq(user.id))
+                .join(deliveryBoard.user, user)
+                .leftJoin(deliComment.user, user)
                 .where(boardIdEq(deliveryId))
                 .orderBy(deliComment.createdAt.desc())
                 .transform(groupBy(deliveryBoard.id)
@@ -100,6 +97,7 @@ public class AllBoardQueryRepository {
                                         deliComment.deliveryBoard.id.as("deliveryBoardId")
                                 ).as("comments")))));
     }
+
 
     //커뮤니티 게시글 전체 조회 Dto
     public Page<ComBoardSimRes> findCommunityBoardAllDto(Pageable pageable){
@@ -129,19 +127,19 @@ public class AllBoardQueryRepository {
 
     }
 
+
     //커뮤니티 게시글 상세 조회 Dto
     public List<ComBoardDetailRes> findByCommunityBoardIdDto(Long communityId){
         return queryFactory
                 .from(communityBoard)
                 .leftJoin(communityBoard.comments, communityComment)
-                .on(communityBoard.id.eq(communityComment.communityBoard.id))
-                .leftJoin(communityBoard.user)
-                .on(communityBoard.user.id.eq(user.id))
-                .leftJoin(communityComment.user)
-                .on(communityComment.user.id.eq(user.id))
+                .leftJoin(communityBoard.user, user)
+                .leftJoin(communityComment.user, user)
                 .where(boardIdEq(communityId))
                 .orderBy(communityComment.createdAt.desc())
-                .transform(groupBy(communityBoard.id).list(Projections.constructor(ComBoardDetailRes.class,
+                .transform(groupBy(communityBoard.id)
+                        .list(Projections.constructor(
+                        ComBoardDetailRes.class,
                         communityBoard.id,
                         communityBoard.title,
                         communityBoard.subtitle,
@@ -150,12 +148,14 @@ public class AllBoardQueryRepository {
                         communityBoard.user.username,
                         communityBoard.createdAt,
                         communityBoard.updateAt,
-                                list(Projections.constructor(DeliCommentRes.class,
+                                list(Projections.constructor(
+                                        DeliCommentRes.class,
                                         communityComment.id,
                                         communityComment.comment.as("comComment"),
                                         communityComment.user.username,
                                         communityComment.communityBoard.id.as("communityBoardId")).as("comments")))));
     }
+
 
     //마켓 게시글 전체 조회 Dto
     public Page<MarketSimRes> findMarketBoardAllDto(Pageable pageable){
@@ -167,8 +167,7 @@ public class AllBoardQueryRepository {
                         marketBoard.price,
                         marketBoard.createdAt))
                 .from(marketBoard)
-                .join(marketBoard.user)
-                .on(marketBoard.user.id.eq(user.id))
+                .join(marketBoard.user, user)
                 .orderBy(marketBoard.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -182,6 +181,7 @@ public class AllBoardQueryRepository {
         return PageableExecutionUtils.getPage(marketBoards, pageable, countQuery :: fetchOne);
     }
 
+
     //마켓 게시글 상세 조회 Dto
     public List<MarketDetailRes> findByIdMarketBoardDto(Long marketId){
         return queryFactory
@@ -192,7 +192,9 @@ public class AllBoardQueryRepository {
                 .on(marketBoard.user.id.eq(user.id))
                 .where(boardIdEq(marketId))
                 .orderBy(uploadFile.createdAt.desc())
-                .transform(groupBy(marketBoard.id).list(Projections.constructor(MarketDetailRes.class,
+                .transform(groupBy(marketBoard.id)
+                        .list(Projections.constructor(
+                        MarketDetailRes.class,
                         marketBoard.user.username,
                         marketBoard.itemName,
                         marketBoard.body.as("contents"),
@@ -200,7 +202,11 @@ public class AllBoardQueryRepository {
                         marketBoard.price,
                         marketBoard.category,
                         marketBoard.createdAt,
-                        list(Projections.constructor(UploadFile.class)))));
+                        list(Projections.constructor(
+                                ImageFilesRes.class,
+                                uploadFile.id,
+                                uploadFile.uploadFileName,
+                                uploadFile.createdAt)))));
     }
 
     private BooleanExpression boardIdEq(Long id) {

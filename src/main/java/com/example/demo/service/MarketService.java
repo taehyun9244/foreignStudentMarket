@@ -10,11 +10,14 @@ import com.example.demo.model.User;
 import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.UploadFileRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
 import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,8 +36,9 @@ public class MarketService {
     private final UploadFileRepository uploadFileRepository;
     private final JpqlBoardQueryRepository queryRepository;
     private final FileStore fileStore;
+    private final AllBoardQueryRepository allBoardQueryRepository;
 
-    //전체 게시글 조회
+    //전체 게시글 조회 Jpql
     @Transactional(readOnly = true)
     public Response getAllListMarket(int offset, int limit) {
         List<MarketBoard> marketBoards = queryRepository.findAllMarket(offset, limit);
@@ -44,14 +48,21 @@ public class MarketService {
         return new Response(collect);
     }
 
-    //상세 게시글 조회
+    //전체 게시글 조회 QueryDsl -> dto
     @Transactional(readOnly = true)
-    public MarketDetailRes getDetailMarket(Long marketId){
-        MarketBoard marketBoard = marketRepository.findById(marketId).orElseThrow(
-                ()-> new RuntimeException("존재하지 않는 게시글입니다")
-        );
-        List<UploadFile> findByImages = uploadFileRepository.findAllById(marketId);
-        return new MarketDetailRes(marketBoard, findByImages);
+    public Response getAllListMarketV2(Pageable pageable) {
+        Page<MarketSimRes> marketBoards = allBoardQueryRepository.findMarketBoardAllDto(pageable);
+        log.info("marketBoards ={}", marketBoards);
+        return new Response(marketBoards);
+    }
+
+
+    //상세 게시글 조회 QueryDsl -> dto
+    @Transactional(readOnly = true)
+    public List<MarketDetailRes> getDetailMarketV2(Long marketId){
+        List<MarketDetailRes> findById = allBoardQueryRepository.findByIdMarketBoardDto(marketId);
+        log.info("findById={}", findById);
+        return findById;
     }
 
 

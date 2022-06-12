@@ -44,14 +44,14 @@ public class CommunityService {
         return new Response<>(simResDtos);
     }
 
-    //커뮤니티 게시판 전체조회 querydsl -> dto
+    //커뮤니티 게시판 전체조회 QueryDsl -> dto
     @Transactional(readOnly = true)
     public Response getCommunityBoardV2(Pageable pageable) {
         Page<ComBoardSimRes> communityBoards = allBoardQueryRepository.findCommunityBoardAllDto(pageable);
         return new Response<>(communityBoards);
     }
 
-    //커뮤니티 게시판 상세조회 dto
+    //커뮤니티 게시판 상세조회 QueryDsl -> dto
     @Transactional(readOnly = true)
     public  List<ComBoardDetailRes> getComBoardDetailV2(Long communityId) {
         List<ComBoardDetailRes> findById = allBoardQueryRepository.findByCommunityBoardIdDto(communityId);

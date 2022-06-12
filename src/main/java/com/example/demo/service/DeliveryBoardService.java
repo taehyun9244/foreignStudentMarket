@@ -46,7 +46,7 @@ public class DeliveryBoardService {
     }
 
 
-    //운송 게시글 전체 조회 -> dto
+    //운송 게시글 전체 조회 QueryDsl -> dto
     @Transactional(readOnly = true)
     public Response getBoardSimV2(Pageable pageable) {
         Page<DeliveryBoardSimRes> deliveryBoards = allBoardQueryRepository.findByDeliveryBoardAllDto(pageable);
@@ -57,7 +57,7 @@ public class DeliveryBoardService {
     }
 
 
-    //운송 게시글 상세 조회 -> dto
+    //운송 게시글 상세 조회 QueryDsl -> dto
     @Transactional(readOnly = true)
     public List<DeliveryBoardDetailRes> getBoardDetailV2(Long deliveryBoardsId) {
         List<DeliveryBoardDetailRes> findById = allBoardQueryRepository.findByDeliveryBoardIdDto(deliveryBoardsId);

@@ -19,7 +19,7 @@ public class MarketDetailRes {
     private LocalDateTime creatAt;
     private List<UploadFile> uploadFiles;
 
-    public MarketDetailRes(MarketBoard marketBoard, List<UploadFile> findByImages) {
+    public MarketDetailRes(MarketBoard marketBoard) {
         this.username = marketBoard.getUser().getUsername();
         this.itemName = marketBoard.getItemName();
         this.contents = marketBoard.getBody();
@@ -27,6 +27,6 @@ public class MarketDetailRes {
         this.price = marketBoard.getPrice();
         this.category = marketBoard.getCategory();
         this.creatAt = marketBoard.getCreatedAt();
-        this.uploadFiles = findByImages;
+        this.uploadFiles = marketBoard.getImageFiles();
     }
 }

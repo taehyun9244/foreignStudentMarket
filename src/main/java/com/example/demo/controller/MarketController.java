@@ -8,6 +8,7 @@ import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.MarketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,10 +31,15 @@ public class MarketController {
        return marketService.getAllListMarket(offset, limit);
     }
 
+    @GetMapping("/marketsV2")
+     public Response getAllListMarketV2(Pageable pageable){
+       return marketService.getAllListMarketV2(pageable);
+    }
+
     //싱세 중고게시글 조회
-    @GetMapping("/markets/{marketId}")
-    public MarketDetailRes getDetailMarket(@PathVariable Long marketId) {
-        return marketService.getDetailMarket(marketId);
+    @GetMapping("/marketsV2/{marketId}")
+    public List<MarketDetailRes> getDetailMarketV2(@PathVariable Long marketId) {
+        return marketService.getDetailMarketV2(marketId);
     }
 
     //중고게시글 작성
