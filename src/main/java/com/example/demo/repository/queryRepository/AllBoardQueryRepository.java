@@ -1,6 +1,7 @@
 package com.example.demo.repository.queryRepository;
 
 import com.example.demo.dto.reponse.*;
+import com.example.demo.model.UploadFile;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -18,6 +19,8 @@ import static com.example.demo.model.QCommunityBoard.*;
 import static com.example.demo.model.QCommunityComment.*;
 import static com.example.demo.model.QDeliComment.*;
 import static com.example.demo.model.QDeliveryBoard.*;
+import static com.example.demo.model.QMarketBoard.*;
+import static com.example.demo.model.QUploadFile.*;
 import static com.example.demo.model.QUser.*;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
@@ -57,6 +60,8 @@ public class AllBoardQueryRepository {
                 .from(deliveryBoard)
                 .join(user);
 
+
+
         return PageableExecutionUtils.getPage(deliveryBoards, pageable, countQuery :: fetchOne);
     }
 
@@ -68,10 +73,14 @@ public class AllBoardQueryRepository {
                 .leftJoin(deliveryBoard.deliComments, deliComment)
                 .on(deliveryBoard.id.eq(deliComment.deliveryBoard.id))
                 .join(deliveryBoard.user)
+                .on(deliveryBoard.user.id.eq(user.id))
                 .leftJoin(deliComment.user)
+                .on(deliComment.user.id.eq(user.id))
                 .where(boardIdEq(deliveryId))
                 .orderBy(deliComment.createdAt.desc())
-                .transform(groupBy(deliveryBoard.id).list(Projections.constructor(DeliveryBoardDetailRes.class,
+                .transform(groupBy(deliveryBoard.id)
+                        .list(Projections.constructor(
+                                DeliveryBoardDetailRes.class,
                                 deliveryBoard.id,
                                 deliveryBoard.title,
                                 deliveryBoard.body.as("contents"),
@@ -83,11 +92,13 @@ public class AllBoardQueryRepository {
                                 deliveryBoard.user.username,
                                 deliveryBoard.createdAt,
                                 deliveryBoard.updateAt,
-                                list(Projections.constructor(DeliCommentRes.class,
+                                list(Projections.constructor(
+                                        DeliCommentRes.class,
                                         deliComment.id,
                                         deliComment.comment,
                                         deliComment.user.username,
-                                        deliComment.deliveryBoard.id.as("deliveryBoardId")).as("comments")))));
+                                        deliComment.deliveryBoard.id.as("deliveryBoardId")
+                                ).as("comments")))));
     }
 
     //커뮤니티 게시글 전체 조회 Dto
@@ -125,7 +136,9 @@ public class AllBoardQueryRepository {
                 .leftJoin(communityBoard.comments, communityComment)
                 .on(communityBoard.id.eq(communityComment.communityBoard.id))
                 .leftJoin(communityBoard.user)
+                .on(communityBoard.user.id.eq(user.id))
                 .leftJoin(communityComment.user)
+                .on(communityComment.user.id.eq(user.id))
                 .where(boardIdEq(communityId))
                 .orderBy(communityComment.createdAt.desc())
                 .transform(groupBy(communityBoard.id).list(Projections.constructor(ComBoardDetailRes.class,
@@ -145,8 +158,50 @@ public class AllBoardQueryRepository {
     }
 
     //마켓 게시글 전체 조회 Dto
+    public Page<MarketSimRes> findMarketBoardAllDto(Pageable pageable){
+        List<MarketSimRes> marketBoards = queryFactory
+                .select(Projections.constructor(MarketSimRes.class,
+                        marketBoard.user.username,
+                        marketBoard.location,
+                        marketBoard.itemName,
+                        marketBoard.price,
+                        marketBoard.createdAt))
+                .from(marketBoard)
+                .join(marketBoard.user)
+                .on(marketBoard.user.id.eq(user.id))
+                .orderBy(marketBoard.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(marketBoard.count())
+                .from(marketBoard)
+                .join(user);
+
+        return PageableExecutionUtils.getPage(marketBoards, pageable, countQuery :: fetchOne);
+    }
 
     //마켓 게시글 상세 조회 Dto
+    public List<MarketDetailRes> findByIdMarketBoardDto(Long marketId){
+        return queryFactory
+                .from(marketBoard)
+                .leftJoin(marketBoard.imageFiles, uploadFile)
+                .on(marketBoard.id.eq(uploadFile.marketBoard.id))
+                .leftJoin(marketBoard.user)
+                .on(marketBoard.user.id.eq(user.id))
+                .where(boardIdEq(marketId))
+                .orderBy(uploadFile.createdAt.desc())
+                .transform(groupBy(marketBoard.id).list(Projections.constructor(MarketDetailRes.class,
+                        marketBoard.user.username,
+                        marketBoard.itemName,
+                        marketBoard.body.as("contents"),
+                        marketBoard.user.address.city.as("location"),
+                        marketBoard.price,
+                        marketBoard.category,
+                        marketBoard.createdAt,
+                        list(Projections.constructor(UploadFile.class)))));
+    }
 
     private BooleanExpression boardIdEq(Long id) {
         return id != null ? deliveryBoard.id.eq(id) : deliveryBoard.isNull();

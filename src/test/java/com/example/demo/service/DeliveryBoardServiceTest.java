@@ -141,10 +141,10 @@ class DeliveryBoardServiceTest {
         when(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).thenReturn(Optional.of(namDeliveryBoard));
 
         //when
-        DeliveryBoardDetailRes detailResDto = deliveryBoardService.getBoardDetail(namDeliveryBoard.getId());
+        List<DeliveryBoardDetailRes> detailResDto = deliveryBoardService.getBoardDetailV2(namDeliveryBoard.getId());
 
         //then
-        assertThat(detailResDto.getId()).isEqualTo(namDeliveryBoard.getId());
+        assertThat(detailResDto.get(0)).extracting(String.valueOf(namDeliveryBoard.getId()));
     }
 
     @Test

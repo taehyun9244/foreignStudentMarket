@@ -82,7 +82,7 @@ class DeliveryBoardRepositoryTest {
         List<DeliveryBoard> result = queryFactory
                 .selectFrom(deliveryBoard)
                 .join(deliveryBoard.user)
-                .join(deliveryBoard.deliComment)
+                .join(deliveryBoard.deliComments)
                 .fetchJoin()
                 .orderBy(deliveryBoard.createdAt.desc())
                 .fetch();

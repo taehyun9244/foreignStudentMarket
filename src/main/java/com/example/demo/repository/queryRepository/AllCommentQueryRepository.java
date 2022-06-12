@@ -35,9 +35,8 @@ public class AllCommentQueryRepository {
                         deliComment.user.username,
                         deliComment.deliveryBoard.id.as("deliveryBoardId")))
                 .from(deliComment)
-                .join(deliComment.deliveryBoard)
-                .on(deliComment.deliveryBoard.id.eq(deliveryBoardId))
-                .join(deliComment.user)
+                .join(user)
+                .on(deliComment.user.id.eq(user.id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .where(boardIdEq(deliveryBoardId))
