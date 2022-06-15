@@ -24,8 +24,8 @@ public class DeliCommentController {
 
     //dto
     @GetMapping("/deliveryBoards/{deliveryBoardId}/commentsV2")
-    public Response getDeliCommentV2(@PathVariable Long deliveryBoardId, Pageable pageable){
-        return deliCommentService.getDeliCommentV2(deliveryBoardId, pageable);
+    public Response getDeliCommentV2(Pageable pageable){
+        return deliCommentService.getDeliCommentV2(pageable);
     }
 
     //Delivery 댓글작성

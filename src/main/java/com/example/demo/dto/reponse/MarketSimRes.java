@@ -1,11 +1,15 @@
 package com.example.demo.dto.reponse;
 
 import com.example.demo.model.MarketBoard;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MarketSimRes {
 
     private String username;

@@ -60,24 +60,29 @@ public class MarketService {
     //상세 게시글 조회 QueryDsl -> dto
     @Transactional(readOnly = true)
     public List<MarketDetailRes> getDetailMarketV2(Long marketId){
-        List<MarketDetailRes> findById = allBoardQueryRepository.findByIdMarketBoardDto(marketId);
-        log.info("findById={}", findById);
-        return findById;
+            List<MarketDetailRes> findById = allBoardQueryRepository.findByIdMarketBoardDto(marketId);
+            log.info("findById={}", findById);
+            return findById;
     }
 
 
     //게시글 작성
     @Transactional
-    public void creatMarketBoard(MarketPostReq postDto, List<MultipartFile> multipartFiles, UserDetailsImpl userDetails) throws IOException {
+    public void creatMarketBoard(MarketPostReq postDto, UserDetailsImpl userDetails){
         User user = userDetails.getUser();
         User writer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                 ()-> new RuntimeException("회원가입을 해주세요 가입되지 않았습니다")
         );
-        List<UploadFile> uploadFiles = fileStore.saveFiles(multipartFiles);
-        List<UploadFile> saveImages = uploadFileRepository.saveAll(uploadFiles);
-
-        MarketBoard creatMarketBoard = new MarketBoard(postDto, writer, saveImages);
+        MarketBoard creatMarketBoard = new MarketBoard(postDto, writer);
         marketRepository.save(creatMarketBoard);
+    }
+
+    //게시글 이미지 저장
+    @Transactional
+    public void creatMarketImages(Long marketId, List<MultipartFile> multipartFiles, UserDetailsImpl userDetails) throws IOException {
+        List<UploadFile> uploadFiles = fileStore.saveFiles(marketId, multipartFiles, userDetails);
+        List<UploadFile> saveImages = uploadFileRepository.saveAll(uploadFiles);
+        uploadFileRepository.saveAll(saveImages);
     }
 
 
@@ -92,7 +97,7 @@ public class MarketService {
                 () -> new RuntimeException("존재하지 않는 게시글 입니다")
         );
         if (writer.equals(findBoard.getUser())) {
-            List<UploadFile> uploadFiles = fileStore.saveFiles(multipartFiles);
+            List<UploadFile> uploadFiles = fileStore.saveFiles(marketId ,multipartFiles, userDetails);
             List<UploadFile> saveImages = uploadFileRepository.saveAll(uploadFiles);
             MarketBoard editMarketBoard = new MarketBoard(postReq, saveImages);
             marketRepository.save(editMarketBoard);

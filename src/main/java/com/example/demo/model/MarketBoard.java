@@ -34,7 +34,7 @@ public class MarketBoard extends Timestamped {
     private String category;
 
     @OneToMany(mappedBy = "marketBoard", cascade = CascadeType.ALL)
-    private List<UploadFile> imageFiles = new ArrayList<UploadFile>();
+    private List<UploadFile> uploadFiles = new ArrayList<UploadFile>();
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -42,14 +42,13 @@ public class MarketBoard extends Timestamped {
 
 
     //주문게시글 생성 생성자
-    public MarketBoard(MarketPostReq postDto, User writer, List<UploadFile> saveImages) {
+    public MarketBoard(MarketPostReq postDto, User writer) {
         this.itemName = postDto.getItemName();
         this.body = postDto.getItemBody();
         this.price = postDto.getPrice();
         this.category = postDto.getCategory();
         this.location = postDto.getLocation();
         this.user = writer;
-        this.imageFiles = saveImages;
     }
 
     //주문게시글 수정 생성자
@@ -58,6 +57,6 @@ public class MarketBoard extends Timestamped {
         this.body = postReq.getItemBody();
         this.price = postReq.getPrice();
         this.category = postReq.getCategory();
-        this.imageFiles = multipartFiles;
+        this.uploadFiles = multipartFiles;
     }
 }

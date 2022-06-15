@@ -9,9 +9,12 @@ import com.example.demo.model.User;
 import com.example.demo.repository.ComCommentRepository;
 import com.example.demo.repository.CommunityRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.AllCommentQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,9 @@ public class ComCommentService {
     private final ComCommentRepository comCommentRepository;
     private final UserRepository userRepository;
     private final CommunityRepository communityRepository;
+    private final AllCommentQueryRepository allCommentQueryRepository;
 
-    //커뮤니티 게시판의 댓글 조회
+    //커뮤니티 게시판의 댓글 조회 JPA
     @Transactional(readOnly = true)
     public Response getComComment(Long communityBoardId) {
         List<CommunityComment>  communityComments = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(communityBoardId);
@@ -35,6 +39,13 @@ public class ComCommentService {
                 .map(communityComment -> new ComCommentRes(communityComment))
                 .collect(Collectors.toList());
         return new Response<>(resDtos);
+    }
+
+    //커뮤니티 게시판의 댓글 조회 QueryDsl -> Dto
+    @Transactional(readOnly = true)
+    public Response getComCommentV2(Pageable pageable) {
+        Page<ComCommentRes> communityComments = allCommentQueryRepository.findComCommentDto(pageable);
+        return new Response<>(communityComments);
     }
 
     //커뮤니티 게시판의 댓글 생성

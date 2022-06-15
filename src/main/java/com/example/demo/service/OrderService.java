@@ -10,9 +10,12 @@ import com.example.demo.model.User;
 import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.OrderQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,7 @@ public class OrderService {
     private final UserRepository userRepository;
     private final MarketRepository marketRepository;
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     //주문생성
     @Transactional
@@ -75,4 +79,11 @@ public class OrderService {
         return new Response(collect);
     }
 
+    //주문상품 리스트 조회 QueryDsl -> Dto
+    @Transactional(readOnly = true)
+    public Response findOrderListV2(Pageable pageable, UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        Page<OrderListRes> orders = orderQueryRepository.findOrderList(pageable, user.getUsername());
+        return new Response(orders);
+    }
 }

@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ComCommentPostReq {
-    private String comComment;
+    private String comment;
     private Long communityBoardId;
 }

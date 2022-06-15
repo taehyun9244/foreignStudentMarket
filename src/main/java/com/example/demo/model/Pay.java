@@ -33,7 +33,7 @@ public class Pay extends Timestamped {
     @JoinColumn(name = "orderID")
     private Order order;
 
-    //주문생성 생성자
+    //결제생성 생성자
     public Pay(User payer, Order orderItem, PayReq payReq) {
         this.user = payer;
         this.itemName = payReq.getItemName();

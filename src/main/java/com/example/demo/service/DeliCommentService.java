@@ -35,7 +35,7 @@ public class DeliCommentService {
     private final AllCommentQueryRepository allCommentQueryRepository;
 
 
-    //DeliveryBoard 댓글 조회
+    //DeliveryBoard 댓글 조회 JPA
     @Transactional(readOnly = true)
     public Response getDeliComment(Long deliveryBoardId){
         List<DeliComment> findDeliBoardComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
@@ -45,10 +45,10 @@ public class DeliCommentService {
         return new Response<>(resDtos);
     }
 
-    //dto
+    //댓글 조회 QueryDsl -> Dto
     @Transactional(readOnly = true)
-    public Response getDeliCommentV2(Long deliveryBoardId, Pageable pageable) {
-        Page<DeliCommentRes> findDeliBoardComment = allCommentQueryRepository.findDeliCommentDto(deliveryBoardId, pageable);
+    public Response getDeliCommentV2(Pageable pageable) {
+        Page<DeliCommentRes> findDeliBoardComment = allCommentQueryRepository.findDeliCommentDto(pageable);
         log.info("findDeliBoardComment={}", findDeliBoardComment);
         return new Response<>(findDeliBoardComment);
     }

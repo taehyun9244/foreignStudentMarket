@@ -18,14 +18,21 @@ public class UploadFile extends Timestamped{
     private String storeFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "marketBoardId")
+    @JoinColumn(name = "userId")
+    @JsonIgnore
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "market_username")
     @JsonIgnore
     private MarketBoard marketBoard;
 
     //이미지생성 생성자
-    public UploadFile(String uploadFileName, String storeFileName) {
+    public UploadFile(String uploadFileName, String storeFileName, User user, MarketBoard findByMarketId) {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
+        this.user = user;
+        this.marketBoard = findByMarketId;
     }
 
 }

@@ -9,10 +9,13 @@ import com.example.demo.model.User;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.PayRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.queryRepository.PayQueryReository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ public class PayService {
     private final PayRepository payRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final PayQueryReository payQueryReository;
 
 
     //결제
@@ -50,7 +54,7 @@ public class PayService {
         }else throw new RuntimeException("존재하지 않는 상품입니다");
     }
 
-    //결제 상품 리스트
+    //결제 상품 리스트 JPA
     @Transactional(readOnly = true)
     public Response payList(UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
@@ -62,6 +66,13 @@ public class PayService {
                 .map(pay -> new PayListRes(pay))
                 .collect(Collectors.toList());
         return new Response(collect);
+    }
+
+    //결제 상품 리스트 QueryDsl -> Dto
+    public Response payListV2(UserDetailsImpl userDetails, Pageable pageable) {
+        User user = userDetails.getUser();
+        Page<PayListRes> pays = payQueryReository.findPayList(user.getUsername(), pageable);
+        return new Response(pays);
     }
 }
 

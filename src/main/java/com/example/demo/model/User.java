@@ -53,6 +53,9 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Delivery> deliveries = new ArrayList<Delivery>();
 
+    @OneToMany(mappedBy = "user")
+    private List<UploadFile> uploadFiles = new ArrayList<UploadFile>();
+
     //유저 회원가입
     public User(String username, String password, String birthday, String email, String phoneNumber, Address address) {
         this.username = username;

@@ -6,6 +6,7 @@ import com.example.demo.model.Order;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,10 +37,17 @@ public class OrderController {
         orderService.cancelOrder(userDetails, orderStatus, orderId);
     }
 
-    //주문상품 리스트 조회
+    //주문상품 리스트 조회 JPA
     @GetMapping("/v1/orders/orderItems")
     public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return orderService.findOrderList(userDetails);
+    }
+
+
+    //주문상품 리스트 조회 QueryDsl
+    @GetMapping("/v2/orders/orderItems")
+    public Response orderListV2(@AuthenticationPrincipal UserDetailsImpl userDetails, Pageable pageable){
+        return orderService.findOrderListV2(pageable, userDetails);
     }
 
 

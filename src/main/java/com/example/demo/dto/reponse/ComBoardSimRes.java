@@ -1,13 +1,17 @@
 package com.example.demo.dto.reponse;
 
 import com.example.demo.model.CommunityBoard;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ComBoardSimRes {
     private Long id;
     private String title;

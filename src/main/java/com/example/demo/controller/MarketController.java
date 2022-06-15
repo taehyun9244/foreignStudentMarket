@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.LinkOption;
 import java.util.List;
 
 @RestController
@@ -31,12 +30,14 @@ public class MarketController {
        return marketService.getAllListMarket(offset, limit);
     }
 
+    //전체 중고게시글 조회 QueryDsl -> Dto
     @GetMapping("/marketsV2")
      public Response getAllListMarketV2(Pageable pageable){
        return marketService.getAllListMarketV2(pageable);
     }
 
-    //싱세 중고게시글 조회
+
+    //싱세 중고게시글 조회 QueryDsl -> Dto
     @GetMapping("/marketsV2/{marketId}")
     public List<MarketDetailRes> getDetailMarketV2(@PathVariable Long marketId) {
         return marketService.getDetailMarketV2(marketId);
@@ -44,13 +45,20 @@ public class MarketController {
 
     //중고게시글 작성
     @PostMapping("/markets")
-    public void creatMarketBoard(@RequestPart MarketPostReq postDto,
-                                 @RequestPart("file") List<MultipartFile> multipartFiles,
-                                 @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public void creatMarketBoard(@RequestBody MarketPostReq postDto,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
         log.info("itemName = {}", postDto.getItemName());
         log.info("username={}", userDetails.getUsername());
+        marketService.creatMarketBoard(postDto, userDetails);
+    }
+
+    //게시글 이미지 저장
+    @PostMapping("/markets/{marketId}")
+    public void creatMarketImages(@PathVariable Long marketId,
+                                  @RequestPart("file") List<MultipartFile> multipartFiles,
+                                  @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         log.info("file name = {}", multipartFiles.size());
-        marketService.creatMarketBoard(postDto, multipartFiles, userDetails);
+        marketService.creatMarketImages(marketId, multipartFiles, userDetails);
     }
 
     //중고게시글 수정

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface UploadFileRepository extends JpaRepository<UploadFile, Long> {
     List<UploadFile> findAllById(Long marketId);
+
 }

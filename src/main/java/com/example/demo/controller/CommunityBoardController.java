@@ -34,7 +34,7 @@ public class CommunityBoardController {
     }
 
     //커뮤니티 게시판 상세조회
-    @GetMapping("/communities/{communityId}")
+    @GetMapping("/communitiesV2/{communityId}")
     public List<ComBoardDetailRes> getComBoardDetailV2(@PathVariable Long communityId){
         return communityService.getComBoardDetailV2(communityId);
     }
