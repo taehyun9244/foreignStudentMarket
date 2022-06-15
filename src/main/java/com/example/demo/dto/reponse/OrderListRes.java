@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class OrderListRes {
 
+    private Long orderId;
     private Long marketId;
     private String itemName;
     private int price;
@@ -19,6 +20,7 @@ public class OrderListRes {
 
 
     public OrderListRes(Order order) {
+        this.orderId = order.getId();
         this.marketId = order.getMarketBoard().getId();
         this.itemName = order.getMarketBoard().getItemName();
         this.price = order.getMarketBoard().getPrice();

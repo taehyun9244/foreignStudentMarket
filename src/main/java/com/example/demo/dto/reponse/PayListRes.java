@@ -20,6 +20,5 @@ public class PayListRes {
         this.price = pay.getItemPrice();
         this.payStatus = pay.getPayStatus();
         this.to_address = pay.getUser().getAddress();
-
     }
 }

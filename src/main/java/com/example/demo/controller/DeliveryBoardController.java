@@ -22,20 +22,20 @@ public class DeliveryBoardController {
     private final DeliveryBoardService deliveryBoardService;
 
     //운송 게시글 전체 조회 Jpql
-    @GetMapping("/deliveryBoards")
-    public Response getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
-                                @RequestParam(value = "limit", defaultValue = "100")int limit) {
-        return deliveryBoardService.getBoardSim(offset, limit);
-    }
+//    @GetMapping("/deliveryBoards")
+//    public Response getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
+//                                @RequestParam(value = "limit", defaultValue = "100")int limit) {
+//        return deliveryBoardService.getBoardSim(offset, limit);
+//    }
 
     //운송 게시글 전체 조회 querydsl-> dto 조회
-    @GetMapping("/deliveryBoardsV2")
+    @GetMapping("/deliveryBoards")
     public Response getBoardSimV2(Pageable pageable) {
         return deliveryBoardService.getBoardSimV2(pageable);
     }
 
     //운송 게시글 상세 조회 dto
-    @GetMapping("/deliveryBoardsV2/{deliveryBoardsId}")
+    @GetMapping("/deliveryBoards/{deliveryBoardsId}")
     public List<DeliveryBoardDetailRes> getBoardDetailV2(@PathVariable Long deliveryBoardsId){
         return deliveryBoardService.getBoardDetailV2(deliveryBoardsId);
     }
@@ -49,10 +49,10 @@ public class DeliveryBoardController {
 
     //운송 게시글 수정
     @PutMapping("/deliveryBoards/{deliveryBoardsId}")
-    public DeliveryBoard editDeliveryBoard(@PathVariable Long deliveryBoardsId,
-                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                           @RequestBody DeliveryBoardPostReq postReqDto){
-        return deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, postReqDto);
+    public void editDeliveryBoard(@PathVariable Long deliveryBoardsId,
+                                  @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                  @RequestBody DeliveryBoardPostReq postReqDto){
+        deliveryBoardService.editDeliveryBoard(deliveryBoardsId, userDetails, postReqDto);
     }
 
 

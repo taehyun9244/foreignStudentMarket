@@ -57,13 +57,12 @@ public class DeliveryBoard extends Timestamped {
     }
 
     //운송게시글 수정 생성자
-    public DeliveryBoard editDeliveryBoard(DeliveryBoardPostReq postReqDto){
+    public void editDeliveryBoard(DeliveryBoardPostReq postReqDto){
         this.title = postReqDto.getTitle();
         this.body = postReqDto.getContents();
         this.from_city = postReqDto.getFrom_city();
         this.from_country = postReqDto.getFrom_country();
         this.price = postReqDto.getPrice();
-        return this;
     }
 
     //댓글 작성시 +1

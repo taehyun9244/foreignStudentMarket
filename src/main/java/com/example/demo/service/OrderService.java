@@ -44,8 +44,10 @@ public class OrderService {
         MarketBoard orderItem = marketRepository.findById(postDto.getMarketId()).orElseThrow(
                 ()-> new RuntimeException("주문상품이 존재하지 않습니다")
         );
-        Order order = new Order(buyer, orderItem, postDto);
-        return orderRepository.save(order);
+        if (orderItem.getUser() != buyer) {
+            Order order = new Order(buyer, orderItem, postDto);
+            return orderRepository.save(order);
+        }else throw new RuntimeException("자신의 게시물은 주문 할 수 없습니다");
     }
 
     //주문취소

@@ -23,7 +23,7 @@ public class OrderController {
     private final OrderService orderService;
 
     //주문생성
-    @PostMapping("/markets/v1/orders")
+    @PostMapping("/markets/v2/orders")
     public Order creatOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @RequestBody OrderReq postDto){
       return orderService.creatOrder(postDto, userDetails);
@@ -38,10 +38,10 @@ public class OrderController {
     }
 
     //주문상품 리스트 조회 JPA
-    @GetMapping("/v1/orders/orderItems")
-    public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return orderService.findOrderList(userDetails);
-    }
+//    @GetMapping("/v1/orders/orderItems")
+//    public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+//        return orderService.findOrderList(userDetails);
+//    }
 
 
     //주문상품 리스트 조회 QueryDsl

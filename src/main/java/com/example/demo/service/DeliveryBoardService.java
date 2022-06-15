@@ -78,13 +78,13 @@ public class DeliveryBoardService {
 
 
     //운송 게시글 수정
-    public DeliveryBoard editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReq postReqDto){
+    public void editDeliveryBoard(Long deliveryId, UserDetailsImpl userDetails, DeliveryBoardPostReq postReqDto){
         User user = userDetails.getUser();
         DeliveryBoard deliveryBoard = deliveryBoardRepository.findById(deliveryId)
                 .orElseThrow( () ->new RuntimeException("존재하지 않는 게시글입니다")
         );
         if (user.getUsername().equals(deliveryBoard.getUser().getUsername())){
-            return deliveryBoard.editDeliveryBoard(postReqDto);
+            deliveryBoard.editDeliveryBoard(postReqDto);
         }else {
             throw new RuntimeException("게시글 작성자가 아닙니다");
         }

@@ -20,21 +20,21 @@ public class CommunityBoardController {
     private final CommunityService communityService;
 
 
-    //커뮤니티 게시판 전체 조회
-    @GetMapping("/communities")
-    public Response getCommunityBoard(@RequestParam(value ="offset", defaultValue = "0") int offset,
-                                      @RequestParam(value = "limit", defaultValue = "100")int limit){
-        return communityService.getCommunityBoard(offset, limit);
-    }
+    //커뮤니티 게시판 전체 조회 Jpql
+//    @GetMapping("/communities")
+//    public Response getCommunityBoard(@RequestParam(value ="offset", defaultValue = "0") int offset,
+//                                      @RequestParam(value = "limit", defaultValue = "100")int limit){
+//        return communityService.getCommunityBoard(offset, limit);
+//    }
 
-    //querydsl -> dto 전체 조회
-    @GetMapping("/communitiesV2")
+    //커뮤니티 게시판 전체조회 Querydsl -> Dto
+    @GetMapping("/communities")
     public Response getCommunityBoardV2(Pageable pageable){
         return communityService.getCommunityBoardV2(pageable);
     }
 
-    //커뮤니티 게시판 상세조회
-    @GetMapping("/communitiesV2/{communityId}")
+    //커뮤니티 게시판 상세조회 Querydsl -> Dto
+    @GetMapping("/communities/{communityId}")
     public List<ComBoardDetailRes> getComBoardDetailV2(@PathVariable Long communityId){
         return communityService.getComBoardDetailV2(communityId);
     }

@@ -24,21 +24,21 @@ public class MarketController {
     private final MarketService marketService;
 
     //전체 중고게시글 조회
-    @GetMapping("/markets")
-     public Response getAllListMarket(@RequestParam(value ="offset", defaultValue = "0") int offset,
-                                      @RequestParam(value = "limit", defaultValue = "100") int limit){
-       return marketService.getAllListMarket(offset, limit);
-    }
+//    @GetMapping("/markets")
+//     public Response getAllListMarket(@RequestParam(value ="offset", defaultValue = "0") int offset,
+//                                      @RequestParam(value = "limit", defaultValue = "100") int limit){
+//       return marketService.getAllListMarket(offset, limit);
+//    }
 
     //전체 중고게시글 조회 QueryDsl -> Dto
-    @GetMapping("/marketsV2")
+    @GetMapping("/markets")
      public Response getAllListMarketV2(Pageable pageable){
        return marketService.getAllListMarketV2(pageable);
     }
 
 
     //싱세 중고게시글 조회 QueryDsl -> Dto
-    @GetMapping("/marketsV2/{marketId}")
+    @GetMapping("/markets/{marketId}")
     public List<MarketDetailRes> getDetailMarketV2(@PathVariable Long marketId) {
         return marketService.getDetailMarketV2(marketId);
     }

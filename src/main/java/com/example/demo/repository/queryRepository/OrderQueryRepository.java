@@ -30,6 +30,7 @@ public class OrderQueryRepository {
         List<OrderListRes> orders = queryFactory
                 .select(Projections.constructor(
                         OrderListRes.class,
+                        order.id.as("orderId"),
                         order.marketBoard.id.as("marketId"),
                         order.marketBoard.itemName,
                         order.marketBoard.price,

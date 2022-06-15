@@ -16,17 +16,17 @@ public class PayController {
     private final PayService payService;
 
     //결제
-    @PostMapping("/orderItems/v1/pays")
+    @PostMapping("/orderItems/v2/pays")
     public void orderPay(@AuthenticationPrincipal UserDetailsImpl userDetails,
                          @RequestBody PayReq payReq){
          payService.orderPay(userDetails, payReq);
     }
 
     //결제 리스트 JPA
-    @GetMapping("/api/v1/payItems")
-    public Response payList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return payService.payList(userDetails);
-    }
+//    @GetMapping("/api/v1/payItems")
+//    public Response payList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+//        return payService.payList(userDetails);
+//    }
 
     //결제 리스트 QueryDsl
     @GetMapping("/api/v2/payItems")
