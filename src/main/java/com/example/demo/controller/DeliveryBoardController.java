@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliveryBoardPostReq;
-import com.example.demo.model.DeliveryBoard;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +21,17 @@ public class DeliveryBoardController {
     private final DeliveryBoardService deliveryBoardService;
 
     //운송 게시글 전체 조회 Jpql
-//    @GetMapping("/deliveryBoards")
-//    public Response getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
-//                                @RequestParam(value = "limit", defaultValue = "100")int limit) {
-//        return deliveryBoardService.getBoardSim(offset, limit);
-//    }
+    @GetMapping("/deliveryBoards/v1")
+    public Response getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
+                                @RequestParam(value = "limit", defaultValue = "100")int limit) {
+        return deliveryBoardService.getBoardSim(offset, limit);
+    }
+
+    //운송 게시글 상세 조회 JPA
+    @GetMapping("/deliveryBoards/{deliveryBoardId}/v1")
+    public DeliveryBoardDetailRes getBoardDetailV1(@PathVariable Long deliveryBoardId){
+        return deliveryBoardService.getBoardDetailV1(deliveryBoardId);
+    }
 
     //운송 게시글 전체 조회 querydsl-> dto 조회
     @GetMapping("/deliveryBoards")

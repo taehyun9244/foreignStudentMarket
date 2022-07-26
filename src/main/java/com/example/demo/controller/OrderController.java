@@ -38,10 +38,10 @@ public class OrderController {
     }
 
     //주문상품 리스트 조회 JPA
-//    @GetMapping("/v1/orders/orderItems")
-//    public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-//        return orderService.findOrderList(userDetails);
-//    }
+    @GetMapping("/v1/orders/orderItems")
+    public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return orderService.findOrderList(userDetails);
+    }
 
 
     //주문상품 리스트 조회 QueryDsl

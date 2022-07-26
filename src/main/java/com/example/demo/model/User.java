@@ -11,7 +11,7 @@ import java.util.List;
 @Entity // DB테이블 표시
 @NoArgsConstructor // 기본생성자
 @Getter
-@Table(name = "User")
+@Table(name = "users")
 public class User extends Timestamped{
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column

@@ -23,10 +23,10 @@ public class PayController {
     }
 
     //결제 리스트 JPA
-//    @GetMapping("/api/v1/payItems")
-//    public Response payList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-//        return payService.payList(userDetails);
-//    }
+    @GetMapping("/api/v1/payItems")
+    public Response payList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return payService.payList(userDetails);
+    }
 
     //결제 리스트 QueryDsl
     @GetMapping("/api/v2/payItems")

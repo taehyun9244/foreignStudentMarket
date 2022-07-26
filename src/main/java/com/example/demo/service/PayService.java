@@ -9,7 +9,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.PayRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.queryRepository.PayQueryReository;
+import com.example.demo.repository.queryRepository.PayQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.OrderStatus;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class PayService {
     private final PayRepository payRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
-    private final PayQueryReository payQueryReository;
+    private final PayQueryRepository payQueryRepository;
 
 
     //결제
@@ -71,7 +71,7 @@ public class PayService {
     //결제 상품 리스트 QueryDsl -> Dto
     public Response payListV2(UserDetailsImpl userDetails, Pageable pageable) {
         User user = userDetails.getUser();
-        Page<PayListRes> pays = payQueryReository.findPayList(user.getUsername(), pageable);
+        Page<PayListRes> pays = payQueryRepository.findPayList(user.getUsername(), pageable);
         return new Response(pays);
     }
 }

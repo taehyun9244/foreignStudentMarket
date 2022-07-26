@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "order_table")
+@Table(name = "orders")
 public class Order extends Timestamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

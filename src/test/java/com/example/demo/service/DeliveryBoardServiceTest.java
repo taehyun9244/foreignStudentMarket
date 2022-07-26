@@ -7,6 +7,7 @@ import com.example.demo.model.Address;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
+import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.CountryEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,8 @@ class DeliveryBoardServiceTest {
 
     @Mock
     private DeliveryBoardRepository mockDeliveryBoardRepository;
+    @Mock
+    private JpqlBoardQueryRepository mockJpqlBoardQueryRepository;
     private UserDetailsImpl namRegister;
     private UserDetailsImpl ayaRegister;
     private UserDetailsImpl userDetailsNull;
@@ -108,7 +111,7 @@ class DeliveryBoardServiceTest {
         deliveryBoards.add(ayaDeliveryBoard);
 
         //when
-        when(mockDeliveryBoardRepository.findAllByOrderByCreatedAtDesc()).thenReturn(deliveryBoards);
+        when(mockJpqlBoardQueryRepository.findAllDeliBoard(0, 1)).thenReturn(deliveryBoards);
         Response<List<DeliveryBoardSimRes>> boardSimResList = deliveryBoardService.getBoardSim(0, 1);
         log.info("boardSimResList = {}", boardSimResList);
 

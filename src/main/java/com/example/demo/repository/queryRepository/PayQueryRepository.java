@@ -20,10 +20,10 @@ import static com.example.demo.model.QUser.*;
 
 
 @Repository
-public class PayQueryReository {
+public class PayQueryRepository {
     private final JPAQueryFactory queryFactory;
 
-    public PayQueryReository(EntityManager em) {
+    public PayQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
@@ -33,12 +33,13 @@ public class PayQueryReository {
                         PayListRes.class,
                         pay.order.id.as("orderId"),
                         pay.itemName,
-                        pay.itemPrice.as("price"),
+                        pay.itemPrice,
                         pay.payStatus,
                         pay.user.address.as("to_address")
                 ))
                 .from(pay)
                 .join(pay.user, user)
+                .on(pay.user.id.eq(user.id))
                 .orderBy(pay.createdAt.desc())
                 .where(existUserEq(username))
                 .offset(pageable.getOffset())

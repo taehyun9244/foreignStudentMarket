@@ -23,7 +23,7 @@ public class DeliCommentController {
 //    }
 
     //Delivery 댓글조회 Querydsl -> Dto
-    @GetMapping("/deliveryBoards/{deliveryBoardId}/comments")
+    @GetMapping("/deliveryBoards/{deliveryBoardId}/comments/v1")
     public Response getDeliCommentV2(Pageable pageable){
         return deliCommentService.getDeliCommentV2(pageable);
     }

@@ -49,6 +49,7 @@ public class AllBoardQueryRepository {
                         deliveryBoard.updateAt))
                 .from(deliveryBoard)
                 .join(deliveryBoard.user, user)
+                .on(deliveryBoard.user.id.eq(user.id))
                 .orderBy(deliveryBoard.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -111,6 +112,7 @@ public class AllBoardQueryRepository {
                 .from(communityBoard)
                 .orderBy(communityBoard.createdAt.desc())
                 .join(communityBoard.user, user)
+                .on(communityBoard.user.id.eq(user.id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -167,6 +169,7 @@ public class AllBoardQueryRepository {
                         marketBoard.createdAt))
                 .from(marketBoard)
                 .join(marketBoard.user, user)
+                .on(marketBoard.user.id.eq(user.id))
                 .orderBy(marketBoard.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

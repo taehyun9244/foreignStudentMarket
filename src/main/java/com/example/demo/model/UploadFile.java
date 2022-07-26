@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(name = "images")
 public class UploadFile extends Timestamped{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
