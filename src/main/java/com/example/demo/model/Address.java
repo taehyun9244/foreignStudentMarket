@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class Address {
 
-    @Column(name = "city",nullable = false, length = 3)
+    @Column(name = "city",nullable = false, length = 5)
     private String city;
     @Column(name = "street",nullable = false)
     private String street;

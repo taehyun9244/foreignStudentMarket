@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.request.LoginReq;
 import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.jwt.JwtTokenProvider;
 import com.example.demo.model.Address;
@@ -44,14 +45,16 @@ public class UserService {
     }
 
     //유저 로그인
-    public String createToken(SignUpReq signUpRequestDto) {
-        User user = userRepository.findByUsername(signUpRequestDto.getUsername())
+    public String createToken(LoginReq loginReq) {
+        User user = userRepository.findByUsername(loginReq.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 유저입니다"));
 
-        if (!passwordEncoder.matches(signUpRequestDto.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(loginReq.getPassword(), user.getPassword())){
             throw new RuntimeException("잘못된 비밀번호입니다");
         }
 
-        return jwtTokenProvider.createToken(user.getUsername(), user.getId(), user.getPhoneNumber());
+        String token = jwtTokenProvider.createToken(user.getId());
+        jwtTokenProvider.getAuthentication(token);
+        return token;
     }
 }

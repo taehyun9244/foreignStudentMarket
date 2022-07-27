@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.request.LoginReq;
 import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class UserController {
 
     //로그인 api
     @PostMapping("/user/login")
-    public String createToken(@RequestBody SignUpReq signUpRequestDto){
-        return userService.createToken(signUpRequestDto);
+    public String createToken(@RequestBody LoginReq loginReq){
+        return userService.createToken(loginReq);
     }
 
 

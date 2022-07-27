@@ -15,6 +15,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
@@ -30,10 +32,9 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String userPk, Long id, String username){
-        Claims claims = Jwts.claims().setSubject(userPk);
+    public String createToken(Long id){
+        Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
-        claims.put("username", username);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
