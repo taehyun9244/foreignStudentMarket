@@ -5,6 +5,8 @@ import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.model.Address;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.security.UserDetailsImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,13 +18,13 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
+@Slf4j
 class UserServiceTest {
 
     @InjectMocks
@@ -49,6 +51,7 @@ class UserServiceTest {
         Address doAddress = new Address("NewYork", "BingHamton", "777");
         doSignUpReq = new SignUpReq("nam", mockPasswordEncoder.encode("1234"), "20220528",
                 "999@naver.com", "080-9999-9999", doAddress);
+
     }
 
     @Test
@@ -95,6 +98,4 @@ class UserServiceTest {
         //then
         verify(mockUserRepository).save(argThat(User -> User.getUsername().equals("nam")));
     }
-
-
 }

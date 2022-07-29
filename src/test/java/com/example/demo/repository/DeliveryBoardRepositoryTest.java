@@ -91,76 +91,76 @@ class DeliveryBoardRepositoryTest {
         }
     }
 
-//
-//    @Test
-//    @DisplayName("전체 운송 게시글 조회")
-//    void findAllByOrderByCreatedAtDesc() {
-//        //given
-//        deliveryBoardRepository.save(namDeliveryBoard);
-//        deliveryBoardRepository.save(ayaDeliveryBoard);
-//
-//        //when
-//        List<DeliveryBoard> deliveryBoards = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
-//
-//        //then
-//        assertThat(deliveryBoards.size()).isEqualTo(2);
-//        assertThat(deliveryBoards).contains(namDeliveryBoard, ayaDeliveryBoard);
-//        assertThat(deliveryBoards).extracting("title").containsExactly("title", "title");
-//
-//    }
 
-//    @Test
-//    @DisplayName("상세 운송 게시글 조회")
-//    void findDetailBoard(){
-//        //given
-//        DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
-//        //when
-//        DeliveryBoard findBoard = deliveryBoardRepository.f(saveBoard.getId()).orElseGet(
-//                ()->deliveryBoardRepository.save(new DeliveryBoard(postReqDto,taehyunRegister.getUser())));
-//        //then
-//        Assertions.assertThat(findBoard.getId()).isEqualTo(saveBoard.getId());
-//    }
+    @Test
+    @DisplayName("전체 운송 게시글 조회")
+    void findAllByOrderByCreatedAtDesc() {
+        //given
+        deliveryBoardRepository.save(namDeliveryBoard);
+        deliveryBoardRepository.save(ayaDeliveryBoard);
+
+        //when
+        List<DeliveryBoard> deliveryBoards = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
+
+        //then
+        assertThat(deliveryBoards.size()).isEqualTo(2);
+        assertThat(deliveryBoards).contains(namDeliveryBoard, ayaDeliveryBoard);
+        assertThat(deliveryBoards).extracting("title").containsExactly("title", "title");
+
+    }
+
+    @Test
+    @DisplayName("상세 운송 게시글 조회")
+    void findDetailBoard(){
+        //given
+        DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
+        //when
+        DeliveryBoard findBoard = deliveryBoardRepository.findById(saveBoard.getId()).orElseGet(
+                ()->deliveryBoardRepository.save(new DeliveryBoard(namPostReq,namRegister.getUser())));
+        //then
+        Assertions.assertThat(findBoard.getId()).isEqualTo(saveBoard.getId());
+    }
 
 
-//    @Test
-//    @DisplayName("운송 게시글 저장")
-//    void saveDeliveryBoard(){
-//        //given
-//        DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
-//        //when & then
-//        Assertions.assertThat(saveBoard.getId()).isEqualTo(1L);
-//    }
+    @Test
+    @DisplayName("운송 게시글 저장")
+    void saveDeliveryBoard(){
+        //given
+        DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
+        //when & then
+        Assertions.assertThat(saveBoard.getId()).isEqualTo(1L);
+    }
 
-//    @Test
-//    @DisplayName("운송 게시글 수정")
-//    void editDeliveryBoard(){
-//        //given
-//        DeliveryBoardPostReq postReqDto = new DeliveryBoardPostReq("배송모집합니다 수정", "5명모집이고 상자크기는 '대'입니다",
-//                "Korea", "Seoul-Seocho", "Korea", "Seoul-Seocho", 70000);
-//        DeliveryBoard saveBoard = deliveryBoardRepository.save(deliveryBoardA);
-//
-//        //when
-//        DeliveryBoard editBoard = new DeliveryBoard(postReqDto, saveBoard.getUser());
-//
-//        //then
-//        Assertions.assertThat(editBoard.getTitle()).isNotEqualTo(deliveryBoardA.getTitle());
-//        Assertions.assertThat(editBoard.getUser()).isEqualTo(deliveryBoardA.getUser());
-//    }
+    @Test
+    @DisplayName("운송 게시글 수정")
+    void editDeliveryBoard(){
+        //given
+        DeliveryBoardPostReq postReqDto = new DeliveryBoardPostReq("배송모집합니다 수정", "5명모집이고 상자크기는 '대'입니다",
+                "NewYork 수정", CountryEnum.USA, 70000);
+        DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
 
-//    @Test
-//    @DisplayName("운송 게시글 삭제")
-//    void deleteDeliveryBoard(){
-//        //given
-//        DeliveryBoard saveBoard = deliveryBoardRepository.save(deliveryBoardA);
-//
-//        //when
-//        Optional<DeliveryBoard> findBoard = deliveryBoardRepository.findById(saveBoard.getId());
-//
-//        //then
-//        findBoard.ifPresent(findBoardId ->{
-//            deliveryBoardRepository.delete(findBoardId);
-//        });
-//        Optional<DeliveryBoard> deleteBoard = deliveryBoardRepository.findById(saveBoard.getId());
-//        org.junit.jupiter.api.Assertions.assertFalse(deleteBoard.isPresent());
-//    }
+        //when
+        DeliveryBoard editBoard = new DeliveryBoard(postReqDto, saveBoard.getUser());
+
+        //then
+        Assertions.assertThat(editBoard.getTitle()).isNotEqualTo(namDeliveryBoard.getTitle());
+        Assertions.assertThat(editBoard.getUser()).isEqualTo(namDeliveryBoard.getUser());
+    }
+
+    @Test
+    @DisplayName("운송 게시글 삭제")
+    void deleteDeliveryBoard(){
+        //given
+        DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
+
+        //when
+        Optional<DeliveryBoard> findBoard = deliveryBoardRepository.findById(saveBoard.getId());
+
+        //then
+        findBoard.ifPresent(findBoardId ->{
+            deliveryBoardRepository.delete(findBoardId);
+        });
+        Optional<DeliveryBoard> deleteBoard = deliveryBoardRepository.findById(saveBoard.getId());
+        org.junit.jupiter.api.Assertions.assertFalse(deleteBoard.isPresent());
+    }
 }

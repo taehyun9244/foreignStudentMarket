@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.request.SignUpReq;
 import com.example.demo.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

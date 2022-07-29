@@ -70,10 +70,7 @@ class UserRepositoryTest {
     void findByDuplicatePhoneNumber() {
 
         //given
-        User namUserPhone = userRepository.save(ayaUser);
-        User byPhoneNumber = userRepository.findByPhoneNumber(namUserPhone.getPhoneNumber()).orElseThrow(
-                () -> new RuntimeException()
-        );
+        userRepository.save(ayaUser);
 
         //when
         User doUserPhone = userRepository.save(doUser);
