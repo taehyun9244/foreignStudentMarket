@@ -1,4 +1,5 @@
 package com.example.demo.service;
+
 import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
 import com.example.demo.dto.reponse.DeliveryBoardSimRes;
 import com.example.demo.dto.reponse.Response;
@@ -7,6 +8,7 @@ import com.example.demo.model.Address;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.DeliveryBoardRepository;
+import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
 import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.CountryEnum;
@@ -20,15 +22,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
@@ -41,6 +43,8 @@ class DeliveryBoardServiceTest {
     private DeliveryBoardRepository mockDeliveryBoardRepository;
     @Mock
     private JpqlBoardQueryRepository mockJpqlBoardQueryRepository;
+    @Mock
+    private AllBoardQueryRepository queryRepository;
     private UserDetailsImpl namRegister;
     private UserDetailsImpl ayaRegister;
     private UserDetailsImpl userDetailsNull;
@@ -58,7 +62,7 @@ class DeliveryBoardServiceTest {
 
         //User: Nam, namBoard: USA
         CountryEnum namCountry = CountryEnum.USA;
-        namPostReq = new DeliveryBoardPostReq("title", "contents", "NewYork", namCountry, 1000);
+        namPostReq = new DeliveryBoardPostReq("namTitle", "contents", "NewYork", namCountry, 1000);
 
         Address namAddress = new Address("Seoul", "Seocho", "132");
         User nam = new User("nam", "1234", "20220404", "123@naver.com", "010-1111-1111", namAddress);
@@ -68,7 +72,7 @@ class DeliveryBoardServiceTest {
 
         //User: aya, ayaBoard: Japan
         CountryEnum ayaCountry = CountryEnum.JP;
-        ayaPostReq = new DeliveryBoardPostReq( "title", "contents", "Sibuya", ayaCountry, 99999);
+        ayaPostReq = new DeliveryBoardPostReq( "ayaTitle", "contents", "Sibuya", ayaCountry, 99999);
 
         Address ayaAddress = new Address("Tokyo", "Sibuya", "155");
         User aya = new User("aya", "1234", "20220528", "999@naver.com", "080-9999-9999", ayaAddress);
@@ -116,7 +120,7 @@ class DeliveryBoardServiceTest {
         log.info("boardSimResList = {}", boardSimResList);
 
         //then
-        assertThat(boardSimResList).isEqualTo(2);
+        assertThat(deliveryBoards).extracting("title").containsExactly("namTitle", "ayaTitle");
     }
 
 
@@ -141,13 +145,16 @@ class DeliveryBoardServiceTest {
     @DisplayName("운송 게시판 상세 조회 성공")
     void getBoardDetailTest() {
         //given
-        when(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).thenReturn(Optional.of(namDeliveryBoard));
+        List<DeliveryBoard> deliveryBoards = new ArrayList<>();
+        deliveryBoards.add(namDeliveryBoard);
+        deliveryBoards.add(ayaDeliveryBoard);
+        List<DeliveryBoardDetailRes> findBoardById = queryRepository.findByDeliveryBoardIdDto(1L);
 
         //when
-        List<DeliveryBoardDetailRes> detailResDto = deliveryBoardService.getBoardDetailV2(namDeliveryBoard.getId());
+        List<DeliveryBoardDetailRes> findBoardId = deliveryBoardService.getBoardDetailV2(1L);
 
         //then
-        assertThat(detailResDto.get(0)).extracting(String.valueOf(namDeliveryBoard.getId()));
+        assertThat(findBoardId).isEqualTo(findBoardById);
     }
 
     @Test

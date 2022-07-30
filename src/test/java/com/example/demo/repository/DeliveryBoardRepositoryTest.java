@@ -6,7 +6,7 @@ import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.util.CountryEnum;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,16 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.demo.model.QDeliveryBoard.deliveryBoard;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 
 @DataJpaTest
 @Transactional
+@Slf4j
 class DeliveryBoardRepositoryTest {
 
     @Autowired
@@ -38,15 +39,9 @@ class DeliveryBoardRepositoryTest {
     private DeliveryBoardPostReq namPostReq;
     private DeliveryBoardPostReq ayaPostReq;
 
-    @Autowired
-    EntityManager em;
-
-    JPAQueryFactory queryFactory;
 
     @BeforeEach
-    public void setUp(){
-
-        queryFactory = new JPAQueryFactory(em);
+    public void setUp() throws Exception{
 
         //User: null
         userDetailsNull = null;
@@ -56,56 +51,34 @@ class DeliveryBoardRepositoryTest {
         User nam = new User("nam", "1234", "20220404", "123@naver.com", "010-1111-1111", namAddress);
 
         CountryEnum namCountry = CountryEnum.USA;
-        namPostReq = new DeliveryBoardPostReq("title", "contents", "NewYork", namCountry, 1000);
+        namPostReq = new DeliveryBoardPostReq("namTitle", "contents", "NewYork", namCountry, 1000);
 
         namRegister =  new UserDetailsImpl(nam);
         namDeliveryBoard = new DeliveryBoard(namPostReq, namRegister.getUser());
-        em.persist(namDeliveryBoard);
+        deliveryBoardRepository.save(namDeliveryBoard);
 
         //User: aya, ayaBoard: Japan
         CountryEnum ayaCountry = CountryEnum.JP;
-        ayaPostReq = new DeliveryBoardPostReq( "title", "contents", "Sibuya", ayaCountry, 99999);
+        ayaPostReq = new DeliveryBoardPostReq( "ayaTitle", "contents", "Sibuya", ayaCountry, 99999);
 
         Address ayaAddress = new Address("Tokyo", "Sibuya", "155");
         User aya = new User("aya", "1234", "20220528", "999@naver.com", "080-9999-9999", ayaAddress);
 
         ayaRegister = new UserDetailsImpl(aya);
         ayaDeliveryBoard = new DeliveryBoard(ayaPostReq, ayaRegister.getUser());
-        em.persist(ayaDeliveryBoard);
-    }
-
-    @Test
-    public void BoardAll(){
-        em.flush();
-        em.clear();
-
-        List<DeliveryBoard> result = queryFactory
-                .selectFrom(deliveryBoard)
-                .join(deliveryBoard.user)
-                .join(deliveryBoard.deliComments)
-                .fetchJoin()
-                .orderBy(deliveryBoard.createdAt.desc())
-                .fetch();
-        for (DeliveryBoard board : result) {
-            System.out.println("board = " + board);
-        }
+        deliveryBoardRepository.save(ayaDeliveryBoard);
     }
 
 
     @Test
     @DisplayName("전체 운송 게시글 조회")
     void findAllByOrderByCreatedAtDesc() {
-        //given
-        deliveryBoardRepository.save(namDeliveryBoard);
-        deliveryBoardRepository.save(ayaDeliveryBoard);
-
-        //when
-        List<DeliveryBoard> deliveryBoards = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
+        //give && when
+        List<DeliveryBoard> findByAllBoard = deliveryBoardRepository.findAllByOrderByCreatedAtDesc();
 
         //then
-        assertThat(deliveryBoards.size()).isEqualTo(2);
-        assertThat(deliveryBoards).contains(namDeliveryBoard, ayaDeliveryBoard);
-        assertThat(deliveryBoards).extracting("title").containsExactly("title", "title");
+        assertThat(findByAllBoard.size()).isEqualTo(2);
+        assertThat(findByAllBoard).contains(namDeliveryBoard, ayaDeliveryBoard);
 
     }
 
@@ -122,13 +95,14 @@ class DeliveryBoardRepositoryTest {
     }
 
 
+    //*
     @Test
     @DisplayName("운송 게시글 저장")
     void saveDeliveryBoard(){
         //given
         DeliveryBoard saveBoard = deliveryBoardRepository.save(namDeliveryBoard);
         //when & then
-        Assertions.assertThat(saveBoard.getId()).isEqualTo(1L);
+        Assertions.assertThat(saveBoard.getTitle()).isEqualTo("namTitle");
     }
 
     @Test

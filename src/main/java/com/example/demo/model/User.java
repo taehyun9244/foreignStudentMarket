@@ -30,8 +30,8 @@ public class User extends Timestamped{
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "user")
-    private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
+//    @OneToMany(mappedBy = "user")
+//    private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
 
     @OneToMany(mappedBy = "user")
     private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();

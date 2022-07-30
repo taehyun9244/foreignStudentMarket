@@ -11,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -57,14 +60,17 @@ class UserRepositoryTest {
     @Test
     @DisplayName("중복유저 아이디 회원가입 실패")
     void saveUserFail(){
+        //given
+        userRepository.save(namUser);
 
-        //given & when
-        User nam = userRepository.save(namUser);
-        //then
-        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class,
-                ()->  userRepository.save(doUser));
-    }
-
+        //when & then
+        try {
+            userRepository.save(doUser);
+        }catch (IllegalArgumentException e){
+            Assertions.assertThat(e.getMessage()).isEqualTo("이미 등록되어 있는 아이디 입니다");
+            fail();
+        }    }
+    
     @Test
     @DisplayName("중복유저 번호로 회원가입 실패")
     void findByDuplicatePhoneNumber() {
@@ -72,11 +78,13 @@ class UserRepositoryTest {
         //given
         userRepository.save(ayaUser);
 
-        //when
-        User doUserPhone = userRepository.save(doUser);
-
-        //then
-        Assertions.fail("등록된 핸드폰 번호입니다").equals(doUserPhone.getPhoneNumber());
+        //when & then
+        try {
+            userRepository.save(doUser);
+        }catch (IllegalArgumentException e){
+            Assertions.assertThat(e.getMessage()).isEqualTo("이미 등록되어 있는 번호 입니다");
+            fail();
+        }
     }
 
 

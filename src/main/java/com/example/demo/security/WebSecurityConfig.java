@@ -48,18 +48,17 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
+                .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy((SessionCreationPolicy.STATELESS))//세션정책, jwt토큰 사용을 위해 STATELESS
                 .and()
-                .headers().frameOptions().disable()
+                    .headers().frameOptions().disable()
                 .and()
-                    .httpBasic().disable()
                     .authorizeRequests()
+                    .mvcMatchers("/user/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
 
     }

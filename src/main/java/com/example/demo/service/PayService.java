@@ -48,7 +48,8 @@ public class PayService {
         log.info("orderItem.getStatus ={}", orderItem.getOrderStatus());
         log.info("exist = {}", exist);
 
-        if (exist == true && orderItem.getOrderStatus().equals(OrderStatus.ORDER.getCode())){
+        if (exist == true && orderItem.getOrderStatus().equals(OrderStatus.ORDER.getCode()))
+            if (orderItem.getItemPrice() == payReq.getItemPrice()) {
             Pay pay = new Pay(payer, orderItem, payReq);
             payRepository.save(pay);
         }else throw new RuntimeException("존재하지 않는 상품입니다");
