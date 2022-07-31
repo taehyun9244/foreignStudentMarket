@@ -32,9 +32,11 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(Long id){
-        Map<String, Object> claims = new HashMap<>();
+    public String createToken(Long id, String username){
+//        Map<String, Object> claims = new HashMap<>();
+        Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", id);
+        claims.put("username", username);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장

@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.DeliCommentRes;
 import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
 import com.example.demo.dto.reponse.DeliveryBoardSimRes;
 import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.dto.request.DeliveryBoardPostReq;
+import com.example.demo.jwt.JwtAccessDeniedHandler;
+import com.example.demo.jwt.JwtAuthenticationEntryPoint;
 import com.example.demo.jwt.JwtTokenProvider;
 import com.example.demo.model.Address;
 import com.example.demo.model.DeliComment;
@@ -30,19 +31,24 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,10 +62,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DeliveryBoardControllerTest {
 
     private MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext context;
+    private Principal mockPrincipal;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private WebApplicationContext context;
     @MockBean
     private DeliveryBoardService boardService;
     @MockBean
@@ -72,6 +79,10 @@ class DeliveryBoardControllerTest {
     private AuthenticationManager authenticationManager;
     @MockBean
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @MockBean
+    private JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     private UserDetailsImpl userDetailsNull;
     private UserDetailsImpl namRegister;
@@ -107,11 +118,14 @@ class DeliveryBoardControllerTest {
         boardSimRes = new DeliveryBoardSimRes(namDeliveryBoard);
         boardSimResList.add(boardSimRes);
 
+        mockPrincipal = new UsernamePasswordAuthenticationToken(namRegister, "", Collections.emptyList());
+
     }
 
     @Test
     @DisplayName("전체 운송 게시글 조회")
     void getBoardSim() throws Exception{
+
         when(boardService.getBoardSimV2(Pageable.ofSize(10))).thenReturn((Response) boardSimResList);
 
         this.mockMvc.perform(get("/deliveryBoards")
@@ -142,11 +156,11 @@ class DeliveryBoardControllerTest {
         commentList.add(namComment);
 
         DeliveryBoardDetailRes boardDetailRes = new DeliveryBoardDetailRes(namDeliveryBoard);
-        when(boardService.getBoardDetailV2(namDeliveryBoard.getId())).thenReturn(Collections.singletonList(boardDetailRes));
+        doReturn(boardDetailRes).when(boardService.getBoardDetailV2(namDeliveryBoard.getId()));
 
-        this.mockMvc.perform(get("/deliveryBoards")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON_VALUE))
+        this.mockMvc.perform(get("/deliveryBoards/{deliveryBoardId}", namDeliveryBoard.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(namDeliveryBoard.getId()))
@@ -167,6 +181,14 @@ class DeliveryBoardControllerTest {
     @Test
     @DisplayName("게시글 생성")
     void creatDeliveryBoard() throws Exception{
+
+        this.mockMvc.perform(get("/deliveryBoards")
+                .principal(mockPrincipal)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .characterEncoding("utf-8").content(objectMapper.writeValueAsString(namPostReq)))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -177,6 +199,11 @@ class DeliveryBoardControllerTest {
     @Test
     @DisplayName("게시글 삭제")
     void deleteDeliveryBoard() throws Exception{
+    }
+
+    @Test
+    @DisplayName("비회원 게시글 생성 불가")
+    void failCreatBoard() throws Exception{
     }
 
     @Test

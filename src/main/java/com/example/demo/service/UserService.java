@@ -53,7 +53,7 @@ public class UserService {
             throw new RuntimeException("잘못된 비밀번호입니다");
         }
 
-        String token = jwtTokenProvider.createToken(user.getId());
+        String token = jwtTokenProvider.createToken(user.getId(), user.getUsername());
         jwtTokenProvider.getAuthentication(token);
         return token;
     }

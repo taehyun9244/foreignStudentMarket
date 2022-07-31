@@ -1,7 +1,10 @@
 package com.example.demo.security;
 
+import com.example.demo.jwt.JwtAccessDeniedHandler;
+import com.example.demo.jwt.JwtAuthenticationEntryPoint;
 import com.example.demo.jwt.JwtAuthenticationFilter;
 import com.example.demo.jwt.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,14 +20,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true)
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
-
-    WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -48,21 +50,26 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic().disable()
+                .cors();
+        http
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy((SessionCreationPolicy.STATELESS))//세션정책, jwt토큰 사용을 위해 STATELESS
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
-                    .headers().frameOptions().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http
+                .headers().frameOptions().disable();
+        http
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/user/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/deliveryBoards/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/communities/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/markets/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                    .authorizeRequests()
-                    .mvcMatchers("/user/**").permitAll()
-                    .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .and()
-                    .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
-
-
-
 }

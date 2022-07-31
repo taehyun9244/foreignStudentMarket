@@ -23,8 +23,6 @@ public class UserController {
     //로그인 api
     @PostMapping("/user/login")
     public String createToken(@RequestBody LoginReq loginReq){
-        return userService.createToken(loginReq);
+         return userService.createToken(loginReq);
     }
-
-
 }
