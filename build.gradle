@@ -62,6 +62,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-inline
     testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.8.0'
 
+    /// https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path
+    implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+
+
 
 }
 
