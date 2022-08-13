@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.reponse.Response;
+import com.example.demo.dto.reponse.DeliCommentRes;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliCommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class DeliCommentController {
 
     //Delivery 댓글조회 Querydsl -> Dto
     @GetMapping("/deliveryBoards/{deliveryBoardId}/comments/v1")
-    public Response getDeliCommentV2(Pageable pageable){
+    public Page<DeliCommentRes> getDeliCommentV2(Pageable pageable){
         return deliCommentService.getDeliCommentV2(pageable);
     }
 

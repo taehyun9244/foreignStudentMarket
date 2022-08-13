@@ -1,19 +1,17 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.Response;
+import com.example.demo.dto.reponse.OrderListRes;
 import com.example.demo.dto.request.OrderReq;
 import com.example.demo.model.Order;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.demo.model.QOrder.order;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import java.util.List;
 
 
 @RestController
@@ -39,14 +37,14 @@ public class OrderController {
 
     //주문상품 리스트 조회 JPA
     @GetMapping("/v1/orders/orderItems")
-    public Response orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public List<OrderListRes> orderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return orderService.findOrderList(userDetails);
     }
 
 
     //주문상품 리스트 조회 QueryDsl
     @GetMapping("/v2/orders/orderItems")
-    public Response orderListV2(@AuthenticationPrincipal UserDetailsImpl userDetails, Pageable pageable){
+    public Page<OrderListRes> orderListV2(@AuthenticationPrincipal UserDetailsImpl userDetails, Pageable pageable){
         return orderService.findOrderListV2(pageable, userDetails);
     }
 

@@ -220,4 +220,8 @@ public class AllBoardQueryRepository {
     private BooleanExpression marketBoardIdEq(Long id) {
         return id != null ? marketBoard.id.eq(id) : marketBoard.isNull();
     }
+
+//    public DeliveryBoardDetailRes findByBoardIdDto(Long boardId) {
+////        queryFactory.select(communityBoard)
+//    }
 }

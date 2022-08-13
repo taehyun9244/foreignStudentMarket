@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 
+import com.example.demo.dto.request.LoginReq;
 import com.example.demo.dto.request.SignUpReq;
+import com.example.demo.jwt.JwtTokenProvider;
 import com.example.demo.model.Address;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
@@ -18,6 +20,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
@@ -29,6 +35,8 @@ class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+    @InjectMocks
+    private JwtTokenProvider jwtTokenProvider;
     @Mock
     private UserRepository mockUserRepository;
     @Spy
@@ -37,6 +45,8 @@ class UserServiceTest {
     private SignUpReq namSignUpReq;
     private SignUpReq ayaSignUpReq;
     private SignUpReq doSignUpReq;
+    private LoginReq loginReq;
+    private UserDetailsImpl namRegister;
 
     @BeforeEach
     public void setUp(){
@@ -52,6 +62,11 @@ class UserServiceTest {
         doSignUpReq = new SignUpReq("nam", mockPasswordEncoder.encode("1234"), "20220528",
                 "999@naver.com", "080-9999-9999", doAddress);
 
+        loginReq = new LoginReq("nam", mockPasswordEncoder.encode("1234"));
+
+        User nam = new User("nam", "1234", "20220404", "123@naver.com",
+                "010-1111-1111", namAddress);
+        namRegister = new UserDetailsImpl(nam);
     }
 
     @Test
@@ -63,7 +78,7 @@ class UserServiceTest {
         try {
             userService.registerUser(doSignUpReq);
         }catch (IllegalArgumentException e){
-            Assertions.assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다 or 이미 등록되어 있는 아이디 입니다");
+            assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다 or 이미 등록되어 있는 아이디 입니다");
             fail();
         }
 
@@ -79,7 +94,7 @@ class UserServiceTest {
         try {
             userService.registerUser(doSignUpReq);
         }catch (IllegalArgumentException e){
-            Assertions.assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다 or 이미 등록되어 있는 번호입니다");
+            assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다 or 이미 등록되어 있는 번호입니다");
             fail();
         }
     }
@@ -97,5 +112,36 @@ class UserServiceTest {
 
         //then
         verify(mockUserRepository).save(argThat(User -> User.getUsername().equals("nam")));
+    }
+
+    @Test
+    @DisplayName("로그인 성공")
+    void successLogin() {
+
+    }
+
+    @Test
+    @DisplayName("틀린 비밀번호로 로그인 실패")
+    void wrongPassword() {
+        //given
+        LoginReq wrongPassword = new LoginReq("nam", mockPasswordEncoder.encode("1111"));
+        given(mockUserRepository.findByUsername(loginReq.getUsername())).willReturn(Optional.ofNullable(namRegister.getUser()));
+
+        //when
+        assertThatThrownBy(()-> userService.createToken(wrongPassword))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("잘못된 비밀번호입니다");
+    }
+
+    @Test
+    @DisplayName("틀린 아이디로 로그인 실패")
+    void wrongUsername() {
+        //given
+        LoginReq wrongUsername = new LoginReq("aya", mockPasswordEncoder.encode("1234"));
+
+        //when
+        assertThatThrownBy(()-> userService.createToken(wrongUsername))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("가입되지 않은 유저입니다");
     }
 }

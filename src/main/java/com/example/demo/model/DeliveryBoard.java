@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.reponse.DeliCommentRes;
 import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.util.CountryEnum;
 import com.example.demo.util.Timestamped;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class DeliveryBoard extends Timestamped {
 
@@ -74,4 +76,7 @@ public class DeliveryBoard extends Timestamped {
     public void removeComment(int count){
         this.countComment = countComment - 1;
     }
+
 }
+
+

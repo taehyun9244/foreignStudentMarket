@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.MarketDetailRes;
-import com.example.demo.dto.reponse.Response;
+import com.example.demo.dto.reponse.MarketSimRes;
 import com.example.demo.dto.request.MarketPostReq;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.MarketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class MarketController {
 
     //전체 중고게시글 조회 QueryDsl -> Dto
     @GetMapping("/markets")
-     public Response getAllListMarketV2(Pageable pageable){
+     public Page<MarketSimRes> getAllListMarketV2(Pageable pageable){
        return marketService.getAllListMarketV2(pageable);
     }
 

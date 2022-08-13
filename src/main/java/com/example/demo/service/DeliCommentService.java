@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.reponse.DeliCommentRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliCommentPostReq;
 import com.example.demo.model.DeliComment;
 import com.example.demo.model.DeliveryBoard;
@@ -37,20 +36,20 @@ public class DeliCommentService {
 
     //DeliveryBoard 댓글 조회 JPA
     @Transactional(readOnly = true)
-    public Response getDeliComment(Long deliveryBoardId){
+    public List<DeliCommentRes> getDeliComment(Long deliveryBoardId){
         List<DeliComment> findDeliBoardComment = deliCommentRepository.findAllByDeliveryBoardIdOrderByCreatedAtDesc(deliveryBoardId);
         List<DeliCommentRes> resDtos = findDeliBoardComment.stream()
                 .map(deliComment -> new DeliCommentRes(deliComment))
                 .collect(toList());
-        return new Response<>(resDtos);
+        return resDtos;
     }
 
     //댓글 조회 QueryDsl -> Dto
     @Transactional(readOnly = true)
-    public Response getDeliCommentV2(Pageable pageable) {
+    public Page<DeliCommentRes> getDeliCommentV2(Pageable pageable) {
         Page<DeliCommentRes> findDeliBoardComment = allCommentQueryRepository.findDeliCommentDto(pageable);
         log.info("findDeliBoardComment={}", findDeliBoardComment);
-        return new Response<>(findDeliBoardComment);
+        return findDeliBoardComment;
     }
 
     //DeliveryBoard 댓글 작성

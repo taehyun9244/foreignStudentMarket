@@ -1,12 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
-import com.example.demo.dto.reponse.Response;
+import com.example.demo.dto.reponse.DeliveryBoardSimRes;
 import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.DeliveryBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class DeliveryBoardController {
 
     //운송 게시글 전체 조회 Jpql
     @GetMapping("/deliveryBoards/v1")
-    public Response getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
-                                @RequestParam(value = "limit", defaultValue = "100")int limit) {
+    public List<DeliveryBoardSimRes> getBoardSim(@RequestParam(value ="offset", defaultValue = "0") int offset,
+                                                 @RequestParam(value = "limit", defaultValue = "100")int limit) {
         return deliveryBoardService.getBoardSim(offset, limit);
     }
 
@@ -35,7 +36,7 @@ public class DeliveryBoardController {
 
     //운송 게시글 전체 조회 querydsl-> dto 조회
     @GetMapping("/deliveryBoards")
-    public Response getBoardSimV2(Pageable pageable) {
+    public Page<DeliveryBoardSimRes> getBoardSimV2(Pageable pageable) {
         return deliveryBoardService.getBoardSimV2(pageable);
     }
 

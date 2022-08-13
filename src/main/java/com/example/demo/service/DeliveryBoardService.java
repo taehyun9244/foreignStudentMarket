@@ -3,7 +3,6 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
 import com.example.demo.dto.reponse.DeliveryBoardSimRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.model.DeliveryBoard;
 import com.example.demo.model.User;
@@ -37,23 +36,23 @@ public class DeliveryBoardService {
 
     //운송 게시글 전체 조회 jpql
     @Transactional(readOnly = true)
-    public Response getBoardSim(int offset, int limit) {
+    public List<DeliveryBoardSimRes> getBoardSim(int offset, int limit) {
         List<DeliveryBoard> deliveryBoards = queryRepository.findAllDeliBoard(offset, limit);
         List<DeliveryBoardSimRes> collect = deliveryBoards.stream()
                 .map(deliveryBoard -> new DeliveryBoardSimRes(deliveryBoard))
                 .collect(Collectors.toList());
-        return new Response(collect);
+        return collect;
     }
 
 
     //운송 게시글 전체 조회 QueryDsl -> dto
     @Transactional(readOnly = true)
-    public Response getBoardSimV2(Pageable pageable) {
+    public Page<DeliveryBoardSimRes> getBoardSimV2(Pageable pageable) {
         Page<DeliveryBoardSimRes> deliveryBoards = allBoardQueryRepository.findByDeliveryBoardAllDto(pageable);
         for (DeliveryBoardSimRes deliveryBoard : deliveryBoards) {
             log.info("deliveryBoard = {}", deliveryBoard);
         }
-        return new Response(deliveryBoards);
+        return deliveryBoards;
     }
 
 
@@ -64,6 +63,11 @@ public class DeliveryBoardService {
         log.info("findById ={}", findById);
         return findById;
     }
+
+//    public DeliveryBoardDetailRes findBoardId(Long boardId){
+//        DeliveryBoardDetailRes findById = allBoardQueryRepository.findByBoardIdDto(boardId);
+//        return findById;
+//    }
 
 
     //운송 게시글 작성

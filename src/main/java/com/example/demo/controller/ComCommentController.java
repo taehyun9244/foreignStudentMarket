@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.reponse.Response;
+import com.example.demo.dto.reponse.ComCommentRes;
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.service.ComCommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ComCommentController {
 
     //Community 댓글조회
     @GetMapping
-    public Response getComCommentV2(Pageable pageable){
+    public Page<ComCommentRes> getComCommentV2(Pageable pageable){
         return comCommentService.getComCommentV2(pageable);
     }
 

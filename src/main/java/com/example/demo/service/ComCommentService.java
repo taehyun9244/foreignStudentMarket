@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.reponse.ComCommentRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.ComCommentPostReq;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.CommunityComment;
@@ -33,19 +32,19 @@ public class ComCommentService {
 
     //커뮤니티 게시판의 댓글 조회 JPA
     @Transactional(readOnly = true)
-    public Response getComComment(Long communityBoardId) {
+    public List<ComCommentRes> getComComment(Long communityBoardId) {
         List<CommunityComment>  communityComments = comCommentRepository.findAllByCommunityBoardIdOrderByCreatedAtDesc(communityBoardId);
         List<ComCommentRes> resDtos = communityComments.stream()
                 .map(communityComment -> new ComCommentRes(communityComment))
                 .collect(Collectors.toList());
-        return new Response<>(resDtos);
+        return resDtos;
     }
 
     //커뮤니티 게시판의 댓글 조회 QueryDsl -> Dto
     @Transactional(readOnly = true)
-    public Response getComCommentV2(Pageable pageable) {
+    public Page<ComCommentRes> getComCommentV2(Pageable pageable) {
         Page<ComCommentRes> communityComments = allCommentQueryRepository.findComCommentDto(pageable);
-        return new Response<>(communityComments);
+        return communityComments;
     }
 
     //커뮤니티 게시판의 댓글 생성

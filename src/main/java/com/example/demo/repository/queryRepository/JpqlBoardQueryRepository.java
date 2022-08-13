@@ -1,9 +1,7 @@
 package com.example.demo.repository.queryRepository;
 
 
-import com.example.demo.model.CommunityBoard;
-import com.example.demo.model.DeliveryBoard;
-import com.example.demo.model.MarketBoard;
+import com.example.demo.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -42,6 +40,26 @@ public class JpqlBoardQueryRepository {
         return em.createQuery(
                 "select mk from MarketBoard  mk" +
                         " join fetch mk.user u", MarketBoard.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    //주문 전체조회 쿼리성능
+    public List<Order> findAllOrder(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order  o" +
+                        " join fetch o.user u", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    //결제 전체조회 쿼리성능
+    public List<Pay> findAllPay(int offset, int limit) {
+        return em.createQuery(
+                "select p from Pay  p" +
+                        " join fetch p.user u", Pay.class)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();

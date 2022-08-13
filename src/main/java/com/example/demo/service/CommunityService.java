@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.ComBoardDetailRes;
 import com.example.demo.dto.reponse.ComBoardSimRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.ComBoardPostReq;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
@@ -20,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,7 +28,6 @@ import java.util.List;
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
-
     private final JpqlBoardQueryRepository queryRepository;
     private final UserRepository userRepository;
     private final AllBoardQueryRepository allBoardQueryRepository;
@@ -36,19 +35,19 @@ public class CommunityService {
 
     //커뮤니티 게시판 전체조회 Jpql
     @Transactional(readOnly = true)
-    public Response getCommunityBoard(int offset, int limit) {
+    public List<ComBoardSimRes> getCommunityBoard(int offset, int limit) {
         List<CommunityBoard> communityBoards = queryRepository.findAllComBoard(offset, limit);
         List<ComBoardSimRes> simResDtos = new ArrayList<>();
         for (CommunityBoard communityBoard : communityBoards)
             simResDtos.add(new ComBoardSimRes(communityBoard));
-        return new Response<>(simResDtos);
+        return simResDtos;
     }
 
     //커뮤니티 게시판 전체조회 QueryDsl -> dto
     @Transactional(readOnly = true)
-    public Response getCommunityBoardV2(Pageable pageable) {
+    public Page<ComBoardSimRes> getCommunityBoardV2(Pageable pageable) {
         Page<ComBoardSimRes> communityBoards = allBoardQueryRepository.findCommunityBoardAllDto(pageable);
-        return new Response<>(communityBoards);
+        return communityBoards;
     }
 
     //커뮤니티 게시판 상세조회 QueryDsl -> dto
@@ -70,13 +69,13 @@ public class CommunityService {
     }
 
     //커뮤니티 게시판 수정
-    public void editCommunityBoard(Long communityBoardId, ComBoardDetailRes detailDto, UserDetailsImpl userDetails) {
+    public void editCommunityBoard(Long communityBoardId, ComBoardPostReq postReq, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         CommunityBoard communityBoard = communityRepository.findById(communityBoardId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않은 게시글입니다")
         );
         if (user.getUsername().equals(communityBoard.getUser().getUsername())){
-            communityBoard.editCommunityBoard(detailDto);
+            communityBoard.editCommunityBoard(postReq);
         }else throw new RuntimeException("게시글 작성자가 아닙니다");
     }
 

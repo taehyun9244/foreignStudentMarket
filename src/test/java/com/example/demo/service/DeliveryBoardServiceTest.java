@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.DeliveryBoardDetailRes;
 import com.example.demo.dto.reponse.DeliveryBoardSimRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.DeliveryBoardPostReq;
 import com.example.demo.model.Address;
 import com.example.demo.model.DeliveryBoard;
@@ -116,7 +115,7 @@ class DeliveryBoardServiceTest {
 
         //when
         when(mockJpqlBoardQueryRepository.findAllDeliBoard(0, 1)).thenReturn(deliveryBoards);
-        Response<List<DeliveryBoardSimRes>> boardSimResList = deliveryBoardService.getBoardSim(0, 1);
+        List<DeliveryBoardSimRes> boardSimResList = deliveryBoardService.getBoardSim(0, 1);
         log.info("boardSimResList = {}", boardSimResList);
 
         //then
@@ -182,7 +181,7 @@ class DeliveryBoardServiceTest {
 
         //then
         assertThat(namDeliveryBoard.getUser()).isEqualTo(namRegister.getUser());
-        org.assertj.core.api.Assertions.assertThat(namDeliveryBoard.getTitle()).isEqualTo("미국배송모집합니다");
+        assertThat(namDeliveryBoard.getTitle()).isEqualTo("미국배송모집합니다");
     }
 
     @Test

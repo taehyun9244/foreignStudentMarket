@@ -51,8 +51,7 @@ public class CommunityBoard extends Timestamped {
     }
 
     //커뮤니티 게시글 수정 생성자
-    public void editCommunityBoard(ComBoardDetailRes editDto) {
-        this.id = editDto.getId();
+    public void editCommunityBoard(ComBoardPostReq editDto) {
         this.title = editDto.getTitle();
         this.subtitle = editDto.getSubtitle();
         this.body = editDto.getContents();

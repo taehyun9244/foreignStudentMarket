@@ -30,17 +30,6 @@ public class User extends Timestamped{
     @Embedded
     private Address address;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<DeliveryBoard> deliveryBoards = new ArrayList<DeliveryBoard>();
-
-    @OneToMany(mappedBy = "user")
-    private List<CommunityBoard> communityBoards = new ArrayList<CommunityBoard>();
-
-    @OneToMany(mappedBy = "user")
-    private List<DeliComment> comments = new ArrayList<DeliComment>();
-
-    @OneToMany(mappedBy = "user")
-    private List<CommunityComment> communityComments = new ArrayList<CommunityComment>();
 
     @OneToMany(mappedBy = "user")
     private List<MarketBoard> marketBoards = new ArrayList<MarketBoard>();
@@ -54,8 +43,6 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user")
     private List<Delivery> deliveries = new ArrayList<Delivery>();
 
-    @OneToMany(mappedBy = "user")
-    private List<UploadFile> uploadFiles = new ArrayList<UploadFile>();
 
     //유저 회원가입
     public User(String username, String password, String birthday, String email, String phoneNumber, Address address) {

@@ -1,11 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.reponse.OrderListRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.OrderReq;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.Order;
-import com.example.demo.model.Pay;
 import com.example.demo.model.User;
 import com.example.demo.repository.MarketRepository;
 import com.example.demo.repository.OrderRepository;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +66,7 @@ public class OrderService {
 
     //주문상품 리스트 조회
     @Transactional(readOnly = true)
-    public Response findOrderList(UserDetailsImpl userDetails) {
+    public List<OrderListRes> findOrderList(UserDetailsImpl userDetails) {
          User user = userDetails.getUser();
          User buyer = userRepository.findByUsername(user.getUsername()).orElseThrow(
                  ()-> new RuntimeException("존재하지 않는 회원입니다")
@@ -78,14 +75,14 @@ public class OrderService {
         List<OrderListRes> collect = orders.stream()
                 .map(order -> new OrderListRes(order))
                 .collect(Collectors.toList());
-        return new Response(collect);
+        return collect;
     }
 
     //주문상품 리스트 조회 QueryDsl -> Dto
     @Transactional(readOnly = true)
-    public Response findOrderListV2(Pageable pageable, UserDetailsImpl userDetails) {
+    public Page<OrderListRes> findOrderListV2(Pageable pageable, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         Page<OrderListRes> orders = orderQueryRepository.findOrderList(pageable, user.getUsername());
-        return new Response(orders);
+        return orders;
     }
 }

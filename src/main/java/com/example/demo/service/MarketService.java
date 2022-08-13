@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.dto.reponse.MarketDetailRes;
 import com.example.demo.dto.reponse.MarketSimRes;
-import com.example.demo.dto.reponse.Response;
 import com.example.demo.dto.request.MarketPostReq;
 import com.example.demo.model.MarketBoard;
 import com.example.demo.model.UploadFile;
@@ -40,20 +39,20 @@ public class MarketService {
 
     //전체 게시글 조회 Jpql
     @Transactional(readOnly = true)
-    public Response getAllListMarket(int offset, int limit) {
+    public List<MarketSimRes> getAllListMarket(int offset, int limit) {
         List<MarketBoard> marketBoards = queryRepository.findAllMarket(offset, limit);
         List<MarketSimRes> collect = marketBoards.stream()
                 .map(marketBoard -> new MarketSimRes(marketBoard))
                 .collect(Collectors.toList());
-        return new Response(collect);
+        return collect;
     }
 
     //전체 게시글 조회 QueryDsl -> dto
     @Transactional(readOnly = true)
-    public Response getAllListMarketV2(Pageable pageable) {
+    public Page<MarketSimRes> getAllListMarketV2(Pageable pageable) {
         Page<MarketSimRes> marketBoards = allBoardQueryRepository.findMarketBoardAllDto(pageable);
         log.info("marketBoards ={}", marketBoards);
-        return new Response(marketBoards);
+        return marketBoards;
     }
 
 
@@ -97,10 +96,12 @@ public class MarketService {
                 () -> new RuntimeException("존재하지 않는 게시글 입니다")
         );
         if (writer.equals(findBoard.getUser())) {
-            List<UploadFile> uploadFiles = fileStore.saveFiles(marketId ,multipartFiles, userDetails);
+            List<UploadFile> uploadFiles = fileStore.saveFiles(marketId , multipartFiles, userDetails);
             List<UploadFile> saveImages = uploadFileRepository.saveAll(uploadFiles);
             MarketBoard editMarketBoard = new MarketBoard(postReq, saveImages);
             marketRepository.save(editMarketBoard);
+        }else {
+            throw new RuntimeException("게시글 작성자가 아닙니다");
         }
         return new MarketBoard();
     }
@@ -117,6 +118,8 @@ public class MarketService {
         );
         if (writer.equals(findBoard.getUser())){
             marketRepository.delete(findBoard);
+        }else {
+            throw new RuntimeException("게시글 작성자가 아닙니다");
         }
     }
 }
