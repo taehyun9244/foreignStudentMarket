@@ -59,11 +59,12 @@
 
 --- 
 
-## 사용한 Stack
+## Stack
 
 - Java11
 - SpringBoot2.6.3
-- JPA
+- Spring Security
+- Spring Data Jpa
 - QueryDSL 5.0.0
 - H2 DataBase
 
