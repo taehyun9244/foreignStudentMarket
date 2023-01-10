@@ -9,6 +9,7 @@ import com.example.demo.model.CommunityComment;
 import com.example.demo.model.User;
 import com.example.demo.repository.ComCommentRepository;
 import com.example.demo.repository.CommunityRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.queryRepository.AllCommentQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
 import org.junit.jupiter.api.Assertions;
@@ -39,6 +40,8 @@ class ComCommentServiceTest {
     private ComCommentService commentService;
     @Mock
     private ComCommentRepository comCommentRepository;
+    @Mock
+    private UserRepository userRepository;
     @Mock
     private CommunityRepository boardRepository;
     @Mock
@@ -112,14 +115,15 @@ class ComCommentServiceTest {
     @Test
     @DisplayName("댓글 생성")
     void creatComment() {
-        //given && when
-        doReturn(new CommunityComment(namRegister.getUser(), commentPostReq, namCommunityBoard))
-                .when(comCommentRepository).save(any(CommunityComment.class));
+        //given
+        given(userRepository.findByUsername(namRegister.getUsername())).willReturn(Optional.ofNullable(namRegister.getUser()));
+        given(boardRepository.findById(namCommunityBoard.getId())).willReturn(Optional.ofNullable(namCommunityBoard));
 
-        CommunityComment communityComment = comCommentRepository.save(namComment);
+        //when
+        commentService.creatComComment(namRegister, commentPostReq, namCommunityBoard.getId());
 
         //then
-        assertThat(communityComment.getCommunityBoard()).isEqualTo(namCommunityBoard);
+        verify(comCommentRepository, times(0)).save(namComment);
     }
 
     @Test

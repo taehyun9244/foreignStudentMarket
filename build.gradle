@@ -69,6 +69,12 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
+    // https://mvnrepository.com/artifact/com.tngtech.archunit/archunit-junit5
+    testImplementation group: 'com.tngtech.archunit', name: 'archunit-junit5', version: '0.13.1'
+
+    // https://mvnrepository.com/artifact/org.testcontainers/testcontainers
+    testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.17.3'
+
 }
 
 //querydsl 추가 시작

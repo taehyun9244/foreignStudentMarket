@@ -20,14 +20,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +47,8 @@ class DeliveryBoardServiceTest {
     private DeliveryBoardRepository mockDeliveryBoardRepository;
     @Mock
     private JpqlBoardQueryRepository mockJpqlBoardQueryRepository;
+    @Mock
+    private AllBoardQueryRepository allBoardQueryRepository;
     @Mock
     private AllBoardQueryRepository queryRepository;
     private UserDetailsImpl namRegister;
@@ -81,7 +88,7 @@ class DeliveryBoardServiceTest {
     }
 
     @Test
-    @DisplayName("운송 게시판 작성 실패")
+    @DisplayName("비회원 운송 게시판 작성 실패")
     void creatDeliveryBoardFailTest() {
         //given
         UserDetailsImpl userDetails = userDetailsNull;
@@ -106,7 +113,7 @@ class DeliveryBoardServiceTest {
     }
 
     @Test
-    @DisplayName("운송 게시판 전체 조회")
+    @DisplayName("운송 게시판 전체 조회 jpql")
     void getBoardSimTest() {
         //given
         List<DeliveryBoard> deliveryBoards = new ArrayList<>();
@@ -120,6 +127,31 @@ class DeliveryBoardServiceTest {
 
         //then
         assertThat(deliveryBoards).extracting("title").containsExactly("namTitle", "ayaTitle");
+    }
+
+    @Test
+    @DisplayName("운송 게시판 전체 조회 querydsl")
+    void findAllBoardQuerydsl() {
+        //given
+        List<DeliveryBoardSimRes> boardSimResList = new ArrayList<>();
+        DeliveryBoardSimRes deliveryBoardSimRes1 = new DeliveryBoardSimRes(namDeliveryBoard);
+        DeliveryBoardSimRes deliveryBoardSimRes2 = new DeliveryBoardSimRes(ayaDeliveryBoard);
+
+        boardSimResList.add(deliveryBoardSimRes1);
+        boardSimResList.add(deliveryBoardSimRes2);
+
+        Page<DeliveryBoardSimRes> deliveryBoardSimResPage = new PageImpl<>(boardSimResList);
+
+        given(allBoardQueryRepository.findByDeliveryBoardAllDto(Pageable.ofSize(10))).willReturn(deliveryBoardSimResPage);
+
+        //when
+        Page<DeliveryBoardSimRes> findAllBoard = deliveryBoardService.getBoardSimV2(Pageable.ofSize(10));
+
+        //then
+        assertThat(findAllBoard.getTotalElements()).isEqualTo(2);
+        assertThat(findAllBoard.toList().contains(namDeliveryBoard));
+        assertThat(findAllBoard.toList().contains(ayaDeliveryBoard));
+
     }
 
 
@@ -154,6 +186,19 @@ class DeliveryBoardServiceTest {
 
         //then
         assertThat(findBoardId).isEqualTo(findBoardById);
+    }
+
+    @Test
+    @DisplayName("운송 게시글 상세 조회 jpa")
+    void findOneBoardJpa() {
+        //given
+        given(mockDeliveryBoardRepository.findById(namDeliveryBoard.getId())).willReturn(Optional.ofNullable(namDeliveryBoard));
+
+        //when
+        DeliveryBoardDetailRes findOne = deliveryBoardService.getBoardDetailV1(namDeliveryBoard.getId());
+
+        //then
+        assertThat(findOne.getId()).isEqualTo(namDeliveryBoard.getId());
     }
 
     @Test
@@ -209,5 +254,32 @@ class DeliveryBoardServiceTest {
         assertThat(namDeliveryBoard.getUser()).isEqualTo(namRegister.getUser());
     }
 
+    @Test
+    @DisplayName("게시글 존재 하지 않아 수정 불가")
+    void failEditNoBoard() {
+        //when && then
+        assertThatThrownBy(()-> deliveryBoardService.editDeliveryBoard(null, namRegister, ayaPostReq))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("존재하지 않는 게시글입니다");
+
+    }
+
+    @Test
+    @DisplayName("게시글 존재 하지 않아 삭제 불가")
+    void failDeleteNoBoard() {
+        //when && then
+        assertThatThrownBy(()-> deliveryBoardService.deleteDeliveryBoard(null, namRegister))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("존재하지 않는 게시글입니다");
+    }
+
+    @Test
+    @DisplayName("게시글 존재하지 않아 상세조회 불가Jpa")
+    void failFindOneBoardJpa() {
+        //when && then
+        assertThatThrownBy(()-> deliveryBoardService.getBoardDetailV1(null))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("존재하지 않는 게시글입니다");
+    }
 
 }

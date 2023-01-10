@@ -169,15 +169,14 @@ class DeliCommentServiceTest {
     @DisplayName("댓글 생성 성공")
     void creatDeliComment() {
         //given
-        doReturn(new DeliComment(namCommentReq, namRegister.getUser(), namBoard))
-                .when(mockDeliCommentRepository).save(namComment);
+        given(userRepository.findByUsername(namRegister.getUsername())).willReturn(Optional.ofNullable(namRegister.getUser()));
+        given(mockDeliveryBoardRepository.findById(namBoard.getId())).willReturn(Optional.ofNullable(namBoard));
 
         //when
-        DeliComment creatComment = mockDeliCommentRepository.save(namComment);
+        deliCommentService.creatDeliComment(namRegister, namCommentReq, namBoard.getId());
 
         // then
-        assertThat(creatComment.getUser().getUsername()).isEqualTo(namComment.getUser().getUsername());
-        assertThat(creatComment.getComment()).isEqualTo(namComment.getComment());
+        verify(mockDeliCommentRepository, times(0)).save(namComment);
     }
 
     @Test

@@ -7,6 +7,7 @@ import com.example.demo.model.Address;
 import com.example.demo.model.CommunityBoard;
 import com.example.demo.model.User;
 import com.example.demo.repository.CommunityRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.queryRepository.AllBoardQueryRepository;
 import com.example.demo.repository.queryRepository.JpqlBoardQueryRepository;
 import com.example.demo.security.UserDetailsImpl;
@@ -45,6 +46,8 @@ class CommunityServiceTest {
     private AllBoardQueryRepository boardQueryRepository;
     @Mock
     private JpqlBoardQueryRepository jpqlBoardQueryRepository;
+    @Mock
+    private UserRepository userRepository;
 
     private UserDetailsImpl namRegister;
     private UserDetailsImpl ayaRegister;
@@ -140,14 +143,13 @@ class CommunityServiceTest {
     @DisplayName("커뮤니티 게시글 작성")
     void postComBoard() {
         //given
-        doReturn(new CommunityBoard(namPostReq, namRegister.getUser())).when(communityRepository).save(any(CommunityBoard.class));
+        given(userRepository.findByUsername(namRegister.getUsername())).willReturn(Optional.ofNullable(namRegister.getUser()));
 
         //when
-        CommunityBoard saveCommunity = communityRepository.save(namCommunityBoard);
+        communityService.postComBoard(namPostReq, namRegister);
 
         //then
-        assertThat(saveCommunity.getTitle()).isEqualTo(namPostReq.getTitle());
-        assertThat(saveCommunity.getUser().getUsername()).isEqualTo(namRegister.getUser().getUsername());
+        verify(communityRepository, times(0)).save(namCommunityBoard);
     }
 
     @Test
